@@ -1,23 +1,60 @@
-# 5-Month Roadmap (≈12–15 hrs/week)
+# 6-Month Roadmap (≈12–15 hrs/week)
 
 This assumes your current profile (LangGraph, MCP, RAG, guardrails, FastAPI, React, Azure/AWS). The
 roadmap skips fundamentals and goes straight to your gaps: **evals → observability → agent breadth →
 Next.js → public portfolio**.
 
+> **Updated:** Project 1 now follows its **full build plan** (18 features, about 80 h, **6 weeks**; see
+> [Project 1 build plan](projects/01-rag-eval-lab/docs/08-build-plan/README.md)). Everything after it
+> moves back 3 weeks. The durations for Projects 2–7 and the capstone are still estimates and will be
+> revised as each project's build plan is written.
+
 | Weeks | Focus | Project | Gap closed | Output |
 |---|---|---|---|---|
 | **0 (3 days)** | Résumé fixes | — | Typos, timeline issues, headline | Updated CV + LinkedIn |
-| **1–3** | Evals + observability | #1 RAG Eval Lab | Ragas/DeepEval, CI gates, Langfuse, rerankers | Repo + ablation table + post |
-| **4–6** | Remote MCP | #2 MCP Hub | OAuth 2.1, MCP client, gateway, tool-design evals | Open-source MCP server + gateway |
-| **7–10** | Agent reliability | #3 Agent Harness (+ #4 A2A) | Trajectory evals, agent SDKs, memory, OTel, A2A | Framework comparison report |
-| **11–13** | Full-stack | #6 AI SaaS on Next.js | Next.js, Vercel AI SDK, resumable streams, billing | Deployed SaaS |
-| **14–15** | Sandboxing + generative UI | #5 Data-Analyst Agent | E2B, sandbox security, generative UI | Repo + threat model |
-| **16** | Cost engineering | #7 Gateway & Router | Semantic cache, routing, cost metrics | Cost report |
-| **17–22** | Capstone | 🏆 Demand-Planning Copilot | Brings everything together | Public demo + video + blog |
+| **1–6** | Evals + observability | #1 RAG Eval Lab (full plan) | Ragas/DeepEval, CI gates, Langfuse/OTel, rerankers, pgvector, Terraform on Azure | Deployed demo + ablation report + post |
+| **7–9** | Remote MCP | #2 MCP Hub | OAuth 2.1, MCP client, gateway, tool-design evals | Open-source MCP server + gateway |
+| **10–13** | Agent reliability | #3 Agent Harness (+ #4 A2A) | Trajectory evals, agent SDKs, memory, OTel, A2A | Framework comparison report |
+| **14–16** | Full-stack | #6 AI SaaS on Next.js | Next.js, Vercel AI SDK, resumable streams, billing | Deployed SaaS |
+| **17–18** | Sandboxing + generative UI | #5 Data-Analyst Agent | E2B, sandbox security, generative UI | Repo + threat model |
+| **19** | Cost engineering | #7 Gateway & Router | Semantic cache, routing, cost metrics | Cost report |
+| **20–25** | Capstone | 🏆 Demand-Planning Copilot | Brings everything together | Public demo + video + blog |
 
-**Start applying at week 10.** By then you'll have three strong public repos on top of your
-experience. Keep building while you interview; the capstone makes a good "what are you working on
-now?" answer.
+## Project 1 in detail (weeks 1–6)
+
+| Week | Milestone | Features | Exit check |
+|---|---|---|---|
+| 1 | M1 Skeleton | F0 Foundation · F1 EDGAR fetch · F2 Parsing · F3a fixed-512 chunking | Parsed filings with sections for 2 companies |
+| 2 | M1 → M2 | F4 Embedding · F5a Dense retrieval · F8a Basic generation · F9 API/SSE · F10 Observability | Streamed answer via `curl`; traces in Langfuse |
+| 3 | M2 Measure | F11a Golden set v0 (30 Qs) · F12 Eval runner | **Baseline A0 recorded** |
+| 4 | M3 Improve | F3b Structural/tables/ctx · F5b Hybrid + filters · F6 Reranking · F7 Query understanding · F8b Citations + abstention · F14a Ablations | A0–A7 results table |
+| 5 | M4 Protect | F11b Golden set v1 (150 + 20 holdout), judge labels · F13 CI gate | Demo bad PR **blocked** by the gate |
+| 6 | M5 Ship | F15 Streamlit UI · F16 Azure deploy · F17 Feedback loop · F14b Report + blog | Public demo URL, README results, post |
+
+```mermaid
+gantt
+    title 6-month roadmap
+    dateFormat YYYY-MM-DD
+    axisFormat W%W
+    section Prep
+    Résumé fixes                        :r0, 2026-10-01, 3d
+    section Projects
+    P1 RAG Eval Lab (full plan)         :p1, 2026-10-05, 6w
+    P2 MCP Hub                          :p2, after p1, 3w
+    P3 Agent Harness + P4 A2A           :p3, after p2, 4w
+    P6 AI SaaS on Next.js               :p6, after p3, 3w
+    P5 Sandboxed Data-Analyst Agent     :p5, after p6, 2w
+    P7 Gateway & Router                 :p7, after p5, 1w
+    Capstone Demand-Planning Copilot    :cap, after p7, 6w
+    section Career
+    AI-102 certification prep           :cert, after p1, 7w
+    Start applying                      :milestone, after p3, 0d
+```
+
+**Start applying at week 13**, once Projects 1–3 are public: evals and CI gates, an MCP platform, and an
+agent framework comparison, on top of your experience. Keep building while you interview; the capstone
+makes a good "what are you working on now?" answer. If you need to apply sooner, **week 6** is a
+reasonable earlier point, because Project 1 alone already closes the biggest gap (evals + observability).
 
 ## Weekly rhythm
 - About 60% building, 20% reading docs/papers, 20% writing (README, LinkedIn post).
@@ -25,7 +62,7 @@ now?" answer.
 
 ## Certification
 - **Azure AI Engineer Associate (AI-102)**: this fits your Azure experience and gets you past ATS filters
-  at Indian GCCs, consultancies and Middle-East enterprises. You can do it alongside weeks 4–10.
+  at Indian GCCs, consultancies and Middle-East enterprises. You can do it alongside weeks 7–13.
 - Optional: AWS Certified Generative AI Developer, if you're targeting AWS-heavy companies.
 
 ## Interview prep alongside

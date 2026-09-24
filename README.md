@@ -13,7 +13,7 @@ these roles:
 | [01-market-analysis.md](01-market-analysis.md) | What JDs ask for, with a breakdown for each target role |
 | [02-tech-stack.md](02-tech-stack.md) | Full tech stack rated for each role, with your current status (✅ / ⚠️ / ❌) |
 | [03-projects.md](03-projects.md) | 7 projects + 1 optional + a CPG demand-planning capstone, mapped to roles and gaps |
-| [04-roadmap.md](04-roadmap.md) | 5-month plan, certification, interview prep, keywords |
+| [04-roadmap.md](04-roadmap.md) | 6-month plan (week by week for Project 1), certification, interview prep, keywords |
 
 ## Project design docs
 

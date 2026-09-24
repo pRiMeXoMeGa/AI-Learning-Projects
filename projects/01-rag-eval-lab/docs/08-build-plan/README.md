@@ -156,11 +156,9 @@ flowchart LR
 
 ## 8.5 Timeline
 
-At **12–15 h/week**, 80 hours takes about **6 weeks**. That is longer than the 3 weeks in the
-[roadmap](../../../../04-roadmap.md). There are two options:
-- **Full plan: 6 weeks.** Everything below.
-- **Core cut: ~3.5 weeks (~48 h).** Skip F15, F16, F17 and A-emb/A-llmctx; the CI gate and ablation table stay.
-  Do the skipped items later during the capstone.
+At **12–15 h/week**, 80 hours takes about **6 weeks**. **Decision: the full plan is used.** The
+[roadmap](../../../../04-roadmap.md) has been updated to give Project 1 weeks 1–6 and move the later
+projects back by 3 weeks.
 
 ```mermaid
 gantt

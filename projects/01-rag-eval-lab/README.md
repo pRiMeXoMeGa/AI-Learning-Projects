@@ -6,7 +6,7 @@
 **Target role:** GenAI / Applied AI Engineer
 **Gaps it closes:** evals (Ragas/DeepEval, LLM-as-judge, CI gates), observability (Langfuse/OTel),
 reranking, and measured retrieval quality
-**Status:** 🟡 Design phase (no code yet)
+**Status:** 🟡 Design and build plan done (no code yet)
 
 ## Design documents
 
@@ -19,6 +19,7 @@ reranking, and measured retrieval quality
 | 5 | [Non-Functional Design](docs/05-non-functional.md) | Latency, cost, observability, security, failure modes, scaling |
 | 6 | [Architecture Decision Records](docs/06-decisions.md) | Why each major choice was made, and the alternatives considered |
 | 7 | [Tech Stack](docs/07-tech-stack.md) | Every technology used, why it was chosen, alternatives rejected, what it adds to your profile |
+| 8 | [Build Plan](docs/08-build-plan/README.md) | 18 features in 5 milestones: master dependency diagram, timeline, and a page per feature with diagrams, tasks and acceptance criteria |
 
 ## The system at a glance
 

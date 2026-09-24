@@ -19,7 +19,7 @@ these roles:
 
 | Project | Status |
 |---|---|
-| [1. RAG Eval Lab](projects/01-rag-eval-lab/README.md) | 🟡 System design done |
+| [1. RAG Eval Lab](projects/01-rag-eval-lab/README.md) | 🟡 System design, tech stack and build plan done |
 
 ## TL;DR
 - **Your strengths are already in demand:** LangGraph multi-agent systems, MCP servers, guardrails,

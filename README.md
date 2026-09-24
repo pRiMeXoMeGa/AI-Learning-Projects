@@ -15,6 +15,12 @@ these roles:
 | [03-projects.md](03-projects.md) | 7 projects + 1 optional + a CPG demand-planning capstone, mapped to roles and gaps |
 | [04-roadmap.md](04-roadmap.md) | 5-month plan, certification, interview prep, keywords |
 
+## Project design docs
+
+| Project | Status |
+|---|---|
+| [1. RAG Eval Lab](projects/01-rag-eval-lab/README.md) | 🟡 System design done |
+
 ## TL;DR
 - **Your strengths are already in demand:** LangGraph multi-agent systems, MCP servers, guardrails,
   multi-LLM platforms, FastAPI + React/TypeScript, and team leadership.

@@ -39,6 +39,8 @@ is thrown away.
 
 ## 1. RAG Eval Lab: measured, eval-gated RAG  *(GenAI)*
 
+📐 **Detailed system design:** [projects/01-rag-eval-lab](projects/01-rag-eval-lab/README.md)
+
 **Why this project:** Your résumé shows RAG but no quality numbers. Hiring managers want to see that
 you can *measure and improve* retrieval.
 

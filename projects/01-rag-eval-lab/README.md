@@ -18,6 +18,7 @@ reranking, and measured retrieval quality
 | 4 | [Evaluation Design](docs/04-evaluation-design.md) | Golden dataset, metrics, judge calibration, ablation plan, CI gate |
 | 5 | [Non-Functional Design](docs/05-non-functional.md) | Latency, cost, observability, security, failure modes, scaling |
 | 6 | [Architecture Decision Records](docs/06-decisions.md) | Why each major choice was made, and the alternatives considered |
+| 7 | [Tech Stack](docs/07-tech-stack.md) | Every technology used, why it was chosen, alternatives rejected, what it adds to your profile |
 
 ## The system at a glance
 

@@ -1,228 +1,245 @@
-# Project Recommendations (for a 4-YOE AI Engineer)
+# Projects for GenAI Engineer · Agent Engineer · AI Full-stack Engineer
 
-Each project is designed so that **together they cover every 🔴/🟠 item in
-[02-tech-stack.md](02-tech-stack.md)**, and each one yields a résumé bullet with a *measured*
-outcome, which is what senior JDs screen for.
+These projects are chosen for your profile. You've already shipped LangGraph multi-agent systems, MCP
+servers, RAG, guardrails and React UIs **for clients**, so a beginner "build a RAG chatbot" project won't
+help. Each project here does three things:
 
-Rule for every project: **no demo without evals, tracing, and a deploy.**
+1. **Fills a gap** from [00-profile-gap-analysis.md](00-profile-gap-analysis.md): evals, observability,
+   remote MCP/A2A, agent SDKs, sandboxing, Next.js/Vercel AI SDK, cost engineering.
+2. **Turns hidden client experience into public proof**: open-source repos with metrics.
+3. **Maps to a target role** so you can pin the right repos for each application.
 
-| # | Project | Primary skills | Level | Time |
+> ⚠️ Build everything from scratch on **public data**. Don't reuse PepsiCo, Unilever, Fractal or
+> LTIMindtree code, prompts or data.
+
+## Overview
+
+| # | Project | Role(s) | Gaps it fills | Time |
 |---|---|---|---|---|
-| 1 | Production-grade Enterprise RAG | Hybrid search, re-ranking, pgvector/Qdrant, Ragas, Langfuse | Core | 3–4 wks |
-| 2 | MCP Tool Server Suite | MCP servers/clients, OAuth, tool design | Core | 2 wks |
-| 3 | Multi-Agent Workflow with LangGraph | LangGraph, HITL, checkpoints, A2A | Core | 3–4 wks |
-| 4 | Eval & Guardrails Platform (CI-gated) | DeepEval/promptfoo, LLM-as-judge, red-teaming | Core | 2–3 wks |
-| 5 | LLM Gateway & LLMOps Stack | LiteLLM, semantic cache, OTel, K8s, Terraform | Senior | 3 wks |
-| 6 | Fine-tune → Quantize → Serve an SLM | LoRA/QLoRA, DPO, vLLM, benchmarking | Senior | 3–4 wks |
-| 7 | Multimodal Document Intelligence | VLMs, Docling, structured extraction, HITL review | Senior | 2–3 wks |
-| 8 | Sandboxed Coding / Data-Analyst Agent | Code execution sandbox, security, tool permissions | Senior | 2–3 wks |
-| 9 | GraphRAG vs Vector RAG Study | Neo4j, entity extraction, comparative evals | Stretch | 2 wks |
-| 10 | Real-time Voice Agent | STT/TTS, LiveKit/Pipecat, latency engineering | Stretch | 2 wks |
-| 🏆 | **Capstone: Vertical AI Copilot (SaaS)** | Everything above, multi-tenant, full-stack | Portfolio | 6–8 wks |
+| 1 | **RAG Eval Lab**: measured, eval-gated RAG | GenAI | Evals, CI gates, reranking, Langfuse | 3 wks |
+| 2 | **MCP Hub**: remote MCP servers + gateway | Agent, Full-stack | Remote MCP, OAuth 2.1, MCP client, tool-design evals | 3 wks |
+| 3 | **Agent Reliability Harness**: one agent, three frameworks | Agent | Trajectory evals, agent SDKs, memory, tracing | 3–4 wks |
+| 4 | **A2A Agent Mesh** | Agent | A2A, cross-framework interop | 1–2 wks |
+| 5 | **Sandboxed Data-Analyst Agent** with generative UI | Agent, Full-stack | Sandboxing, code-execution security, generative UI | 3 wks |
+| 6 | **Full-stack AI SaaS on Next.js** | Full-stack | Next.js, Vercel AI SDK, resumable streams, billing, multi-tenancy | 3–4 wks |
+| 7 | **LLM Gateway & Cost Router** | GenAI | Semantic cache, routing, cost/latency metrics, OTel | 2 wks |
+| 8 | *(optional)* **Realtime Voice Agent** | Full-stack | Realtime/voice UX | 2 wks |
+| 🏆 | **Capstone: Demand-Planning Copilot for CPG** | All three | Everything, in your own domain | 5–6 wks |
+
+**Suggested order:** 1 → 2 → 3 → 6 → 5 → 4 → 7 → Capstone. Projects 1 and 3 close the biggest gap
+(evals + observability) first. The **capstone reuses components from projects 1–7**, so nothing you build
+is thrown away.
+
+**GitHub pins by role**
+- GenAI Engineer: Capstone, 1, 7, 3
+- Agent Engineer: Capstone, 3, 2, 5
+- AI Full-stack Engineer: Capstone, 6, 5, 2
 
 ---
 
-## 1. Production-grade Enterprise RAG ("DocuMind")
+## 1. RAG Eval Lab: measured, eval-gated RAG  *(GenAI)*
 
-**Problem:** Q&A over a messy corpus (e.g. 2k+ PDFs from SEC filings, RBI circulars, or your
-company-style docs) with citations and access control.
+**Why this project:** Your résumé shows RAG but no quality numbers. Hiring managers want to see that
+you can *measure and improve* retrieval.
 
-**Stack:** Python, FastAPI (SSE streaming), Docling/Unstructured, Postgres + **pgvector** (then
-swap to **Qdrant** to compare), BM25 (Postgres FTS or Elasticsearch), BGE/Cohere **reranker**,
-OpenAI/Claude/Azure OpenAI, **Langfuse**, **Ragas**, Docker.
+**Data:** A public corpus with hard questions, e.g. SEC 10-K filings of 20 CPG companies, or RBI/SEBI
+circulars. These give you tables, cross-document questions and numbers.
+
+**Stack:** FastAPI (SSE), Docling, Postgres + **pgvector** (with Pinecone for comparison), BM25,
+**Cohere/BGE reranker**, query rewriting, **Ragas + DeepEval**, **Langfuse**, GitHub Actions, Docker.
 
 **Milestones**
-1. Naive RAG baseline → build a 100-question **golden eval set** (with synthetic generation + manual review).
-2. Measure faithfulness, answer relevance, context precision/recall with Ragas.
-3. Add hybrid search → reranker → query rewriting → parent-document chunking; measure **each** step.
-4. Citations with span highlighting; "I don't know" behaviour.
-5. Row-level **ACL-aware retrieval** (metadata filters per user/group).
-6. Incremental ingestion (only re-embed changed docs) via a queue (Celery/Redis).
-7. Tracing + cost/latency dashboard in Langfuse.
+1. Build a 150-question **golden set** (synthetic generation + manual review) with question types:
+   factoid, multi-hop, table/numeric, unanswerable.
+2. Naive baseline, then measure context precision/recall, faithfulness and answer correctness.
+3. Add one technique at a time (hybrid → reranker → query rewriting → parent-document chunking →
+   contextual chunk headers) and **record each step's effect** in an ablation table.
+4. Calibrate an LLM-as-judge against 50 human labels and report agreement.
+5. **CI gate:** a PR fails if faithfulness or recall drops more than a threshold.
+6. Langfuse traces with cost and latency per query; p50/p95 dashboard.
 
-**Senior signal:** An ablation table in the README showing which technique moved which metric.
-**Résumé bullet:** "Raised RAG faithfulness 0.68→0.91 and cut p95 latency 45% via hybrid search + reranking + caching."
+**Résumé bullet template:** "Raised RAG faithfulness from __ to __ and recall@5 from __ to __ via hybrid
+search + reranking; added CI eval gates in GitHub Actions that block quality regressions."
 
 ---
 
-## 2. MCP Tool Server Suite
+## 2. MCP Hub: remote MCP servers + gateway  *(Agent, Full-stack)*
 
-**Problem:** Expose real systems (Postgres, GitHub/Jira, your RAG from #1, a calendar) to any
-agent (Claude Desktop, Cursor, your own agent) via **Model Context Protocol**.
+**Why this project:** You've built internal FastMCP servers. This project takes you from "built MCP
+tools" to **MCP platform expert**, which is the strongest differentiator in agent JDs, and the result is
+public.
 
-**Stack:** MCP Python SDK (FastMCP) and/or TypeScript SDK, streamable HTTP transport, **OAuth 2.1**
-auth, Docker, pytest.
+**Stack:** FastMCP (Python) + MCP TypeScript SDK, streamable HTTP, **OAuth 2.1** (Auth0/Keycloak/Entra),
+Postgres, Redis, Docker, MCP Inspector, pytest.
 
 **Milestones**
-1. Read-only Postgres MCP server (tools + resources + prompts).
-2. RAG-as-a-tool: wrap Project #1 as an MCP server.
-3. Write-capable tools with confirmation/elicitation and **scoped permissions**.
-4. Remote deployment with OAuth; rate limiting; audit logging of every tool call.
-5. Build a minimal MCP **client** in your own agent loop (raw API, no framework) to deeply understand tool calling.
-6. Tool-design study: compare tool descriptions/granularity and measure agent task success.
+1. **Open-source MCP server** for a useful public API or dataset, e.g. Indian mutual-fund NAVs,
+   data.gov.in, or UAE open data. Publish it to the MCP registry and PyPI/npm.
+2. Remote deployment with **OAuth 2.1**, scoped tools per user, rate limits, audit log of every call.
+3. Use **elicitation** (asking the user for input mid-call) and a confirmation flow for write tools.
+4. **MCP gateway:** one endpoint that aggregates several MCP servers, with a tool registry, per-tenant
+   allow-lists and policy checks. Your security background shows here.
+5. Write your own **MCP client** in a raw tool-calling loop (no framework), for both the Claude and
+   OpenAI APIs.
+6. **Tool-design evals:** compare tool granularity and description wording, and measure agent task
+   success and token usage.
+7. Threat-model write-up: tool poisoning, prompt injection via tool results, confused-deputy attacks.
 
-**Senior signal:** Security write-up — prompt injection via tool outputs, tool poisoning, least-privilege.
+**Résumé bullet template:** "Built an OAuth-secured MCP gateway aggregating __ servers / __ tools with
+per-tenant policies; open-source MCP server with __ installs/stars."
 
 ---
 
-## 3. Multi-Agent Workflow with LangGraph ("OpsPilot")
+## 3. Agent Reliability Harness: one agent, three frameworks  *(Agent)*
 
-**Problem:** An agentic workflow a business would pay for, e.g. **invoice-to-payment**, **incident
-triage** (read alerts → query logs → propose fix → open ticket), or **research-to-report**.
+**Why this project:** Agent JDs ask for **trajectory evals, tracing and framework breadth**. You know
+LangGraph deeply; this shows you can judge frameworks objectively.
 
-**Stack:** **LangGraph** (supervisor + specialist sub-agents), Postgres checkpointer, MCP tools
-from #2, human-in-the-loop interrupts, LangSmith/Langfuse, FastAPI, Streamlit or Next.js UI.
+**Task:** An "IT incident triage" or "customer-refund" agent: read the ticket, query the MCP tools from
+project 2, decide, ask a human for approval, act.
+
+**Stack:** **LangGraph** (Postgres checkpointer, interrupts, long-term memory store),
+**OpenAI Agents SDK**, **Claude Agent SDK** (or Google ADK), **Langfuse**/**LangSmith**,
+**OpenTelemetry**, DeepEval, pytest.
 
 **Milestones**
-1. Single ReAct agent with 3–5 tools; measure task success on 30 scripted scenarios.
-2. Refactor into supervisor + specialist graph; add **structured state** and typed outputs.
-3. **Human approval** before any write action; resume from checkpoint after crash/restart.
-4. Short-term + long-term memory (per-user store).
-5. Guard against loops (step budgets, cost budgets, timeouts).
-6. Re-implement one agent with **OpenAI Agents SDK / Claude Agent SDK** and expose it over **A2A** — compare DX and reliability.
+1. Build 50 scripted scenarios with expected **tool trajectories** and outcomes, including adversarial
+   ones (injected instructions in tickets, missing data, tool failures).
+2. LangGraph implementation: supervisor + specialists, HITL approval, crash/resume, time-travel debugging,
+   per-user long-term memory.
+3. Implement the same agent with the OpenAI Agents SDK and the Claude Agent SDK, using the same MCP tools.
+4. Harness scores: task success, trajectory match, steps, tokens, cost, latency, and the rate at which
+   prompt injection succeeds.
+5. Guardrails: step, cost and time budgets; loop detection; tool allow-lists.
+6. Publish a comparison report in the README and as a blog/LinkedIn post.
 
-**Senior signal:** Trajectory evals (did the agent call the right tools in the right order?), not just final-answer evals.
+**Résumé bullet template:** "Built an agent evaluation harness (__ scenarios, trajectory + outcome metrics)
+comparing LangGraph, OpenAI Agents SDK and Claude Agent SDK; cut failed runs from __% to __%."
 
 ---
 
-## 4. Eval & Guardrails Platform (CI-gated)
+## 4. A2A Agent Mesh  *(Agent)*
 
-**Problem:** Make "prompt changes break production" impossible.
-
-**Stack:** **DeepEval** or **promptfoo**, Ragas, LLM-as-judge with calibrated rubrics, GitHub
-Actions, **NeMo Guardrails / Llama Guard**, Presidio (PII), garak/PyRIT for red-teaming.
+**Stack:** A2A protocol SDK, agents from project 3 (LangGraph + one vendor SDK), Agent Cards, auth.
 
 **Milestones**
-1. Eval harness that runs against Projects #1 and #3 (datasets versioned in git).
-2. **CI gate**: PR fails if faithfulness/task-success drops beyond a threshold.
-3. Calibrate LLM-judge against 50 human labels; report agreement (Cohen's kappa).
-4. Input/output guardrails: PII redaction, jailbreak & **prompt-injection detection**, topic restriction.
-5. Automated red-team suite (indirect injection via retrieved docs & tool outputs).
-6. Online eval: sample production traces → judge → dashboard.
+1. Expose two agents built with different frameworks as **A2A servers** with Agent Cards.
+2. An orchestrator agent discovers them, delegates tasks, and handles long-running tasks and streaming
+   updates.
+3. Write up how **MCP (agent↔tool)** and **A2A (agent↔agent)** fit together.
 
-**Résumé bullet:** "Built CI eval gates that caught 12 regressions pre-release; blocked 97% of injection attempts in red-team suite."
+Small project, but it gives you a strong interview story.
 
 ---
 
-## 5. LLM Gateway & LLMOps Stack
+## 5. Sandboxed Data-Analyst Agent with generative UI  *(Agent, Full-stack)*
 
-**Problem:** A central platform every team's LLM traffic goes through.
+**Why this project:** Sandbox security is an explicit agent-JD requirement, and your M.Tech in
+Information Security makes this a natural fit. The generative-UI front end also counts toward the
+full-stack role.
 
-**Stack:** **LiteLLM** (or build your own in FastAPI), Redis (exact + **semantic cache**),
-multi-provider routing (OpenAI, Anthropic, Bedrock, Azure OpenAI, self-hosted vLLM),
-**OpenTelemetry** → Prometheus/Grafana, per-team budgets, **Kubernetes** + Helm, **Terraform**
-(AWS or Azure), GitHub Actions.
+**Stack:** Claude Agent SDK or LangGraph, **E2B** (or Docker + gVisor) sandbox, pandas/DuckDB,
+**Next.js + Vercel AI SDK** (charts rendered as generative UI components), FastAPI.
 
 **Milestones**
-1. Unified API with fallbacks, retries, timeouts, circuit breaker.
-2. Semantic cache — measure hit rate vs. answer-quality degradation.
-3. **Cost-aware router**: easy queries → small model, hard → frontier model (use a classifier); measure cost savings vs. quality.
-4. Per-tenant keys, quotas, spend dashboards.
-5. Deploy on managed K8s (EKS/AKS) via Terraform with autoscaling.
-
-**Senior signal:** A cost report: "$ per 1k requests before/after routing + caching."
+1. Loop: the agent writes code, runs it in the sandbox, reads the result, fixes errors.
+2. Hard isolation: no network, CPU/memory/time limits, read-only data mounts, destroyed per session.
+3. Generative UI: the agent returns chart/table components (not just text) that stream into the page.
+4. Benchmark on 50 analysis questions (correctness, iterations, cost).
+5. Threat model: sandbox escape, data exfiltration, prompt injection hidden in CSV cells.
 
 ---
 
-## 6. Fine-tune → Quantize → Serve a Small Language Model
+## 6. Full-stack AI SaaS on Next.js  *(Full-stack)*
 
-**Problem:** Beat (or match) a frontier API on a narrow task at a fraction of the cost —
-e.g. **text-to-SQL** on your schema, **ticket classification + extraction**, or a Hindi/Hinglish
-support assistant.
+**Why this project:** Next.js and the Vercel AI SDK are your biggest full-stack gaps. You already know
+React and TypeScript, so this goes quickly.
 
-**Stack:** Hugging Face Transformers/PEFT/**TRL**, **Unsloth**, **QLoRA**, synthetic data
-generation with a frontier model, **DPO**, AWQ/GGUF quantization, **vLLM** on a cloud GPU
-(or Ollama locally), MLflow/W&B.
+**Idea:** "Contract/Policy Copilot": upload documents, chat with citations, run extraction workflows.
+It reuses the RAG from project 1.
+
+**Stack:** **Next.js (App Router, Server Components, Server Actions)**, **Vercel AI SDK** (`useChat`,
+`streamText`, tool calls, structured outputs), shadcn/ui, Auth.js or Clerk, Postgres + pgvector (Drizzle
+or Prisma), FastAPI Python service for heavy AI work, Stripe usage-based billing, Vercel + AWS/Azure.
 
 **Milestones**
-1. Baseline: frontier API + few-shot on a held-out test set.
-2. Generate & clean a synthetic training set (dedupe, filter with a judge).
-3. SFT with QLoRA on a 1–8B open-weight model → evaluate.
-4. Preference tuning (DPO) on failure cases → evaluate.
-5. Quantize, serve with vLLM (continuous batching), load-test (tokens/sec, TTFT, p95).
-6. Cost/quality comparison table vs. API baseline.
+1. Streaming chat with tool-call timelines, citations and a document-preview side panel.
+2. **Resumable streams** (a refresh or reconnect mid-answer doesn't lose it) and persistent chat history.
+3. Multi-tenant workspaces, roles, per-tenant data isolation (row-level security).
+4. Usage metering (tokens per tenant) and Stripe billing; rate limits.
+5. E2E tests with Playwright; deploy with preview environments per PR.
 
-**Résumé bullet:** "Fine-tuned 3B model matching frontier-API accuracy (94% vs 95%) at 1/15th the cost per request."
+**Résumé bullet template:** "Built and deployed a multi-tenant AI SaaS (Next.js, Vercel AI SDK, FastAPI,
+pgvector) with resumable streaming, RLS isolation and usage-based billing."
 
 ---
 
-## 7. Multimodal Document Intelligence
+## 7. LLM Gateway & Cost Router  *(GenAI)*
 
-**Problem:** Extract structured data from invoices, contracts, or medical forms (scans, tables,
-handwriting) into a validated schema.
+**Why this project:** It builds on your "GenAI Playground (17+ LLMs)" experience and adds the cost/latency
+engineering JDs ask for.
 
-**Stack:** Vision-language models (GPT/Claude/Gemini vision, or Qwen-VL open-weight),
-**Docling**/Azure Document Intelligence, Pydantic schemas, confidence scoring, human review UI
-(Streamlit), Postgres.
+**Stack:** LiteLLM (or your own FastAPI gateway), Redis (exact + **semantic cache**), provider prompt
+caching, a small classifier for routing, OpenTelemetry → Prometheus/Grafana, Docker/K8s, Terraform.
 
 **Milestones**
-1. OCR-then-LLM vs direct VLM extraction — compare field-level accuracy.
-2. Schema validation + auto-retry on validation errors.
-3. Confidence-based routing to a **human review queue**; learn from corrections.
-4. Batch processing with a job queue; throughput & cost metrics.
+1. Unified API with fallbacks, retries, circuit breaker, per-team budgets.
+2. Semantic cache: measure hit rate against quality loss using the eval set from project 1.
+3. **Cost-aware routing:** easy queries go to a small model, hard ones to a frontier model. Report
+   savings against quality.
+4. Dashboards: cost per request, TTFT, p95, cache hit rate.
+
+**Résumé bullet template:** "Cut LLM cost per 1k requests by __% at <__% quality loss via semantic
+caching + complexity-based model routing."
 
 ---
 
-## 8. Sandboxed Coding / Data-Analyst Agent
+## 8. *(Optional)* Realtime Voice Agent  *(Full-stack)*
 
-**Problem:** "Upload a CSV / connect a DB, ask questions, get charts" — an agent that writes and
-runs code safely.
-
-**Stack:** Agent loop (Claude Agent SDK / OpenAI Agents SDK / LangGraph), **E2B** or Docker-based
-sandbox, pandas/DuckDB, network & filesystem restrictions, artifact storage.
-
-**Milestones**
-1. Code-gen → execute → observe → fix loop.
-2. Hard sandbox: no network, CPU/memory/time limits, read-only mounts.
-3. Permission model for dangerous actions; full audit trail.
-4. Benchmark on 50 analysis questions (correctness + number of iterations).
-
-**Senior signal:** Threat model document for agentic code execution.
+LiveKit Agents or Pipecat, streaming STT/TTS or a realtime speech API, MCP tools (calendar/CRM), and a
+Next.js front end. Goal: under 800 ms turn latency, barge-in handling, transcript evals.
+Do this only if you're targeting voice or customer-support product companies.
 
 ---
 
-## 9. GraphRAG vs Vector RAG — a Comparative Study
+## 🏆 Capstone: Demand-Planning Copilot for CPG  *(all three roles)*
 
-**Stack:** Neo4j, LLM entity/relation extraction, Microsoft GraphRAG or LightRAG, the eval
-harness from #4.
+**Why this project:** It's **your domain**. You've built forecasting agents for PepsiCo and Unilever.
+Rebuilding the idea publicly on open data gives you a portfolio piece that looks like your real work,
+which you can walk through in any interview without NDA problems.
 
-**Deliverable:** A blog post + repo showing *when* graph retrieval beats vector retrieval
-(multi-hop, aggregation questions) and when it doesn't justify the cost. Great for LinkedIn
-visibility.
+**Data:** The **M5 Forecasting (Walmart) dataset** (public on Kaggle), plus public holiday/promo calendars.
 
----
+**Architecture**
+- **Data/MCP layer (project 2):** MCP servers over sales, inventory and promotions in Postgres/DuckDB,
+  exposed through your OAuth MCP gateway.
+- **Agents (projects 3 & 4):** A LangGraph supervisor with specialists: *Data Retriever*,
+  *Forecaster* (runs statistical/ML forecasts in the **sandbox** from project 5), *Analyst* (explains
+  drivers), *Planner* (proposes order quantities). Planner actions need **human approval**.
+  Long-term memory stores planner preferences.
+- **Knowledge (project 1):** RAG over category playbooks, promo guidelines and meeting notes, with citations.
+- **Quality:** Forecast accuracy (MAPE/WAPE against a statistical baseline), trajectory evals, RAG evals,
+  red-team suite, all gated in CI.
+- **Ops (project 7):** All LLM calls go through the gateway; Langfuse + OTel traces; cost per planning
+  session.
+- **UI (project 6):** Next.js + Vercel AI SDK with generative UI: forecast charts, scenario sliders
+  ("what if promo +10%?"), an approval inbox, and a tool-call timeline.
+- **Deploy:** Docker, Terraform on Azure or AWS, GitHub Actions, public demo with seeded data and a
+  3-minute video.
 
-## 10. Real-time Voice Agent
+**README must include:** architecture diagram, eval tables, cost per session, latency, threat model,
+design trade-offs, and what failed.
 
-**Problem:** Appointment booking / customer-support phone agent.
-
-**Stack:** LiveKit Agents or Pipecat, streaming STT (Whisper/Deepgram), realtime LLM or
-STT→LLM→TTS pipeline, tools via MCP (calendar), telephony (Twilio SIP).
-
-**Focus:** End-to-end latency (< 800 ms turn-taking), interruption handling, evals on call transcripts.
-
----
-
-## 🏆 Capstone: Vertical AI Copilot (SaaS-style)
-
-Combine everything into **one deployable product** in a domain you know from your 4 years
-(fintech, healthcare, legal, e-commerce, HR, etc.). Example: **"Compliance Copilot"** for banks.
-
-- Multi-tenant auth (OAuth/OIDC), per-tenant data isolation and ACL-aware RAG (#1)
-- Agent workflows with approvals (#3) using MCP tools (#2)
-- Document intake (#7), optional fine-tuned classifier (#6)
-- All traffic via your gateway (#5), CI eval gates + guardrails (#4)
-- Next.js + Vercel AI SDK front-end with streaming & generative UI
-- Deployed on AWS or Azure with Terraform, K8s, GitHub Actions
-- Public README: architecture diagram, eval results, cost per user, threat model, demo video
-
-This single repo is what you walk through in a senior AI Engineer system-design interview.
+**Résumé bullet template:** "Built an open-source multi-agent demand-planning copilot (LangGraph, MCP,
+A2A, Next.js) on the M5 dataset; improved WAPE by __% over a baseline and kept cost at $__ per session
+with CI-gated evals."
 
 ---
 
-## How to present these projects
+## Rules for every project
 
-- One repo per project (or a mono-repo) with: **architecture diagram, eval table, cost/latency numbers, trade-offs, what failed**.
-- A 2–3 minute demo video for each.
-- One LinkedIn post / blog per project, focused on a *finding* ("Reranking beat a bigger embedding model for 1/10th the cost").
-- Put the measured outcomes on the résumé, using the JD keywords from [01-market-analysis.md](01-market-analysis.md).
+- **No demo without evals, tracing and a deployment.**
+- README: problem → architecture diagram → how to run → **results table** → trade-offs → what's next.
+- A 2–3 minute demo video.
+- One LinkedIn post per project about a **finding** (e.g. "A reranker beat a 3× larger embedding
+  model"), which also builds inbound recruiter interest.

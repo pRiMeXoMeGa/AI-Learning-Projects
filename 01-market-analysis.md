@@ -60,18 +60,50 @@ Pulled from GenAI Engineer, AI Engineer, Senior/Staff AI Engineer and Applied AI
 - "Serve open-weight models (Llama, Qwen, Mistral) on **vLLM / TGI / Triton**", quantization
 - "Inference optimization" — appears as a top-7 skill in the 198-company study
 
-## 4. Role archetypes (pick your lane)
+## 4. Your three target roles: what their JDs ask for
 
-| Archetype | Core of the JD | Differentiator |
-|---|---|---|
-| **GenAI / Applied AI Engineer** | RAG, agents, LLM APIs, FastAPI, cloud | Production RAG quality + evals |
-| **Agent Engineer** | LangGraph, MCP, A2A, tool design, long-running agents | Reliability, sandboxing, human-in-the-loop |
-| **LLM / Model Engineer** | Fine-tuning, serving, quantization, GPUs | Cost/latency per token, vLLM, distillation |
-| **LLMOps / AI Platform Engineer** | Gateways, observability, K8s, CI evals, governance | Multi-tenant platform, FinOps for tokens |
-| **Forward-Deployed / Solutions AI Engineer** | End-to-end delivery at customer sites | Speed + breadth + stakeholder skills |
-| **AI Full-stack Engineer** | Next.js/React + FastAPI + LLM | Streaming UX, generative UI |
+Other archetypes (LLM/Model Engineer, LLMOps Platform Engineer) are out of scope for this plan.
+Fine-tuning and serving appear there but are **optional** for the three roles below.
 
-## 5. What separates a 4-year candidate from a senior hire
+### 4.1 GenAI / Applied AI Engineer
+*"Design and develop enterprise GenAI applications… build and optimise RAG pipelines… integrate
+enterprise knowledge bases… evaluate and monitor LLM quality."*
+
+| Must | Differentiators |
+|---|---|
+| Python, FastAPI, LLM APIs (OpenAI, Claude, Gemini), Azure OpenAI / AI Foundry or Bedrock | Eval-driven development with CI gates |
+| RAG: chunking, hybrid search, **re-ranking**, vector DBs (pgvector, Pinecone, Qdrant, Azure AI Search) | Retrieval metrics and ablations (context precision/recall, faithfulness) |
+| Structured outputs, prompt/context engineering | Cost/latency engineering: caching, routing |
+| Evals (Ragas/DeepEval), observability (Langfuse/LangSmith) | Document intelligence and multimodal inputs |
+| Guardrails, PII handling | Domain depth (CPG, BFSI, insurance) |
+
+### 4.2 Agent Engineer
+*"Build production-grade agentic systems… design MCP servers that expose domain services as tools…
+multi-agent orchestration… own evaluation infrastructure… sandbox security."* Recruiters say most
+candidates have shipped toy agents; few have run multi-agent systems with **eval pipelines, traces
+and rollbacks**.
+
+| Must | Differentiators |
+|---|---|
+| LangGraph (state, conditional edges, checkpointers, interrupts) | **Trajectory evals** (right tools, right order, step/cost budgets) |
+| **MCP**: servers, clients, tool registration, secure integration, OAuth | **A2A** interop; breadth across OpenAI Agents SDK / Claude Agent SDK / Google ADK |
+| Tool calling, structured outputs, planner/supervisor patterns | Sandboxed code execution, browser/computer-use agents |
+| Memory (short and long term), HITL approvals | Durable execution for long-running agents (Temporal, LangGraph persistence) |
+| Tracing and debugging agent runs | Threat modelling: prompt injection via tool outputs, tool poisoning, least privilege |
+
+### 4.3 AI Full-stack Engineer
+*"Build complete applications where AI is a core architectural component, from the database to the
+UI… streaming, tool use, structured outputs… Vercel AI SDK or generative UI is a massive plus."*
+
+| Must | Differentiators |
+|---|---|
+| React + **Next.js** (App Router, Server Components), TypeScript | **Vercel AI SDK**, generative UI, persistent streaming state |
+| Streaming LLM responses (SSE/WebSockets), tool use, structured outputs | Agent UIs: showing tool calls, approvals, artifacts, citations |
+| Python (FastAPI) *or* Node.js backends, REST/GraphQL/tRPC | Realtime voice/multimodal UX |
+| Postgres + pgvector, auth (OAuth/OIDC), Stripe-style usage billing | Multi-tenant SaaS, usage metering, rate limits |
+| Deploy: Vercel/AWS/Azure, Docker, GitHub Actions | Product sense: shipping end-to-end features quickly |
+
+## 5. What separates a mid-level candidate from a senior hire
 
 JDs repeatedly say that **many candidates have built a RAG demo, few have owned a GenAI system
 in production.** Senior signals recruiters screen for:
@@ -82,7 +114,7 @@ in production.** Senior signals recruiters screen for:
 4. **Retrieval depth** — hybrid search, re-rankers, chunking strategy, query rewriting, GraphRAG where justified.
 5. **Cost/latency engineering** — caching (exact + semantic + provider prompt caching), model routing, batching, streaming.
 6. **Security & governance** — prompt injection, PII redaction, data residency, audit logs, EU AI Act awareness.
-7. **Open-weight model ownership** — fine-tune → quantize → serve → benchmark vs API model.
+7. **Open-weight model ownership** — fine-tune → quantize → serve → benchmark vs API model. *(Optional for your three target roles.)*
 8. **Measurable outcomes on the résumé** — "reduced p95 latency 40%", "cut token cost 60%", "raised faithfulness 0.71→0.89".
 
 ## 6. Declining / table-stakes-only
@@ -114,3 +146,8 @@ in production.** Senior signals recruiters screen for:
 - [LinkedIn Profile Keywords for GenAI Engineers (TopGenAIJobs)](https://www.topgenaijobs.com/blog/linkedin-profile-genai-engineers)
 - [AI Engineer Resume 2026 keywords (LevStack)](https://levstack.io/en/blog/ai-engineer-resume-2026/)
 - [AI Agent Operations Engineer (Second Talent)](https://www.secondtalent.com/occupations/ai-agent-operations-engineer/)
+- [AI Full Stack Engineer — ScienTec (freehire)](https://freehire.me/jobs/ai-full-stack-engineer-scientec-personnel-wh264cje)
+- [Senior Full-Stack Engineer (Next.js, AI-Native) — Lumimeds (Greenhouse)](https://job-boards.greenhouse.io/lumimeds/jobs/4205631009)
+- [What is Agentic AI Engineering? (agentic-engineering-jobs.com)](https://agentic-engineering-jobs.com/what-is-agentic-engineering)
+- [MCP and Tool-Use Architecture Careers (TopGenAIJobs)](https://www.topgenaijobs.com/blog/mcp-tool-use-architecture-careers)
+- [AI Agent Engineer Career Guide 2026 (Presenc AI)](https://presenc.ai/research/agent-engineer-career-guide-2026)

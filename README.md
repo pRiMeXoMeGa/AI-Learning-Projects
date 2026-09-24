@@ -1,16 +1,28 @@
 # AI Learning Projects
 
-A market-driven plan for moving from a 4-year AI Engineer to a senior AI Engineer or GenAI Engineer in 2026.
+A market-driven plan for a senior GenAI and full-stack engineer (about 5 years of experience) targeting
+these roles:
+
+1. **GenAI / Applied AI Engineer**
+2. **Agent Engineer**
+3. **AI Full-stack Engineer**
 
 | File | What's inside |
 |---|---|
-| [01-market-analysis.md](01-market-analysis.md) | What AI Engineer and GenAI Engineer job descriptions ask for (LinkedIn postings and job-posting studies) |
-| [02-tech-stack.md](02-tech-stack.md) | The full tech stack by layer, marked Must / Should / Nice |
-| [03-projects.md](03-projects.md) | 10 projects plus a capstone, with stack, milestones, and résumé bullets |
-| [04-roadmap.md](04-roadmap.md) | 6-month plan, certifications, résumé/LinkedIn keywords |
+| [00-profile-gap-analysis.md](00-profile-gap-analysis.md) | Current strengths vs. 2026 JDs, gaps, résumé fixes |
+| [01-market-analysis.md](01-market-analysis.md) | What JDs ask for, with a breakdown for each target role |
+| [02-tech-stack.md](02-tech-stack.md) | Full tech stack rated for each role, with your current status (✅ / ⚠️ / ❌) |
+| [03-projects.md](03-projects.md) | 7 projects + 1 optional + a CPG demand-planning capstone, mapped to roles and gaps |
+| [04-roadmap.md](04-roadmap.md) | 5-month plan, certification, interview prep, keywords |
 
 ## TL;DR
-1. The market wants people who **ship, evaluate and operate** LLM systems, not just train models.
-2. Must-haves: **Python, FastAPI, LLM APIs, RAG (hybrid + rerank), vector DBs, LangGraph, MCP, evals, Docker, cloud (Azure/AWS)**.
-3. Differentiators for senior roles: **eval-driven development, agent reliability, cost/latency engineering, guardrails and security, fine-tuning and serving open-weight models**.
-4. Build projects 1 → 6, then the capstone. Publish measured results for every project.
+- **Your strengths are already in demand:** LangGraph multi-agent systems, MCP servers, guardrails,
+  multi-LLM platforms, FastAPI + React/TypeScript, and team leadership.
+- **What's missing is public, measured proof.** Specifically:
+  - evals (Ragas/DeepEval, CI gates, trajectory evals)
+  - observability (Langfuse/OTel)
+  - remote MCP/A2A and vendor agent SDKs
+  - sandboxed agents
+  - Next.js + Vercel AI SDK
+- **Plan:** Projects 1 → 2 → 3 → 6 → 5 → 4 → 7, then the **Demand-Planning Copilot** capstone on the
+  public M5 dataset. It rebuilds your CPG forecasting experience as an open-source portfolio piece.

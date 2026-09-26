@@ -95,5 +95,5 @@ pending confirmation) travels inside the request, signed so it can't be forged. 
 No. The tools return data and calculations only, and say so in their descriptions.
 
 **Is this the code?**
-Not yet. These are the design documents. The tech-stack rationale and the feature-by-feature build plan
-come next.
+Not yet. These are the design documents and the [tech-stack rationale](08-tech-stack.md). The
+feature-by-feature build plan comes next.

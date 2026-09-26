@@ -98,7 +98,7 @@ flowchart TB
 | **Gateway** | MCP endpoint for clients; token validation; aggregation; routing; registry; policy calls; confirmations; token exchange; filters; audit; admin API | Python 3.12, MCP Python SDK v2, Starlette/Uvicorn, httpx |
 | **OPA** | Evaluates policy decisions from a versioned Rego bundle | Open Policy Agent (sidecar) |
 | **india-mf-mcp** | MF tools, resources, prompts; per-user watchlists and holdings | Python, FastMCP 4, SQLAlchemy, Postgres |
-| **fx-rates-mcp** | FX tools (rates, conversion, history) | TypeScript, MCP TypeScript SDK v2, Node 22 |
+| **fx-rates-mcp** | FX tools (rates, conversion, history) | TypeScript, MCP TypeScript SDK v2, Hono, Node 24 LTS |
 | **stdio bridge** | Runs a stdio-only server as a subprocess and exposes it to the gateway | Part of the gateway package |
 | **Ingest worker** | Daily AMFI NAV + ECB rates jobs, history backfill | Python, scheduled job (cron in compose / Container Apps job) |
 | **PostgreSQL** | `mf` (funds, NAVs, user data), `gateway` (servers, tools, tenants, credentials), `audit` (events) | Postgres 16, partitioned NAV table |

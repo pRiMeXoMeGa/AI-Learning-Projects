@@ -6,7 +6,7 @@
 **Target roles:** Agent Engineer (primary), AI Full-stack Engineer
 **Gaps it closes:** remote MCP with OAuth 2.1, MCP clients, tool-design evals, MCP security (tool
 poisoning, rug pulls, confused deputies), TypeScript MCP SDK, public open-source proof
-**Status:** 🟡 System design done (tech stack and build plan next; no code yet)
+**Status:** 🟡 System design and tech stack done (build plan next; no code yet)
 
 > **New here?** Start with [0 · Start here](docs/00-start-here.md): the project in plain English, one
 > request's journey through the gateway, and which document to read next.
@@ -23,7 +23,7 @@ poisoning, rug pulls, confused deputies), TypeScript MCP SDK, public open-source
 | 5 | [Security & Threat Model](docs/05-security-threat-model.md) | Assets, trust boundaries, MCP-specific threats → controls → tests, STRIDE, audit integrity, residual risk |
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, cost, observability, failure modes, scaling, testing |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 17 decisions with alternatives and consequences |
-| 8 | Tech Stack | *Next:* every technology, why it was chosen, alternatives |
+| 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology, why it was chosen, alternatives rejected, what it adds to your profile, versions, things to verify |
 | 9 | Build Plan | *Next:* features, milestones, master diagram, per-feature pages |
 | 10 | Setup Guide | *With the build plan:* accounts, keys, first run |
 | 11 | [Glossary](docs/11-glossary.md) | Plain-English definitions of MCP, OAuth, security, fund and eval terms |

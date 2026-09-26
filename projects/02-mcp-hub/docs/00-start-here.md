@@ -21,6 +21,7 @@ the [glossary](11-glossary.md).
 | Understand the design | [Requirements](01-requirements.md) → [Architecture](02-architecture.md) → [Low-level design](03-low-level-design.md) | 1 h |
 | Understand how it's measured | [Evaluation design](04-evaluation-design.md) | 20 min |
 | Understand speed, failures and operations | [Non-functional design](06-non-functional.md) | 15 min |
+| Start building | This page → [Setup guide](10-setup-guide.md) → [Build plan](09-build-plan/README.md) → the feature page you're on | 45 min |
 
 ## 0.3 The mental model: an office building with a reception desk
 
@@ -95,5 +96,5 @@ pending confirmation) travels inside the request, signed so it can't be forged. 
 No. The tools return data and calculations only, and say so in their descriptions.
 
 **Is this the code?**
-Not yet. These are the design documents and the [tech-stack rationale](08-tech-stack.md). The
-feature-by-feature build plan comes next.
+Not yet. These are the design documents, the [tech-stack rationale](08-tech-stack.md) and the
+[build plan](09-build-plan/README.md), written before any code.

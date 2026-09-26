@@ -6,7 +6,7 @@
 **Target roles:** Agent Engineer (primary), AI Full-stack Engineer
 **Gaps it closes:** remote MCP with OAuth 2.1, MCP clients, tool-design evals, MCP security (tool
 poisoning, rug pulls, confused deputies), TypeScript MCP SDK, public open-source proof
-**Status:** 🟡 System design and tech stack done (build plan next; no code yet)
+**Status:** 🟡 Design, tech stack and build plan done (no code yet); timeline option to be chosen
 
 > **New here?** Start with [0 · Start here](docs/00-start-here.md): the project in plain English, one
 > request's journey through the gateway, and which document to read next.
@@ -22,10 +22,10 @@ poisoning, rug pulls, confused deputies), TypeScript MCP SDK, public open-source
 | 4 | [Evaluation Design](docs/04-evaluation-design.md) | Tool-design evals, security evals, protocol conformance, performance, CI gate |
 | 5 | [Security & Threat Model](docs/05-security-threat-model.md) | Assets, trust boundaries, MCP-specific threats → controls → tests, STRIDE, audit integrity, residual risk |
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, cost, observability, failure modes, scaling, testing |
-| 7 | [Architecture Decision Records](docs/07-decisions.md) | 17 decisions with alternatives and consequences |
+| 7 | [Architecture Decision Records](docs/07-decisions.md) | 18 decisions with alternatives and consequences |
 | 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology, why it was chosen, alternatives rejected, what it adds to your profile, versions, things to verify |
-| 9 | Build Plan | *Next:* features, milestones, master diagram, per-feature pages |
-| 10 | Setup Guide | *With the build plan:* accounts, keys, first run |
+| 9 | [Build Plan](docs/09-build-plan/README.md) | 23 features in 6 milestones: master dependency diagram, timeline options, and a page per feature with diagrams, tasks and acceptance criteria |
+| 10 | [Setup Guide](docs/10-setup-guide.md) | Accounts and keys (and when you need them), `.env`, first run, cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | Plain-English definitions of MCP, OAuth, security, fund and eval terms |
 
 ## The system at a glance

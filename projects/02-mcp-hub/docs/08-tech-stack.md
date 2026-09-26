@@ -81,6 +81,7 @@ flowchart TB
 | Authorization server | **Keycloak** | Full OIDC, token exchange, runs locally in Docker | Auth0, Entra ID, WorkOS, Ory Hydra |
 | Policy engine | **Open Policy Agent (Rego)** | Separate, testable, versioned policy; widely known | Cedar, hard-coded rules |
 | PII redaction | **Microsoft Presidio** | Proven PII detection; matches your Responsible-AI experience | Regex only, cloud PII APIs |
+| Local data for the stdio package | **SQLite snapshot** | Works offline with `uvx`, no Postgres needed (ADR-018) | Calling the hosted API |
 | Database | **PostgreSQL 16** | Partitioning, row-level security, trigram search, JSONB, one DB for everything | TimescaleDB (time-series extras not needed) |
 | DB access (Python) | **SQLAlchemy 2 (async) + asyncpg + Alembic** | Typed queries, migrations, async | Raw asyncpg (no migrations story) |
 | Cache / rate limits / nonces | **Redis 7** | Atomic Lua scripts for token buckets, `SET NX` nonces | In-memory only (breaks with 2 replicas) |
@@ -145,6 +146,8 @@ flowchart TB
   Hono is small and fast and runs on Node, Bun or edge runtimes.
 - **Not chosen:** Express (works, but older patterns); writing the second server in Python too (misses
   the TS signal).
+- **Also used:** `jose` for JWT validation in TypeScript, `node-postgres` for data, `fast-check` for
+  property tests in vitest.
 
 ### Identity & policy layer
 
@@ -227,6 +230,7 @@ flowchart TB
   app is enough for an internal admin tool.
 - **Not chosen:** Next.js (server rendering isn't needed; Next.js is the focus of Project 6); Streamlit
   (weaker full-stack signal for this role).
+- **Also used:** `oidc-client-ts` for login with PKCE (tokens kept in memory).
 
 ### Quality & observability
 

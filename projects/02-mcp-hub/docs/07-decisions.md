@@ -130,3 +130,14 @@ building.
 - **Alternatives:** AWS ECS / Lambda (the stateless protocol would also fit Lambda well; documented as an
   alternative).
 - **Consequences:** Reuses Project 1's infrastructure code.
+
+### ADR-018: Local stdio mode reads a SQLite snapshot
+- **Context:** Users installing `india-mf-mcp` with `uvx` won't run Postgres, but the server needs NAV data.
+- **Decision:** The stdio package downloads a checksummed **SQLite snapshot** (latest NAVs + limited
+  history) on first run and refreshes it daily; the hosted server uses Postgres. A small repository
+  interface hides the difference.
+- **Alternatives:** The local server calls the hosted endpoint for data (needs the network and adds a
+  dependency on our uptime); bundling the data in the wheel (too large, goes stale).
+- **Consequences:** Works offline and needs no account; user data tools (watchlists, holdings) are only
+  available in the hosted, signed-in mode.
+

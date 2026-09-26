@@ -242,7 +242,7 @@ flowchart LR
     CACHE -- yes --> F
     CACHE -- no --> REG["registry: approved tool<br/>definitions (pinned hashes)"]
     REG --> NS["namespace names<br/>mf__search_schemes · fx__convert"]
-    NS --> F["filter by policy:<br/>tenant allow-list + user scopes"]
+    NS --> F["filter by tenant allow-list<br/>(tools needing more scope stay visible<br/>→ step-up when called)"]
     F --> ORD["stable ordering<br/>(keeps LLM prompt caches warm)"]
     ORD --> OUT["result + ttlMs + cache scope"]
 ```

@@ -195,6 +195,18 @@ generation:
     min_top_rerank_score: 0.30
 ```
 
+**Agentic pipelines** add `mode` and an `agent` block (full example in
+[F18](08-build-plan/F18-agentic-rag.md#state-and-configuration)):
+
+```yaml
+id: AG2
+mode: auto                  # pipeline | agent | auto
+base_pipeline: A6           # retrieval settings used by the search_filings tool
+agent: { model: strong, prompt: agent_researcher@v1, max_steps: 6, max_tool_calls: 12,
+         max_total_tokens: 40000, timeout_s: 45, parallel_tool_calls: true }
+router: { agent_for: [comparison_years, comparison_companies, multi_hop] }
+```
+
 `PipelineConfig` is a Pydantic model. Its **canonical JSON hash** is stored with every trace and eval run,
 which gives reproducibility (NFR-6). Model aliases (`fast`, `strong`, `judge`) resolve to concrete
 provider model IDs in `configs/models.yaml`, so a model change is a one-line diff.
@@ -260,6 +272,7 @@ You answer questions about SEC 10-K filings using ONLY the numbered sources.
   "question": "How did PepsiCo's gross margin change from FY2023 to FY2024?",
   "filters": { "ticker": ["PEP"], "fiscal_year": [2023, 2024] },
   "pipeline": "A5",
+  "mode": "pipeline",
   "debug": false
 }
 ```
@@ -272,6 +285,13 @@ event: token      data: {"text":"increased to 54.6% [1]…"}
 event: citations  data: [{"n":1,"chunk_id":"…","ticker":"PEP","fiscal_year":2024,"section":"7", …}]
 event: done       data: {"latency_ms":2310,"input_tokens":5120,"output_tokens":212,"abstained":false}
 event: error      data: {"code":"UPSTREAM_TIMEOUT","message":"…"}
+```
+
+In `agent` mode (or `auto` when routed to the agent), `step` events arrive before the first `token`:
+```
+event: step       data: {"n":1,"node":"plan","sub_questions":["KO FY2024 tax rate","PEP FY2024 tax rate"]}
+event: step       data: {"n":2,"node":"act","tools":[{"name":"search_filings","args":{"ticker":["KO"],"fiscal_year":[2024]},"n_results":8,"ms":410}, …]}
+event: done       data: {…, "mode":"agent","steps":2,"tool_calls":3,"budget_exceeded":false}
 ```
 With `debug: true`, a `retrieval` event adds every candidate with its dense/sparse/RRF/rerank scores,
 which is useful for the UI's "why this answer?" panel.
@@ -315,3 +335,21 @@ The online path doesn't cache answers in this project (semantic caching is Proje
 | Rerank | 2 s | 1 | On failure, fall back to the RRF order |
 | Generate (stream) | 10 s to first token, 30 s total | 1 before the first token only | Never retry mid-stream |
 | Eval runner | — | — | `asyncio.Semaphore(8)`, respects provider rate limits (token bucket) |
+| Agent run (whole) | 45 s | 0 | Guard stops the loop and answers with the evidence collected so far |
+| Agent tool call | Same as the stage it wraps | Same | A tool error is returned to the LLM as a message, so it can try something else |
+
+## 3.10 Agent design (agentic mode)
+
+| Aspect | Design |
+|---|---|
+| Framework | LangGraph `StateGraph`, used **only** in `ragkit/agent` (see [ADR-015](06-decisions.md)) |
+| Nodes | `plan` → `act` → `guard` → `tools` → `observe` → `reflect` → (`act` again, or `answer`) |
+| State | `question`, `filters`, `sub_questions`, `messages`, `evidence` (chunk_id → best-scored chunk), `calculations`, `trajectory`, `budget`, `status` |
+| Tools | `search_filings`, `read_chunk_context`, `list_filings`, `calculate`, `finish`, all read-only with Pydantic argument schemas |
+| Answer | The F8 generator over the evidence pool (ranked by rerank score, `evidence_max_tokens` budget); calculator results are passed as `<calc>` blocks, and citations must still point at the source numbers |
+| Budgets | 6 steps, 12 tool calls, 40k tokens, 45 s; duplicate `(tool, normalised args)` calls return the cached result |
+| Checkpointing | LangGraph Postgres checkpointer (`agent` schema) in the API; in-memory in evals |
+| Safety | Tool outputs wrapped in `<tool_result>` and treated as data; no write tools, no network access beyond the database |
+
+Full design, diagrams and tasks: [F18](08-build-plan/F18-agentic-rag.md). How it's evaluated:
+[04 §4.11](04-evaluation-design.md#411-agentic-evaluation-trajectory-evals).

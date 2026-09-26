@@ -42,6 +42,9 @@ flowchart TB
         SDK[Provider SDKs<br/>Azure OpenAI · Anthropic · OpenAI · Cohere]
         ST2[sentence-transformers<br/>local BGE embed/rerank]
     end
+    subgraph L3b["Agentic mode"]
+        LG[LangGraph<br/>StateGraph · Postgres checkpointer]
+    end
     subgraph L4["Data"]
         PG[(PostgreSQL 16<br/>+ pgvector)]
         RD[(Redis 7)]
@@ -60,6 +63,7 @@ flowchart TB
         TF[Terraform → Azure Container Apps]
     end
     L1 --> L2 --> L3 --> L4
+    L2 --> L3b -. "tools call" .-> L3
     L3 -. traced by .-> L5
     L6 -. builds, tests, deploys .-> L2
 ```
@@ -81,6 +85,7 @@ flowchart TB
 | Embeddings | **OpenAI `text-embedding-3-large` @1024d** (+ **BGE-M3** local) | Strong quality, Matryoshka dimensions, cheap | Cohere Embed, Voyage |
 | Reranker | **Cohere Rerank** (+ **BGE-reranker** local) | Best quality-per-effort gain in RAG | No reranker, LLM-as-reranker |
 | RAG framework | **None (plain Python)** | Every stage visible and measurable | LangChain, LlamaIndex, Haystack |
+| Agent framework (agentic mode only) | **LangGraph** | Stateful graph, parallel tool calls, checkpoints, streaming; most-requested agent framework in JDs | Hand-written loop, OpenAI Agents SDK, Claude Agent SDK |
 | Eval: RAG metrics | **Ragas** | Standard faithfulness / relevancy metrics | TruLens |
 | Eval: rubric judges | **DeepEval** | GEval rubrics, pytest-style, CI-friendly | promptfoo, OpenAI Evals |
 | Eval: retrieval metrics | **Custom (numpy)** | Span-overlap scoring isn't available in any library | — |
@@ -229,6 +234,19 @@ flowchart TB
 - **Revisit:** An optional LlamaIndex re-implementation scored by the same eval harness makes a good
   comparison section.
 
+### Agentic mode: LangGraph
+- **Role:** Runs the read-only research agent (F18): plan → act → guard → tools → observe → reflect →
+  answer, with a Postgres checkpointer for step-by-step inspection and replay.
+- **Why:** The agent loop needs state, conditional edges, parallel tool calls and checkpoints, which
+  LangGraph provides without hiding the retrieval (the tools are plain functions over our own code). It
+  matches C3 (it's the agent framework JDs ask for most) and your existing experience, so the effort goes
+  into the new skill: **evaluating agent trajectories** (C4).
+- **Not chosen:** A hand-written loop (fine, but you'd rebuild checkpointing and streaming); OpenAI Agents
+  SDK and Claude Agent SDK (compared side by side in Project 3); LlamaIndex agents (would hide the
+  retrieval again, against ADR-013).
+- **Revisit:** If the agent never beats the pipeline in F19, keep LangGraph out of the default path and
+  leave the agent as a documented experiment.
+
 ### Quality & observability layer
 
 #### Ragas
@@ -318,8 +336,10 @@ flowchart TB
 | pgvector (HNSW, halfvec, filtered search) | Schema + latency numbers |
 | Docling, structure-aware chunking | Chunking ablation by question type |
 | uv, testcontainers, Terraform on Azure Container Apps | Repo + deployed demo |
+| Agentic RAG with LangGraph, trajectory evals, cost-aware routing | Agent-vs-pipeline report, agent step traces, gate rules for agents |
 
-**Deliberately not in this project** (covered elsewhere): LangGraph and agents (Project 3), LiteLLM and
+**Deliberately not in this project** (covered elsewhere): agents that act (write tools, HITL approvals),
+multi-agent systems and agent-framework comparisons (Project 3), LiteLLM and
 semantic caching (Project 7), Next.js and the Vercel AI SDK (Project 6), Kubernetes, fine-tuning.
 
 ## 7.5 Version baseline
@@ -335,3 +355,4 @@ the design:
 | Pydantic | 2.x | Model JSON schema for structured outputs |
 | Redis | 7.x | — |
 | Langfuse | v3 (SDK with OTel support) | OTel-based tracing, datasets |
+| LangGraph | 1.x | Stable `StateGraph` API, Postgres checkpointer, streaming of node updates |

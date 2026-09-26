@@ -70,6 +70,7 @@ scripts/index_snapshot.sh            # build/restore the pg_dump used by CI
 - [ ] Budget guard + cache restore; timeouts
 - [ ] **Demo PR:** switch the default to `fixed-512` / remove the reranker and show the gate blocking it (screenshot for the README)
 - [ ] Branch protection: `eval-smoke` required on `main`
+- [ ] (M5) Add the `agent_metrics` rules from [F19](F19-trajectory-evals.md) once the default uses `mode: agent` or `auto`
 
 ## Acceptance criteria
 - A PR with no pipeline changes passes with ~0 LLM cost (cache)

@@ -16,6 +16,7 @@ regressions**. Every retrieval improvement must come with numbers.
 |---|---|
 | Analyst (end user) | Ask natural-language questions and get a streamed answer with clickable citations |
 | Analyst | Filter by company, fiscal year or 10-K section |
+| Analyst | Ask complex questions (comparisons across companies or years, multi-step reasoning, calculations) and see the steps the agent took |
 | Developer | Change chunking, retrieval, reranking or prompts and see the quality impact before merging |
 | Developer | Inspect a single query's trace (retrieved chunks, scores, prompt, latency, cost) |
 | CI pipeline | Run the eval suite on each PR and block merges that regress quality |
@@ -49,6 +50,9 @@ regressions**. Every retrieval improvement must come with numbers.
 | FR-12 | Minimal UI (Streamlit) to ask questions, view citations and browse eval runs | Should |
 | FR-13 | Online feedback (thumbs up/down) attached to traces | Could |
 | FR-14 | Multi-tenancy, per-user ACLs | **Won't** (Project 6 covers this) |
+| FR-15 | **Agentic mode:** a read-only research agent (LangGraph) that plans, calls retrieval and calculation tools several times, and answers with the same citation and abstention contract. Request field `mode: pipeline \| agent \| auto`; `auto` routes by question type | Should |
+| FR-16 | **Trajectory evals:** score the agent's tool calls (validity, selection, search coverage, efficiency, redundancy) and compare agent vs. pipeline on the same golden set | Should |
+| FR-17 | Agent steps are streamed to the client (`step` SSE events) and traced as nested spans | Should |
 
 ## 1.5 Non-functional requirements
 
@@ -63,6 +67,7 @@ regressions**. Every retrieval improvement must come with numbers.
 | NFR-7 | Security | API-key auth; secrets in env / Key Vault; retrieved text treated as untrusted (prompt-injection aware) |
 | NFR-8 | Portability | Runs fully with `docker compose up`; the LLM provider can be swapped by config (Azure OpenAI / Anthropic / OpenAI) |
 | NFR-9 | Availability | Portfolio scale: a single region and single replica is fine; stateless API so it can scale out |
+| NFR-10 | Agent mode | First `step` event ≤ 2 s; full answer p95 ≤ 20 s; hard budgets of 6 steps, 12 tool calls, 40k tokens, 45 s; on budget exhaustion return a partial cited answer or abstain, never an error |
 
 ## 1.6 Capacity estimates (back of the envelope)
 
@@ -88,9 +93,12 @@ separate vector database. The engineering difficulty is in **quality measurement
 3. The judge's agreement with human labels is reported (Cohen's κ ≥ 0.6 target).
 4. A demo PR that degrades retrieval is **automatically blocked** by the CI gate (included as evidence in the README).
 5. A Langfuse dashboard shows p50/p95 latency and cost per query.
+6. An **agent-vs-pipeline report** shows, per question type and with confidence intervals, where the agent
+   is better and what it costs, and the `auto` router is configured from those numbers.
 
 ## 1.8 Out of scope
 - Authentication beyond an API key, multi-tenancy, ACL-aware retrieval (→ Project 6)
-- Agentic / multi-step tool-using RAG (→ Project 3)
+- Agents that **act** (write tools, side effects), human-in-the-loop approvals, multi-agent systems and
+  agent-framework comparisons (→ Project 3). The agent here is read-only and single-agent.
 - Semantic caching and model routing (→ Project 7)
 - Fine-tuning embedding or generation models

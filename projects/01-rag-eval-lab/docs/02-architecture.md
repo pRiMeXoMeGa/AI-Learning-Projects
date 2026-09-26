@@ -9,7 +9,9 @@
    not chunk IDs, so the same golden set can score any chunking strategy (see [04](04-evaluation-design.md)).
 4. **Retrieved text is untrusted input.** It is delimited, never executed, and never allowed to override
    system instructions.
-5. **Boring infrastructure.** Postgres does vector, full-text and metadata storage. There is no extra database
+5. **Agents must earn their cost.** The agentic mode shares retrieval and answer generation with the
+   fixed pipeline and is compared with it on the same golden set. It's used only where it measurably wins.
+6. **Boring infrastructure.** Postgres does vector, full-text and metadata storage. There is no extra database
    until the numbers justify one.
 
 ## 2.2 System context (C4 level 1)
@@ -90,7 +92,7 @@ flowchart TB
 
 | Container | Responsibility | Tech |
 |---|---|---|
-| **Query API** | Online query pipeline, SSE streaming, document/eval-run read APIs | FastAPI, Pydantic v2, asyncio |
+| **Query API** | Online query pipeline **and agentic mode**, SSE streaming, document/eval-run read APIs | FastAPI, Pydantic v2, asyncio, LangGraph (agent mode only) |
 | **Ingestion worker** | Download → parse → chunk → embed → index, incremental and idempotent | arq (async Redis queue) or Celery |
 | **Eval runner** | Runs a pipeline config over a golden-set version, scores it, stores results, enforces the gate | Python, Ragas, DeepEval, custom metrics |
 | **PostgreSQL** | Documents, chunks, vectors (pgvector HNSW), full-text (tsvector GIN), eval runs | Postgres 16 + pgvector ≥ 0.7 |
@@ -113,11 +115,15 @@ flowchart LR
         RNK[rerank]
         QRY[query<br/>rewrite · decompose · self-query]
         GEN[generation<br/>prompt · citations · abstain]
+        AGT[agent<br/>LangGraph graph · tools · guard · router]
         PRV[providers<br/>LLM · embeddings · reranker adapters]
         OBS[observability<br/>tracing decorators]
         STO[storage<br/>repositories]
     end
 
+    AGT -. "tools call" .-> RET
+    AGT -. "tools call" .-> RNK
+    AGT -. "answer via" .-> GEN
     API[api] --> ragkit
     WORK[worker] --> ING
     EVAL[evals] --> ragkit
@@ -191,6 +197,50 @@ sequenceDiagram
     API->>LF: spans: rewrite, dense, sparse, fusion, rerank, generate (+tokens, cost)
 ```
 
+## 2.6b Data flow B2: agentic query (`mode: agent`, or `auto` for complex questions)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Analyst
+    participant API as Query API
+    participant RT as Router
+    participant AG as Agent graph (LangGraph)
+    participant GD as Guard
+    participant T as Tools
+    participant G as Generator (F8)
+    participant CP as Checkpointer (Postgres)
+
+    U->>API: POST /v1/query {question, mode: "auto"}
+    API->>RT: route(QueryPlan.type)
+    alt factoid / other
+        RT-->>API: pipeline → Data flow B
+    else comparison / multi-hop
+        RT->>AG: run(question, filters)
+        AG->>AG: plan → sub-questions
+        API-->>U: SSE step (plan)
+        loop until finish() or budget exhausted
+            AG->>GD: proposed tool calls
+            GD-->>AG: allowed / duplicate / budget exhausted
+            AG->>T: search_filings · read_chunk_context · list_filings · calculate (parallel)
+            T-->>AG: results → evidence pool
+            AG->>CP: checkpoint state
+            API-->>U: SSE step (tools, n_results, ms)
+        end
+        AG->>G: answer(question, evidence pool, calculations)
+        G-->>API: tokens + citations (same contract as the pipeline)
+        API-->>U: SSE token … citations … done {mode, steps, tool_calls}
+    end
+```
+
+**Key points**
+- The agent **reuses** the pipeline's retrieval (as the `search_filings` tool) and its answer generator, so
+  any retrieval improvement from the ablations helps both modes.
+- The guard is plain Python and runs **before** every tool call: step, tool-call, token and time budgets,
+  plus duplicate-call detection.
+- Tools are read-only. The worst an injected instruction in a filing can do is waste the agent's budget,
+  which the guard caps.
+
 ## 2.7 Data flow C: evaluation & CI gate
 
 ```mermaid
@@ -258,10 +308,10 @@ concurrency. An AWS equivalent is ECS Fargate + RDS Postgres (pgvector) + Elasti
 01-rag-eval-lab/
 ├── docs/                      # these design docs
 ├── configs/
-│   ├── pipelines/             # A0-naive.yaml … A7-full.yaml (ablations)
+│   ├── pipelines/             # A0-naive.yaml … A7-full.yaml (ablations), AG1-agent.yaml, AG2-auto.yaml
 │   └── prompts/               # versioned prompt templates
 ├── data/golden/               # golden set JSONL (v1, v2 …) + human labels
-├── src/ragkit/                # core package (see 2.4)
+├── src/ragkit/                # core package (see 2.4), incl. ragkit/agent/ (LangGraph)
 ├── src/api/                   # FastAPI app
 ├── src/worker/                # ingestion jobs
 ├── src/evals/                 # runner, metrics, gate, report

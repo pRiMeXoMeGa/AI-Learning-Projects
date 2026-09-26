@@ -91,6 +91,7 @@ while building.
   explain).
 - **Consequences:** More code, but every stage is transparent, traceable and easy to explain in interviews.
   A LlamaIndex re-implementation can be an optional comparison.
+- **Amended by ADR-015:** LangGraph is allowed inside `ragkit/agent` for the agentic mode only.
 
 ### ADR-014: Azure Container Apps + Azure Postgres Flexible Server for the cloud deployment
 - **Decision:** Deploy to Azure with Terraform. It matches your résumé and common JD requirements
@@ -98,3 +99,38 @@ while building.
 - **Alternatives:** AWS ECS + RDS (documented equivalent); Fly.io/Render (cheaper, less résumé value).
 - **Consequences:** Scale-to-zero keeps demo cost low. Postgres Flexible Server supports the pgvector
   extension (it must be allow-listed in the server parameters).
+
+### ADR-015: LangGraph for the agentic mode only (amends ADR-013)
+- **Context:** FR-15 adds a multi-step research agent. Agent loops need state, conditional edges,
+  parallel tool calls, budgets and checkpoints. LangGraph is also the agent framework most often named in
+  2026 Agent Engineer JDs, and one you already use at work.
+- **Decision:** Use LangGraph `StateGraph` inside `ragkit/agent` only. The tools are plain functions that
+  call the existing retrieval code, and the final answer goes through the same F8 generator. ADR-013 still
+  holds for the pipeline: no LangChain retrievers, chains or document loaders.
+- **Alternatives:** A hand-written loop (about 150 lines; fully transparent, but you'd rebuild
+  checkpointing, streaming and parallel tool calls); OpenAI Agents SDK or Claude Agent SDK (tied to one
+  provider, and comparing frameworks is Project 3's job); LlamaIndex agents (would pull the retrieval
+  internals back behind a framework).
+- **Consequences:** One extra dependency, isolated to one package. The agent's value isn't the framework
+  but the **evaluation**: trajectory metrics and the agent-vs-pipeline comparison.
+
+### ADR-016: The agent is read-only and has hard budgets
+- **Context:** Retrieved filings are untrusted text, and agent loops can run away on cost.
+- **Decision:** Only read-only tools (search, read context, list filings, calculate, finish). A guard
+  written in plain Python enforces step, tool-call, token and time budgets and blocks duplicate calls
+  **before** any tool runs. On budget exhaustion, answer from the evidence collected so far or abstain.
+- **Alternatives:** Prompt-only limits ("don't search more than 5 times"), which aren't reliable; write
+  tools with human approval, which are out of scope here and covered in Project 3.
+- **Consequences:** Prompt injection can at worst waste budget, and the budget is capped. Budget-exceeded
+  rate becomes a tracked eval metric.
+
+### ADR-017: The agent must beat the pipeline on the same golden set before it's used
+- **Context:** Agents are slower and cost more. "Agentic" alone isn't a reason to use one.
+- **Decision:** The agent reuses the pipeline's retrieval and answer generation, so the only difference is
+  how evidence is gathered. Pipeline, agent and `auto` are compared per question type with a paired
+  bootstrap (F19). `router.agent_for` lists only the types where the agent is significantly better within
+  the cost budget.
+- **Alternatives:** Always use the agent (simple, but expensive and slower for factoid questions); route
+  with an LLM classifier (an extra call; F7's question type is already available).
+- **Consequences:** A clear, defensible cost/quality story. If the agent doesn't win anywhere, that's
+  reported honestly and the default stays `pipeline`.

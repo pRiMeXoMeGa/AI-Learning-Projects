@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M5 | F9, F12 | 4 h | Demo video, screenshots |
+| M6 | F9, F12 | 4 h | Demo video, screenshots |
 
 **Goal:** An internal tool with three pages: **Ask** (streamed answer, citations, "why this answer"),
 **Eval runs** (browse and compare), **Golden set** (read-only browser).
@@ -20,6 +20,7 @@ flowchart TB
     ASK --> A3["citations panel → passage with highlighted span"]
     ASK --> A4["'why this answer?' table:<br/>dense rank · sparse rank · RRF · rerank score"]
     ASK --> A5["👍/👎 feedback → F17"]
+    ASK --> A6["mode selector: pipeline · agent · auto<br/>+ agent step timeline (from step events)"]
 
     RUNS --> R1["runs list (pipeline, golden version, key metrics)"]
     RUNS --> R2["compare two runs:<br/>metric Δ with CI · regressed questions"]
@@ -53,6 +54,7 @@ ui/client.py                         # SSE client (httpx-sse)
 - [ ] SSE client; incremental rendering with `st.write_stream`
 - [ ] Citation panel: fetch the passage by chunk ID; highlight the cited span
 - [ ] "Why this answer" table from the `retrieval` debug event
+- [ ] Mode selector; agent step timeline (tool, arguments, results, ms) from `step` events (F18)
 - [ ] Runs list + comparison view + trace links
 - [ ] Golden-set browser (read-only)
 

@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M5 (stretch) | F9, F10 | 2 h | Golden set v2 (F11) |
+| M6 (stretch) | F9, F10 | 2 h | Golden set v2 (F11) |
 
 **Goal:** Close the loop from real usage back into the golden set: user feedback and sampled online judge
 scores surface bad answers, which become new golden questions.

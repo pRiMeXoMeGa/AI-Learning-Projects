@@ -26,6 +26,11 @@ gantt
 | **TTFT total** | **≤ 3 s** | Provider prompt caching of the static system prompt; smaller context |
 | Full answer | ≤ 8 s | Output cap of 600 tokens; concise-answer instructions |
 
+**Agent mode (NFR-10).** The agent has no fixed stage budget, because the number of steps varies. It is
+bounded instead: the first `step` event within 2 s (the plan), each `search_filings` call costs the same
+as one retrieval + rerank (≈ 520 ms), parallel tool calls keep comparison questions at ~2 rounds, and the
+guard stops the run at 45 s. Target: full answer p95 ≤ 20 s.
+
 ## 5.2 Cost model
 
 Per query:
@@ -36,6 +41,11 @@ Typical token counts: rewrite ≈ 400 in / 80 out; generation ≈ 6,000 in / 300
 tokens dominate**, so the biggest cost levers are `rerank.top_n`, `context.max_tokens`, parent expansion,
 and prompt caching. The actual prices come from `configs/models.yaml` and are logged by Langfuse per trace.
 Every ablation row reports **input tokens per query** next to quality.
+
+**Agent mode** adds, per question, the plan call plus one tool-calling LLM turn per step (each turn re-reads
+the growing message history), so a typical 2–3-step run costs roughly **3–5× the pipeline's tokens**.
+That's why `auto` mode exists and why every agent row in the results reports tokens per query next to
+quality.
 
 Eval run cost: ≈ 150 × (generation + rewrite + ~4 judge calls). On a cache hit (unchanged
 prompt/config) the cost is close to zero.
@@ -55,6 +65,10 @@ flowchart TB
     T --> S6["span: generate<br/>(generation: model, prompt version, tokens, cost, TTFT)"]
     T --> S7["span: postprocess<br/>n_citations, invalid_citations, abstained"]
 ```
+
+In agent mode the trace is nested: `rag.query` → `agent.plan` → `agent.act` (one per step) →
+`tool.search_filings` → the usual `retrieve.dense`, `retrieve.sparse`, `fusion.rrf` and `rerank` spans,
+then `generate`. The trace attributes add `mode`, `steps`, `tool_calls` and `budget_exceeded`.
 
 - Prompts are stored as **Langfuse prompt versions**, and traces link to the exact version used.
 - Eval runs are Langfuse **dataset runs**, so each eval item links to its full trace. You can click from a
@@ -79,6 +93,7 @@ field is kept redactable because Project 6 will reuse this code for private data
 | API abuse / cost blow-up | API-key auth, per-key rate limit (token bucket in Redis), `max_output_tokens`, request size limits |
 | Secret leakage | Keys only in env / Azure Key Vault; never logged; GitHub secrets are not exposed to fork PRs |
 | SSRF via ingestion | Ingestion only fetches from an allow-list (`sec.gov`) |
+| Agent misuse through injected text (e.g. a filing says "search for X 50 times") | Tools are read-only with no side effects; the guard enforces step, tool-call, token and time budgets and blocks duplicate calls; injection probes are part of the golden set, and trajectory metrics show budget abuse |
 | Supply chain | Pinned dependencies (`uv.lock`), Dependabot, container image scanning in CI |
 | Data licensing | SEC filings are public; EDGAR fair-access rules respected (User-Agent header, ≤ 10 req/s) |
 
@@ -92,6 +107,8 @@ field is kept redactable because Project 6 will reuse this code for private data
 | Postgres down | `/readyz` fails | Load balancer stops routing; API returns `503` |
 | Empty or poor retrieval | Top rerank score < threshold | Abstain, show the closest sources |
 | Model returns uncited claims | Post-processing validator | Strip invalid markers; log `citation_invalid`; counted by the eval |
+| Agent hits a budget | Guard | Stop the loop, answer from the evidence collected so far (or abstain); `budget_exceeded=true` in `done` and in the trace |
+| Agent tool error (bad args, timeout) | Tool wrapper | Return the error to the LLM as a message so it can retry differently; counted by tool-call validity |
 | Ingestion parse failure | Job error | Retry ×3 with backoff, then dead-letter; the document is marked `failed` and skipped by queries |
 
 ## 5.6 Scaling path (beyond the portfolio scale)
@@ -110,6 +127,7 @@ field is kept redactable because Project 6 will reuse this code for private data
 |---|---|---|
 | Unit | Chunkers (boundaries, offsets), RRF, span-overlap metric, citation parser, config hashing | pytest, hypothesis (property tests on offsets) |
 | Integration | Postgres queries (dense, sparse, filters) against a seeded mini-corpus | pytest + testcontainers |
-| Contract | API schemas, SSE event order | pytest + httpx |
+| Contract | API schemas, SSE event order (incl. `step` events in agent mode) | pytest + httpx |
+| Agent graph | Node transitions and budgets with a **scripted fake LLM** (fixed tool-call sequence) | pytest |
 | Eval (quality) | Smoke and full golden-set runs | Eval runner + CI gate |
 | Load | 20 concurrent users, p95 latency | Locust or k6 (once, documented in the README) |

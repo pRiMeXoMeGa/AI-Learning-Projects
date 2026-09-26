@@ -1,6 +1,6 @@
 # 8. Build Plan: Feature by Feature
 
-This plan splits Project 1 into **18 features** (F0–F17), grouped into **5 milestones**. Every feature
+This plan splits Project 1 into **20 features** (F0–F19), grouped into **6 milestones**. Every feature
 has its own page with a detailed diagram, tasks, acceptance criteria, tests and an estimate.
 
 ## 8.1 Build strategy: measure before you optimise
@@ -11,16 +11,19 @@ flowchart LR
     M2["M2 · Measure<br/>golden set v0 + eval runner<br/>+ tracing → baseline A0"]
     M3["M3 · Improve<br/>full corpus, chunking, hybrid,<br/>rerank, query understanding<br/>→ ablations A1–A7"]
     M4["M4 · Protect<br/>golden v1 (150 Qs), judge<br/>calibration, CI gate"]
-    M5["M5 · Ship<br/>UI, Azure deploy,<br/>report, blog"]
-    M1 --> M2 --> M3 --> M4 --> M5
+    M5["M5 · Agentic<br/>LangGraph research agent<br/>+ trajectory evals<br/>→ agent vs pipeline"]
+    M6["M6 · Ship<br/>UI, Azure deploy,<br/>report, blog"]
+    M1 --> M2 --> M3 --> M4 --> M5 --> M6
 ```
 
-Three rules:
+Four rules:
 1. **Walking skeleton first.** A thin but complete path (ingest → retrieve → answer → API) on
    2 companies, before making any part of it good.
 2. **Evaluation before improvement.** Retrieval isn't touched (M3) until a baseline score exists (M2).
    Every later change then produces a number.
-3. **Each feature ends with a PR, green tests and a short note in `CHANGELOG.md`.** From M4 onwards, each
+3. **The agent comes last and must earn its place.** It's built only after the pipeline is measured and
+   protected, and it's compared with the pipeline on the same golden set (F19).
+4. **Each feature ends with a PR, green tests and a short note in `CHANGELOG.md`.** From M4 onwards, each
    PR also shows the eval-gate result.
 
 ## 8.2 Master diagram: how the features connect
@@ -33,7 +36,8 @@ flowchart TB
     classDef m2 fill:#dcfce7,stroke:#16a34a,color:#14532d
     classDef m3 fill:#fef3c7,stroke:#d97706,color:#78350f
     classDef m4 fill:#fce7f3,stroke:#db2777,color:#831843
-    classDef m5 fill:#ede9fe,stroke:#7c3aed,color:#4c1d95
+    classDef m5 fill:#ccfbf1,stroke:#0d9488,color:#134e4a
+    classDef m6 fill:#ede9fe,stroke:#7c3aed,color:#4c1d95
 
     F0["F0 Foundation<br/>repo · uv · compose · config"]
 
@@ -57,6 +61,11 @@ flowchart TB
         F12["F12 Eval runner<br/>& metrics"]
         F13["F13 CI eval gate"]
         F14["F14 Ablation study<br/>& report"]
+    end
+
+    subgraph AGT["Agentic mode"]
+        F18["F18 Agentic RAG<br/>LangGraph · tools · router"]
+        F19["F19 Trajectory evals<br/>agent vs pipeline"]
     end
 
     F10["F10 Observability<br/>Langfuse · OTel"]
@@ -87,15 +96,28 @@ flowchart TB
     F10 --> F17
     F9 --> F17
     F17 -. "new golden Qs" .-> F11
+    F5 --> F18
+    F6 --> F18
+    F8 --> F18
+    F10 --> F18
+    F7 -. "router" .-> F18
+    F18 --> F19
+    F12 --> F19
+    F11 --> F19
+    F19 -. "agent rows" .-> F14
+    F19 -. "agent rules" .-> F13
+    F18 -. "mode: agent / auto" .-> F9
+    F18 -. "step timeline" .-> F15
 
     class F0,F1,F2,F3,F4,F5,F8,F9 m1
     class F10,F11,F12 m2
     class F6,F7,F14 m3
     class F13 m4
-    class F15,F16,F17 m5
+    class F18,F19 m5
+    class F15,F16,F17 m6
 ```
 
-**Legend:** blue = M1 Skeleton · green = M2 Measure · amber = M3 Improve · pink = M4 Protect · purple = M5 Ship.
+**Legend:** blue = M1 Skeleton · green = M2 Measure · amber = M3 Improve · pink = M4 Protect · teal = M5 Agentic · purple = M6 Ship.
 In M1, features F1–F5 and F8 are built in their **simplest form** (e.g. F3 = `fixed-512` only,
 F5 = dense only). M3 then extends them, which the per-feature pages mark as *Phase A* (skeleton) and
 *Phase B* (full).
@@ -126,7 +148,14 @@ flowchart LR
         F12 -->|"run + per-item scores"| F13
         F12 --> F14
     end
-    F7 & F5 & F6 & F8 -.->|spans| F10[F10 Langfuse / OTel]
+    subgraph Agentic["Agentic (mode: agent / auto)"]
+        Q2([question]) --> F18
+        F18 -->|"search_filings(...)"| F5
+        F18 -->|"evidence pool"| F8
+        F18 -->|"trajectory[]"| F19
+        F12 -->|"answer metrics"| F19
+    end
+    F7 & F5 & F6 & F8 & F18 -.->|spans| F10[F10 Langfuse / OTel]
     F12 -.->|dataset runs| F10
 ```
 
@@ -148,17 +177,23 @@ flowchart LR
 | F11 | Golden dataset builder | M2 → M4 | F2 | 8 | [F11](F11-golden-dataset.md) |
 | F12 | Eval runner & metrics | M2 | F8, F10, F11 | 8 | [F12](F12-eval-runner.md) |
 | F13 | CI eval gate | M4 | F12 | 4 | [F13](F13-ci-gate.md) |
-| F14 | Ablation study & report | M3 → M5 | F12 | 5 | [F14](F14-ablation-report.md) |
-| F15 | Streamlit UI | M5 | F9, F12 | 4 | [F15](F15-streamlit-ui.md) |
-| F16 | Azure deployment | M5 | F9, F13 | 5 | [F16](F16-azure-deployment.md) |
-| F17 | Online feedback loop | M5 (stretch) | F9, F10 | 2 | [F17](F17-feedback-loop.md) |
-| | **Total** | | | **~80 h** | |
+| F14 | Ablation study & report | M3 → M6 | F12 | 5 | [F14](F14-ablation-report.md) |
+| F15 | Streamlit UI | M6 | F9, F12 | 4 | [F15](F15-streamlit-ui.md) |
+| F16 | Azure deployment | M6 | F9, F13 | 5 | [F16](F16-azure-deployment.md) |
+| F17 | Online feedback loop | M6 (stretch) | F9, F10 | 2 | [F17](F17-feedback-loop.md) |
+| F18 | Agentic RAG mode (LangGraph) | M5 | F5, F6, F8, F10 | 8 | [F18](F18-agentic-rag.md) |
+| F19 | Trajectory evals (agent vs pipeline) | M5 | F11, F12, F18 | 6 | [F19](F19-trajectory-evals.md) |
+| | **Total** | | | **~94 h** | |
 
 ## 8.5 Timeline
 
-At **12–15 h/week**, 80 hours takes about **6 weeks**. **Decision: the full plan is used.** The
-[roadmap](../../../../04-roadmap.md) has been updated to give Project 1 weeks 1–6 and move the later
-projects back by 3 weeks.
+At **12–15 h/week**, about 94 hours takes **7 weeks**. **Decision: the full plan is used, including
+the agentic milestone (M5).** The [roadmap](../../../../04-roadmap.md) gives Project 1 weeks 1–7 and moves
+the later projects back accordingly.
+
+> **If you're short on time:** M5 is self-contained. Skipping F18–F19 brings the plan back to ~80 h and
+> 6 weeks, and the project still closes the evals and observability gap. The agent then moves back to
+> Project 3.
 
 ```mermaid
 gantt
@@ -189,8 +224,13 @@ gantt
     section M4 Protect
     F11b Golden v1 (150) + labels  :f11b, after f14a, 3d
     F13 CI eval gate               :f13, after f11b, 2d
-    section M5 Ship
-    F15 Streamlit UI               :f15, after f13, 2d
+    section M5 Agentic
+    F18 Agent graph + tools        :f18, after f13, 3d
+    F18 Router + SSE steps         :f18b, after f18, 1d
+    F19 Trajectory labels + metrics :f19, after f18b, 2d
+    F19 Agent vs pipeline report   :f19b, after f19, 1d
+    section M6 Ship
+    F15 Streamlit UI               :f15, after f19b, 2d
     F16 Azure deployment           :f16, after f15, 2d
     F17 Feedback loop              :f17, after f16, 1d
     F14b Report + blog post        :f14b, after f17, 2d
@@ -206,7 +246,8 @@ gantt
 | **M2 Measure** | `rag-lab eval run --pipeline A0 --golden v0` prints recall@8, faithfulness, correctness, abstention with CIs; every item links to a Langfuse trace. |
 | **M3 Improve** | Full 60-filing corpus indexed in ≥ 3 index versions; A0–A7 results table produced; at least one change significantly improves results (CI of the difference excludes 0). |
 | **M4 Protect** | Golden v1 (150 + 20 holdout) committed; judge κ reported; a deliberately bad PR is **blocked** by the gate. |
-| **M5 Ship** | Public demo URL, README with results, architecture, costs and screenshots, a blog/LinkedIn post, a 3-minute video. |
+| **M5 Agentic** | `POST /v1/query` with `mode: agent` streams `step` events and a cited answer; the agent-vs-pipeline report (A-best vs AG1 vs AG2, per question type, with CIs) is committed; `router.agent_for` is set from it. |
+| **M6 Ship** | Public demo URL, README with results, architecture, costs and screenshots, a blog/LinkedIn post, a 3-minute video. |
 
 ## 8.7 Definition of done (every feature)
 
@@ -226,4 +267,6 @@ gantt
 | Golden-set creation takes longer than planned | M2 slips | Start with v0 = 30 Qs; grow to 150 in M4 |
 | LLM/API spend during evals | Cost | Response cache (F12), smoke split, budget guard |
 | Judge disagrees with humans (κ < 0.6) | Gate unreliable | Gate on deterministic metrics first; iterate on the rubric |
-| Scope creep (agents, UI polish) | Timeline | The out-of-scope list in [01 §1.8](../01-requirements.md) is binding |
+| Scope creep (UI polish, write-actions for the agent, multi-agent) | Timeline | The out-of-scope list in [01 §1.8](../01-requirements.md) is binding; the agent stays read-only and single-agent |
+| Agent cost or latency blows up | Eval spend, slow demo | Hard budgets in the guard (steps, tool calls, tokens, time); `auto` mode sends only complex questions to the agent; eval cache applies to agent LLM calls too |
+| Agent is not better than the pipeline | "Wasted" milestone | That's still a valid, publishable result: the report says so and the router stays on `pipeline` |

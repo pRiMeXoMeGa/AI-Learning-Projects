@@ -70,6 +70,8 @@ data/labels/judge_calibration_v1.jsonl
   - [ ] ≥ 40% hand-written or heavily edited; 10 prompt-injection probe questions
   - [ ] Label 50 answers for judge calibration
   - [ ] Re-anchoring script + test
+- Phase C (v1.1, done in [F19](F19-trajectory-evals.md))
+  - [ ] Add `expected_trajectory` to the 55 multi-step items and 10 new calculation questions
 
 ## Acceptance criteria
 - 100% of evidence spans verify against the canonical text (validator in CI)

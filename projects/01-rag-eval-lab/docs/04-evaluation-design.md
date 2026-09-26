@@ -64,6 +64,9 @@ golden set.
 ```
 *(The numbers above are illustrative placeholders, not real figures.)*
 
+From **v1.1**, multi-step items (multi-hop, cross-year, cross-company, and 10 new `calculation`
+questions) also carry an optional `expected_trajectory` block used to score the agent (§4.11).
+
 ### How the golden set is built
 
 ```mermaid
@@ -156,6 +159,8 @@ Each row adds **one** change to the previous row, and all rows use golden set v1
 | **A7** | → parent-child expansion | Multi-hop improves; token cost goes up (trade-off) |
 | A-emb | A5 with a different embedding model / dim (1024 vs 3072, bge-m3) | Cost vs. quality of embeddings |
 | A-llmctx | A5 with LLM-generated contextual summaries | Is the ingestion cost worth it? |
+| **AG1** | Best pipeline's retrieval, but answered by the **agent** for every question | Better on comparison / multi-hop / calculation; costs several times more tokens |
+| **AG2** | `auto`: agent only for comparison and multi-hop types | Keeps most of AG1's gain at a fraction of the extra cost |
 
 **Results table format (goes in the README)**
 
@@ -224,3 +229,26 @@ removing the reranker, and screenshot the gate blocking it.
 | Runs, datasets, score storage & UI | **Langfuse** datasets + scores (also stored in Postgres for the gate) |
 | CI | **GitHub Actions** + a sticky PR comment action |
 | Stats | numpy bootstrap (custom, ~30 lines) |
+| Trajectory metrics | Custom (`src/evals/metrics/trajectory.py`), because they depend on this project's tools and filters |
+
+## 4.11 Agentic evaluation (trajectory evals)
+
+The agent is scored on the **same answer metrics** as the pipeline (§4.3–4.4), plus metrics about its
+**trajectory**, the sequence of tool calls it made:
+
+| Metric | Type | Definition |
+|---|---|---|
+| **Task success** | Combined | Correctness ≥ 4/5 **and** numeric answers correct **and** citations valid |
+| **Tool-call validity** | Deterministic | Tool calls whose arguments pass schema validation / all calls |
+| **Tool selection recall** | Deterministic | `required_tools` actually used / `required_tools` |
+| **Search coverage** | Deterministic | `required_searches` matched by the filters actually used / `required_searches` |
+| **Step efficiency** | Deterministic | `min_steps` / steps used, capped at 1 |
+| **Redundant-call rate** | Deterministic | Duplicate `(tool, args)` calls / all calls |
+| **Budget-exceeded rate** | Deterministic | Runs stopped by the guard / runs |
+| **Pool recall vs. context recall** | Deterministic (span-based) | Evidence the agent *saw* vs. evidence that *reached the answer prompt* |
+| Trajectory reasonableness | Judge (optional) | Rubric over the step list, 1–5 |
+
+**The key experiment:** A-best (pipeline) vs. AG1 (agent) vs. AG2 (auto) on golden v1.1 `full`, compared
+with a paired bootstrap **per question type**. The router's `agent_for` list is set from this result, and
+the gate gets agent rules (`agent_metrics` in `gate.yaml`) once the default mode uses the agent. Details,
+diagrams and the results-table format: [F19](08-build-plan/F19-trajectory-evals.md).

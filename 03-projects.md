@@ -16,7 +16,7 @@ help. Each project here does three things:
 
 | # | Project | Role(s) | Gaps it fills | Time |
 |---|---|---|---|---|
-| 1 | **RAG Eval Lab**: measured, eval-gated RAG | GenAI | Evals, CI gates, reranking, Langfuse | 6 wks (full plan) |
+| 1 | **RAG Eval Lab**: measured, eval-gated RAG + agentic mode | GenAI, Agent | Evals, CI gates, reranking, Langfuse, agentic RAG + trajectory evals | 7 wks (full plan) |
 | 2 | **MCP Hub**: remote MCP servers + gateway | Agent, Full-stack | Remote MCP, OAuth 2.1, MCP client, tool-design evals | 3 wks |
 | 3 | **Agent Reliability Harness**: one agent, three frameworks | Agent | Trajectory evals, agent SDKs, memory, tracing | 3–4 wks |
 | 4 | **A2A Agent Mesh** | Agent | A2A, cross-framework interop | 1–2 wks |
@@ -48,7 +48,8 @@ you can *measure and improve* retrieval.
 circulars. These give you tables, cross-document questions and numbers.
 
 **Stack:** FastAPI (SSE), Docling, Postgres + **pgvector** (with Pinecone for comparison), BM25,
-**Cohere/BGE reranker**, query rewriting, **Ragas + DeepEval**, **Langfuse**, GitHub Actions, Docker.
+**Cohere/BGE reranker**, query rewriting, **Ragas + DeepEval**, **Langfuse**, **LangGraph** (agent mode
+only), GitHub Actions, Docker.
 
 **Milestones**
 1. Build a 150-question **golden set** (synthetic generation + manual review) with question types:
@@ -59,9 +60,15 @@ circulars. These give you tables, cross-document questions and numbers.
 4. Calibrate an LLM-as-judge against 50 human labels and report agreement.
 5. **CI gate:** a PR fails if faithfulness or recall drops more than a threshold.
 6. Langfuse traces with cost and latency per query; p50/p95 dashboard.
+7. **Agentic mode:** a read-only LangGraph research agent (search, read, calculate tools, hard budgets)
+   that reuses the same retrieval and answer generator; **trajectory evals** compare agent vs. pipeline
+   per question type, and an `auto` router sends only the types where the agent wins.
 
-**Résumé bullet template:** "Raised RAG faithfulness from __ to __ and recall@5 from __ to __ via hybrid
-search + reranking; added CI eval gates in GitHub Actions that block quality regressions."
+**Résumé bullet templates:**
+- "Raised RAG faithfulness from __ to __ and recall@5 from __ to __ via hybrid search + reranking; added
+  CI eval gates in GitHub Actions that block quality regressions."
+- "Built an agentic RAG mode (LangGraph) with trajectory evals; improved cross-company answer correctness
+  by __ points and routed only complex questions to the agent, keeping average cost at __× the pipeline."
 
 ---
 
@@ -96,6 +103,11 @@ per-tenant policies; open-source MCP server with __ installs/stars."
 
 **Why this project:** Agent JDs ask for **trajectory evals, tracing and framework breadth**. You know
 LangGraph deeply; this shows you can judge frameworks objectively.
+
+> **How this differs from Project 1's agent mode:** Project 1's agent is read-only and single-agent, and
+> is judged against a fixed pipeline. Here the agent **acts** (tools with side effects, HITL approval,
+> crash/resume, memory) and the comparison is **between frameworks**. The trajectory-metric code from
+> Project 1 (F19) can be reused as a starting point.
 
 **Task:** An "IT incident triage" or "customer-refund" agent: read the ticket, query the MCP tools from
 project 2, decide, ask a human for approval, act.

@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| Phase A (M3): run A0–A7 · Phase B (M5): final report, holdout, blog | F12 (+ F3 versions, F6, F7) | 5 h | README, blog post |
+| Phase A (M3): run A0–A7 · Phase B (M6): final report (+ agent rows from F19), holdout, blog | F12 (+ F3 versions, F6, F7) | 5 h | README, blog post |
 
 **Goal:** Run the ablation ladder from [04 §4.7](../04-evaluation-design.md), test significance, pick the
 final default pipeline, check it once on the holdout, and publish the results.

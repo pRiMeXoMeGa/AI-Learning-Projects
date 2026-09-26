@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M5 | F9, F13 | 5 h | Public demo URL |
+| M6 | F9, F13 | 5 h | Public demo URL |
 
 **Goal:** A reproducible Azure deployment with Terraform: Container Apps (api, worker, ui), Postgres
 Flexible Server with pgvector, Redis, Blob, Key Vault, and a GitHub Actions pipeline that deploys only

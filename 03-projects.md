@@ -74,6 +74,11 @@ only), GitHub Actions, Docker.
 
 ## 2. MCP Hub: remote MCP servers + gateway  *(Agent, Full-stack)*
 
+📐 **Detailed system design:** [projects/02-mcp-hub](projects/02-mcp-hub/README.md). The design targets the
+**MCP 2026-07-28 specification** (stateless core, multi round-trip requests for elicitation, CIMD client
+registration, no token passthrough). The domain chosen is **Indian mutual-fund data (AMFI)**; the
+milestones below are refined there.
+
 **Why this project:** You've built internal FastMCP servers. This project takes you from "built MCP
 tools" to **MCP platform expert**, which is the strongest differentiator in agent JDs, and the result is
 public.
@@ -85,7 +90,8 @@ Postgres, Redis, Docker, MCP Inspector, pytest.
 1. **Open-source MCP server** for a useful public API or dataset, e.g. Indian mutual-fund NAVs,
    data.gov.in, or UAE open data. Publish it to the MCP registry and PyPI/npm.
 2. Remote deployment with **OAuth 2.1**, scoped tools per user, rate limits, audit log of every call.
-3. Use **elicitation** (asking the user for input mid-call) and a confirmation flow for write tools.
+3. Use **elicitation** (asking the user for input mid-call; since 2026-07-28 done through multi
+   round-trip requests) and a confirmation flow for write tools.
 4. **MCP gateway:** one endpoint that aggregates several MCP servers, with a tool registry, per-tenant
    allow-lists and policy checks. Your security background shows here.
 5. Write your own **MCP client** in a raw tool-calling loop (no framework), for both the Claude and

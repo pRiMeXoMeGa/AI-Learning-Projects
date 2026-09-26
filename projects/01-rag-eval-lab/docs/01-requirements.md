@@ -82,6 +82,7 @@ regressions**. Every retrieval improvement must come with numbers.
 | Embedding cost (one-off per index version) | ~5M tokens per version |
 | Query load | Portfolio/demo: < 1 QPS. Design must still show how it scales (see [05](05-non-functional.md)) |
 | Eval run (full) | 150 Qs × (1 generation + ~4 judge calls) ≈ **750 LLM calls** |
+| Agent eval run (AG1, full v1.1) | 160 Qs × (plan + ~3 agent steps + generation + ~4 judge calls) ≈ **1,500 LLM calls**; run rarely, and cached |
 
 **Conclusion:** At this scale **one Postgres instance with pgvector** is sufficient. We don't need a
 separate vector database. The engineering difficulty is in **quality measurement**, not throughput.

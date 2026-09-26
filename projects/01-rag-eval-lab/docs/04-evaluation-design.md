@@ -20,6 +20,9 @@ flowchart LR
     ANS -.- M5["Latency · tokens · cost"]
 ```
 
+In agent mode, one more layer sits between query processing and generation: the agent's **trajectory**
+(which tools it called, with which filters, how many steps), scored in §4.11.
+
 Measuring each layer separately tells us **where** quality is lost. For example, low answer correctness
 together with high recall points to a generation problem, not a retrieval problem.
 

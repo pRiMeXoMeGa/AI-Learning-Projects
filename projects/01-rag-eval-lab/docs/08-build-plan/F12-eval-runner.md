@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M2 | F8, F10, F11 | 8 h | F13, F14, F15 |
+| M2 | F8, F10, F11 | 8 h | F13, F14, F15, F19 |
 
 **Goal:** `rag-lab eval run --pipeline A3 --golden v1 --split full` runs the pipeline **in-process**
 over the golden set, computes all metrics in [04 §4.3–4.6](../04-evaluation-design.md) with bootstrap CIs,

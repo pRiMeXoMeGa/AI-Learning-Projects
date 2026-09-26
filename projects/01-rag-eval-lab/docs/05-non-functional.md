@@ -48,7 +48,9 @@ That's why `auto` mode exists and why every agent row in the results reports tok
 quality.
 
 Eval run cost: ≈ 150 × (generation + rewrite + ~4 judge calls). On a cache hit (unchanged
-prompt/config) the cost is close to zero.
+prompt/config) the cost is close to zero. An agent eval run (AG1) costs roughly **2× a pipeline run**
+because of the extra agent turns, so it runs on demand, not nightly; AG2 (`auto`) costs less because only
+complex questions reach the agent.
 
 ## 5.3 Observability
 

@@ -6,7 +6,8 @@
 **Target roles:** Agent Engineer (primary), AI Full-stack Engineer
 **Gaps it closes:** remote MCP with OAuth 2.1, MCP clients, tool-design evals, MCP security (tool
 poisoning, rug pulls, confused deputies), TypeScript MCP SDK, public open-source proof
-**Status:** 🟡 Design, tech stack and build plan done (no code yet); timeline option to be chosen
+**Status:** 🟡 Design, tech stack and build plan done (no code yet). **Core plan chosen: ~103 h, 8 weeks**
+(roadmap weeks 8–15)
 
 > **New here?** Start with [0 · Start here](docs/00-start-here.md): the project in plain English, one
 > request's journey through the gateway, and which document to read next.
@@ -24,7 +25,7 @@ poisoning, rug pulls, confused deputies), TypeScript MCP SDK, public open-source
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, cost, observability, failure modes, scaling, testing |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 18 decisions with alternatives and consequences |
 | 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology, why it was chosen, alternatives rejected, what it adds to your profile, versions, things to verify |
-| 9 | [Build Plan](docs/09-build-plan/README.md) | 23 features in 6 milestones: master dependency diagram, timeline options, and a page per feature with diagrams, tasks and acceptance criteria |
+| 9 | [Build Plan](docs/09-build-plan/README.md) | 23 features in 6 milestones (20 in the chosen core plan): master dependency diagram, 8-week timeline, and a page per feature with diagrams, tasks and acceptance criteria |
 | 10 | [Setup Guide](docs/10-setup-guide.md) | Accounts and keys (and when you need them), `.env`, first run, cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | Plain-English definitions of MCP, OAuth, security, fund and eval terms |
 
@@ -38,7 +39,7 @@ flowchart LR
     end
     subgraph Hub["MCP Hub"]
         GW["MCP Gateway<br/>OAuth resource server · registry + pinning ·<br/>OPA policy · confirmations (MRTR) ·<br/>token exchange · filters · audit"]
-        CON["Admin console<br/>React + TS"]
+        CON["Admin CLI (hubctl)<br/>React console later"]
     end
     subgraph Upstreams
         MF["india-mf-mcp<br/>Python · FastMCP 4<br/>(open source)"]
@@ -63,9 +64,11 @@ flowchart LR
 ## Planned deliverables
 1. **india-mf-mcp** on PyPI and the official MCP Registry; **fx-rates-mcp** on npm
 2. The MCP Gateway (Docker images + Terraform for Azure), with 2+ stateless replicas
-3. An admin console for tool approvals, tenant policies and the audit log
+3. Admin tooling: the `hubctl` CLI for tool approvals and the audit API (the React admin console is
+   deferred in the core plan)
 4. A minimal MCP client for Claude and OpenAI models with full OAuth (CIMD, PKCE, step-up)
-5. A **tool-design report** (5 toolset variants × 2 model families, with confidence intervals)
+5. A **tool-design report** (3 toolset variants in the core plan, 5 later × 2 model families, with
+   confidence intervals)
 6. A **security report** (attack success rate with and without defences, false-positive rate) and a
    threat model
 7. A blog/LinkedIn post on MCP security or tool design, with the numbers

@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M4 | Could (full plan) | F9, F11 | 4 h | Demo of third-party upstream auth |
+| M4 | Could · **deferred in the core plan** | F9, F11 | 4 h | Demo of third-party upstream auth |
 
 **Goal:** Put a **third-party** MCP server (GitHub's remote server, read-only tools) behind the gateway,
 where each user authorizes the **gateway** to access GitHub through **URL-mode elicitation**. The client

@@ -104,6 +104,10 @@ flowchart LR
 | FR-25 | Security eval suite: attack cases run with gateway defences off vs. on | Must |
 | FR-26 | Protocol conformance and interoperability checks (MCP Inspector + at least 2 third-party clients) | Must |
 
+> **Build scope:** the chosen **core plan** ([build plan §9.5](09-build-plan/README.md#95-timeline-option-b-core-plan-chosen))
+> builds all *Must* requirements. FR-7 (Tasks), FR-8 (resources/prompts), FR-9 (MCP Apps), FR-21 (GitHub
+> upstream) and FR-23 (admin console) are deferred; admin approvals use the `hubctl` CLI.
+
 ## 1.5 Non-functional requirements
 
 | ID | Category | Target |
@@ -131,7 +135,7 @@ flowchart LR
 | Tools exposed | ~25–35 in total |
 | `tools/list` size | ~30 tools × ~250 tokens ≈ **7–8k tokens** per agent turn if unfiltered, which is why filtering and descriptions matter (measured in the evals) |
 | Audit events | < 100k/month at demo scale; append-only table |
-| Tool-design eval run | 60 tasks × 5 variants × 2 models × 3 repeats = **1,800 agent runs** (full); smoke = 15 tasks |
+| Tool-design eval run | 60 tasks × 5 variants × 2 models × 3 repeats = **1,800 agent runs** (full); **1,080** with the core plan's 3 variants; smoke = 15 tasks |
 
 **Conclusion:** One Postgres handles both the MF data and the gateway state. The engineering difficulty is
 in **protocol correctness, security and measurement**, not in scale.

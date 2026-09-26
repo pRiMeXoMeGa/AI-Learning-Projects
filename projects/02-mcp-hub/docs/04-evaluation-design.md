@@ -76,6 +76,9 @@ Growth"), so runs are reproducible.
 | **T4** | T1 with **minimal descriptions** (one short line, no "when not to use") | Lower success on comparison and multi-step tasks |
 | **T5** | T1 **without output schemas** (text-only results) | More misread numbers in calculation tasks |
 
+**Core plan (chosen):** T1, T2 and T4 run first; T3 and T5 are added later if time allows
+([build plan §9.5](09-build-plan/README.md#95-timeline-option-b-core-plan-chosen)).
+
 Each variant runs with **two model families** (a Claude model and an OpenAI model, set in
 `configs/models.yaml`) through the own client (C4), **3 repeats** per task, temperature 0.
 

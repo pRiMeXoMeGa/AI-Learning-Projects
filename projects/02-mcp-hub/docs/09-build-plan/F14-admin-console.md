@@ -2,12 +2,12 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M4 | Should (full plan) | F12 | 7 h | Demo video, screenshots |
+| M4 | Should · **deferred in the core plan** | F12 | 7 h | Demo video, screenshots |
 
 **Goal:** A small React + TypeScript app for admins: review and approve tool definitions with a
 **side-by-side diff**, manage tenant allow-lists, and browse and **verify** the audit log.
 
-In the **core plan** this feature is replaced by the `hubctl` CLI from F8 (approvals) and the admin API
+In the **core plan (chosen)** this feature is replaced by the `hubctl` CLI from F8 (approvals) and the admin API
 (audit), and the console moves to "later".
 
 ## Diagram: pages

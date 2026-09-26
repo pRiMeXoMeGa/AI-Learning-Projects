@@ -17,7 +17,7 @@ help. Each project here does three things:
 | # | Project | Role(s) | Gaps it fills | Time |
 |---|---|---|---|---|
 | 1 | **RAG Eval Lab**: measured, eval-gated RAG + agentic mode | GenAI, Agent | Evals, CI gates, reranking, Langfuse, agentic RAG + trajectory evals | 7 wks (full plan) |
-| 2 | **MCP Hub**: remote MCP servers + gateway | Agent, Full-stack | Remote MCP, OAuth 2.1, MCP client, tool-design evals, MCP security | 7–9 wks (build plan; option pending) |
+| 2 | **MCP Hub**: remote MCP servers + gateway | Agent, Full-stack | Remote MCP, OAuth 2.1, MCP client, tool-design evals, MCP security | 8 wks (core plan) |
 | 3 | **Agent Reliability Harness**: one agent, three frameworks | Agent | Trajectory evals, agent SDKs, memory, tracing | 3–4 wks |
 | 4 | **A2A Agent Mesh** | Agent | A2A, cross-framework interop | 1–2 wks |
 | 5 | **Sandboxed Data-Analyst Agent** with generative UI | Agent, Full-stack | Sandboxing, code-execution security, generative UI | 3 wks |

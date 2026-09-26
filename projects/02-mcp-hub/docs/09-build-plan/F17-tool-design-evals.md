@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M5 | Must | F6, F9, F13 | 9 h | F20, F22 |
+| M5 | Must | F6, F9, F13 | 9 h full · **6 h core (T1, T2, T4)** | F20, F22 |
 
 **Goal:** Measure how **tool granularity, description style and output schemas** change agent task
 success, reliability and token cost, for **two model families**, using the design in

@@ -125,6 +125,8 @@ flowchart TB
 
 **Legend:** blue = M1 Useful server · green = M2 Identity · amber = M3 Gateway core · teal = M4 Breadth ·
 pink = M5 Measure & protect · purple = M6 Ship.
+**F14, F15 and F16 are deferred** in the chosen core plan (§9.5); they stay in the diagram so their
+dependencies are clear when they're added later.
 
 ## 9.3 Runtime integration map: what flows between features
 
@@ -171,50 +173,46 @@ flowchart LR
 | F11 | Stateless confirmations | M3 | Must | F10, F5 | 4 | [F11](F11-confirmations.md) |
 | F12 | Rate limits, filters & audit chain | M3 | Must | F9, F10 | 7 | [F12](F12-ratelimit-filters-audit.md) |
 | F13 | fx-rates-mcp (TypeScript) | M4 | Must | F4, F8 | 5 | [F13](F13-fx-rates-ts.md) |
-| F14 | Admin console | M4 | Should | F12 | 7 | [F14](F14-admin-console.md) |
-| F15 | Tasks, resources & prompts | M4 | Should | F2 | 3 | [F15](F15-tasks-resources.md) |
-| F16 | GitHub upstream (URL-mode consent) | M4 | Could | F9, F11 | 4 | [F16](F16-github-upstream.md) |
-| F17 | Tool-design evals | M5 | Must | F6, F9, F13 | 9 | [F17](F17-tool-design-evals.md) |
+| F14 | Admin console | M4 | Should · **deferred** | F12 | 7 | [F14](F14-admin-console.md) |
+| F15 | Tasks, resources & prompts | M4 | Should · **deferred** | F2 | 3 | [F15](F15-tasks-resources.md) |
+| F16 | GitHub upstream (URL-mode consent) | M4 | Could · **deferred** | F9, F11 | 4 | [F16](F16-github-upstream.md) |
+| F17 | Tool-design evals | M5 | Must | F6, F9, F13 | 9 (6 in core: 3 variants) | [F17](F17-tool-design-evals.md) |
 | F18 | Security evals | M5 | Must | F6, F11, F12 | 8 | [F18](F18-security-evals.md) |
 | F19 | Conformance, interop & performance | M5 | Must | F12 | 5 | [F19](F19-conformance-perf.md) |
 | F20 | CI gate & release pipeline | M5 | Must | F17, F18, F19 | 3 | [F20](F20-ci-release.md) |
 | F21 | Azure deployment | M6 | Must | F12, F13 | 4 | [F21](F21-azure-deployment.md) |
 | F22 | Reports, blog & video | M6 | Must | F20, F21 | 3 | [F22](F22-reports-blog.md) |
-| | **Total (full plan)** | | | | **~121 h** | |
+| | **Total: full plan / core plan (chosen)** | | | | **~121 h / ~103 h** | |
 
-## 9.5 Timeline: decision needed
+## 9.5 Timeline: Option B (core plan) chosen
 
-The roadmap currently gives Project 2 **3 weeks**. The design is bigger than that estimate assumed (a
-gateway with seven security controls, two servers, a client, and three eval suites), so there are two
-options:
+The design was bigger than the roadmap's original 3-week estimate, so two options were compared:
 
 | Option | Scope | Effort | Weeks at ~13.5 h/week |
 |---|---|---|---|
-| **A. Full plan** | All 23 features | ~121 h | **9 weeks** |
-| **B. Core plan** | Must features only: drop F14 (approvals via a CLI instead), F15 and F16; tool-design evals with 3 variants instead of 5 | ~103 h | **7–8 weeks** |
+| A. Full plan | All 23 features | ~121 h | 9 weeks |
+| **B. Core plan ✅ chosen** | Must features only: F14 admin console, F15 Tasks/resources and F16 GitHub upstream are **deferred**; approvals use the `hubctl` CLI (F8); tool-design evals run **3 variants (T1, T2, T4)** instead of 5 | **~103 h** | **8 weeks** |
 
-**Recommendation: Option B first, then add F14 if time allows.** The core plan keeps everything that makes
-the project stand out (current protocol, gateway security controls, measured attack reduction, tool-design
-evals, published server). The console is a strong full-stack signal, but Project 6 covers full-stack in
-depth. Once you choose, the [roadmap](../../../../04-roadmap.md) gets updated.
+**Why B:** it keeps everything that makes the project stand out (current protocol, gateway security
+controls, measured attack reduction, tool-design evals, a published server). Full-stack depth comes in
+Project 6. The deferred features (~18 h) are listed below and can be added after the job search starts.
 
-**Full plan (Option A), week by week**
+**Core plan, week by week** (roadmap weeks 8–15)
 
-| Week | Milestone | Features | Exit check |
-|---|---|---|---|
-| 1 | M1 | F0 Foundation · F1 AMFI ingestion · F2 read tools (start) | NAVs for all schemes in Postgres |
-| 2 | M1 → M2 | F2 read tools (finish) · F3 release v0.1 · F4 Keycloak | **india-mf-mcp v0.1 on PyPI + MCP Registry**, working in Claude Desktop |
-| 3 | M2 | F5 user tools + interactive tools · F6 own client | Client logs in (CIMD + PKCE), handles a disambiguation form |
-| 4 | M3 | F7 edge & authn · F8 registry & pinning · F9 routing (start) | Two replicas serve a filtered `tools/list` |
-| 5 | M3 | F9 token exchange + stdio bridge · F10 OPA · F11 confirmations | Destructive tool needs confirmation; any replica completes it |
-| 6 | M3 → M4 | F12 rate limits, filters, audit · F13 fx-rates-mcp | Audit chain verifies; cross-server task works |
-| 7 | M4 | F14 admin console · F15 Tasks/resources · F16 GitHub upstream | A changed tool definition is approved from the console |
-| 8 | M5 | F17 tool-design evals · F18 security evals (start) | Tool-design report with CIs |
-| 9 | M5 → M6 | F18 (finish) · F19 · F20 · F21 · F22 | ASR with vs. without defences; public demo; blog post |
+| Week | Roadmap week | Milestone | Features | Exit check |
+|---|---|---|---|---|
+| 1 | 8 | M1 | F0 Foundation · F1 AMFI ingestion · F2 read tools (start) | NAVs for all schemes in Postgres |
+| 2 | 9 | M1 → M2 | F2 (finish) · F3 release v0.1 · F4 Keycloak | **india-mf-mcp v0.1 on PyPI + MCP Registry**, working in Claude Desktop |
+| 3 | 10 | M2 | F5 user + interactive tools · F6 own client | Client logs in (CIMD/PKCE) and handles a disambiguation form |
+| 4 | 11 | M3 | F7 edge & authn · F8 registry & pinning · F9 (start) | Two replicas serve a filtered `tools/list`; rug pull quarantined |
+| 5 | 12 | M3 | F9 token exchange + stdio bridge · F10 OPA · F11 confirmations | Destructive tool needs confirmation; any replica completes it |
+| 6 | 13 | M3 → M4 | F12 rate limits, filters, audit · F13 fx-rates-mcp | Audit chain verifies; cross-server task works |
+| 7 | 14 | M5 | F17 tool-design evals (T1, T2, T4) · F18 security evals (start) | Tool-design report with CIs |
+| 8 | 15 | M5 → M6 | F18 (finish) · F19 · F20 · F21 · F22 | ASR with vs. without defences; public demo; blog post |
 
 ```mermaid
 gantt
-    title Project 2 build timeline (full plan, ~13.5 h/week)
+    title Project 2 build timeline (core plan, ~13.5 h/week)
     dateFormat YYYY-MM-DD
     axisFormat W%W
     section M1 Useful server
@@ -236,11 +234,8 @@ gantt
     F12 Rate limits + filters + audit :f12, after f11, 3d
     section M4 Breadth
     F13 fx-rates-mcp (TS)            :f13, after f12, 2d
-    F14 Admin console                :f14, after f13, 3d
-    F15 Tasks + resources            :f15, after f14, 1d
-    F16 GitHub upstream              :f16, after f15, 2d
     section M5 Measure
-    F17 Tool-design evals            :f17, after f16, 4d
+    F17 Tool-design evals (3 variants) :f17, after f13, 3d
     F18 Security evals               :f18, after f17, 3d
     F19 Conformance + perf           :f19, after f18, 2d
     F20 CI gate + release            :f20, after f19, 1d
@@ -249,8 +244,17 @@ gantt
     F22 Reports + blog + video       :f22, after f21, 1d
 ```
 
-*(Dates are illustrative and assume Project 2 starts after Project 1's 7 weeks. One "d" is one working
-session of about 2–2.5 hours.)*
+*(Dates are illustrative: Project 2 starts after Project 1's 7 weeks. One "d" is one working session of
+about 2–2.5 hours.)*
+
+**Deferred (add later if time allows, ~18 h)**
+
+| Feature | Effort | Value when added |
+|---|---|---|
+| F14 Admin console | 7 h | Visible full-stack piece; approvals with a diff view |
+| F15 Tasks, resources & prompts | 3 h | Wider protocol coverage (Tasks extension) |
+| F16 GitHub upstream (URL-mode consent) | 4 h | Third-party upstream auth demo |
+| Tool-design variants T3 (fine-grained) and T5 (no output schemas) | ~3 h | Two more findings for the report |
 
 ## 9.6 Milestone exit criteria
 
@@ -259,7 +263,7 @@ session of about 2–2.5 hours.)*
 | **M1 Useful server** | `uvx india-mf-mcp` works in Claude Desktop over stdio; the HTTP transport passes MCP Inspector checks; v0.1 is on PyPI and listed in the MCP Registry; returns/XIRR maths pass property tests. |
 | **M2 Identity** | The own client completes discovery → CIMD → PKCE → `iss` check → token with the right audience; user tools respect RLS; a disambiguation `input_required` round trip works end to end. |
 | **M3 Gateway core** | Through **one URL and two replicas**: filtered `tools/list`, token exchange per upstream, OPA decisions, stateless confirmations, rate limits, filters, and a verifiable audit chain. Gateway-level security suite at 100%. |
-| **M4 Breadth** | fx-rates-mcp on npm and behind the gateway; cross-server tasks work; (full plan) console approvals, Tasks, GitHub via URL-mode consent. |
+| **M4 Breadth** | fx-rates-mcp on npm and behind the gateway; cross-server tasks work. (Deferred: console approvals, Tasks, GitHub via URL-mode consent.) |
 | **M5 Measure & protect** | Tool-design report and security report committed with CIs; gateway overhead p95 ≤ 25 ms; interop matrix filled; CI gate blocks a deliberately bad PR. |
 | **M6 Ship** | Public gateway + server endpoints on Azure; README with results and diagrams; threat model published; blog/LinkedIn post; 3-minute video. |
 
@@ -283,4 +287,4 @@ session of about 2–2.5 hours.)*
 | Eval LLM spend | Cost | Response cache from Project 1; smoke sets on PRs; full matrix on demand only |
 | Security suite false positives block normal use | Utility drops | Measure false-positive rate in F18; tune heuristics; confirmations as the real backstop |
 | Scope creep (MCP Apps, more upstreams, Kubernetes) | Timeline | Out-of-scope list in [01 §1.8](../01-requirements.md) is binding; MCP Apps stays "Could" |
-| Plan is longer than the roadmap assumed | Later projects slip | Choose Option A or B in §9.5 now; the roadmap is updated accordingly |
+| Plan is longer than the roadmap assumed | Later projects slip | **Option B chosen** (8 weeks); roadmap updated; deferred features added only after the job search starts |

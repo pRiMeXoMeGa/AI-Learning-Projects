@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M4 | Should (full plan) | F2 | 3 h | — |
+| M4 | Should · **deferred in the core plan** | F2 | 3 h | — |
 
 **Goal:** Use the rest of the protocol surface in india-mf-mcp: a long-running tool through the **Tasks
 extension**, a **resource template**, and a **prompt**. Optionally an **MCP Apps** chart (Could).

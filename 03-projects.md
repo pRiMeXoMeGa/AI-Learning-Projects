@@ -146,6 +146,12 @@ comparing LangGraph, OpenAI Agents SDK and Claude Agent SDK; cut failed runs fro
 
 ## 4. A2A Agent Mesh  *(Agent)*
 
+📐 **Detailed system design:** [projects/04-a2a-agent-mesh](projects/04-a2a-agent-mesh/README.md). It targets
+**A2A 1.0**, with an Incident Commander in **Google ADK** delegating to Project 3's LangGraph Triage Agent
+plus an OpenAI-Agents-SDK Comms agent and a Claude-Agent-SDK research agent. It adds signed and pinned
+Agent Cards, per-hop token exchange, cross-agent approval via `auth-required`, and a measured MCP-vs-A2A
+comparison; the milestones below are refined there.
+
 **Stack:** A2A protocol SDK, agents from project 3 (LangGraph + one vendor SDK), Agent Cards, auth.
 
 **Milestones**

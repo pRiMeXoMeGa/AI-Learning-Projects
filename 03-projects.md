@@ -185,6 +185,11 @@ full-stack role.
 
 ## 6. Full-stack AI SaaS on Next.js  *(Full-stack)*
 
+📐 **Detailed system design:** [projects/06-ai-saas-nextjs](projects/06-ai-saas-nextjs/README.md). The idea
+is refined to **ClauseDesk**, a contract-review SaaS on **Next.js 16** and **AI SDK 7**, with durable
+workflows, Better Auth organizations, Postgres RLS, Stripe usage meters and CUAD-based extraction evals;
+the milestones below are refined there.
+
 **Why this project:** Next.js and the Vercel AI SDK are your biggest full-stack gaps. You already know
 React and TypeScript, so this goes quickly.
 

@@ -102,7 +102,7 @@ flowchart TB
 ```
 
 **Legend:** blue = M1 Skeleton · green = M2 Documents · amber = M3 Chat · teal = M4 Playbooks ·
-pink = M5 SaaS · purple = M6 Prove & ship. **F15 is deferred in the recommended core plan** (§9.5).
+pink = M5 SaaS · purple = M6 Prove & ship. **F15 is deferred in the chosen core plan** (§9.5).
 Audit events are still written from F9 onwards; only the settings and audit pages wait.
 
 ## 9.3 Runtime integration map
@@ -147,17 +147,17 @@ flowchart LR
 | F18 | Evals: CUAD extraction & chat | M6 | Must | F6, F7, F11 | 5 (3.5 in core) | [F18](F18-evals.md) |
 | F19 | Performance & observability | M6 | Must | F16 | 3 (2 in core) | [F19](F19-performance-observability.md) |
 | F20 | Launch, report, blog & video | M6 | Must | F16–F19 | 4 (3.5 in core) | [F20](F20-launch.md) |
-| | **Total: full plan / core plan (recommended)** | | | | **~89 h / ~82 h** | |
+| | **Total: full plan / core plan (chosen)** | | | | **~89 h / ~82 h** | |
 
-## 9.5 Timeline: three options
+## 9.5 Timeline: Option B (core plan) chosen
 
-The roadmap gives Project 6 **3 weeks** (weeks 28–30). This is the main full-stack project, so the design is
+The roadmap originally gave Project 6 **3 weeks** (weeks 28–30). This is the main full-stack project, so the design is
 the biggest yet:
 
 | Option | Scope | Effort | Weeks at ~13.7 h/week |
 |---|---|---|---|
 | A. Full plan | All 21 features | ~89 h | ~6.5 |
-| **B. Core plan (recommended)** | Everything that makes it a real SaaS: orgs + RLS, durable ingestion and playbooks, chat with citations + resume + approvals, register review, Stripe + metering + quotas, E2E on previews, isolation + billing suites, CUAD evals. **Deferred:** F15 settings/audit pages. **Slimmed:** evals (30 CUAD contracts, one model), no k6 load test, no register edit-history view | **~82 h** | **6** |
+| **B. Core plan ✅ chosen** | Everything that makes it a real SaaS: orgs + RLS, durable ingestion and playbooks, chat with citations + resume + approvals, register review, Stripe + metering + quotas, E2E on previews, isolation + billing suites, CUAD evals. **Deferred:** F15 settings/audit pages. **Slimmed:** evals (30 CUAD contracts, one model), no k6 load test, no register edit-history view | **~82 h** | **6** |
 | C. Lean | B without Stripe (metering + quotas only, "billing-ready"), without tool approvals, register read-only, page-level highlights only, a smaller E2E set | ~70 h | ~5 |
 
 **Why B:**
@@ -166,13 +166,13 @@ the biggest yet:
 - The capstone reuses this app shell, so time spent here is not lost.
 - C saves 12 h but removes the billing story.
 
-**Roadmap impact (to update once you choose):** P6 grows from 3 to 6 weeks with B, which adds **3 weeks**
-and takes the roadmap from ~39 to **~42 weeks (about 9.7 months)**. With C it adds 2 weeks (~41 weeks).
+**Roadmap impact (applied):** P6 grows from 3 to 6 weeks (roadmap weeks 28–33), which adds **3 weeks** and
+takes the [roadmap](../../../../04-roadmap.md) from ~39 to **~42 weeks (about 9.7 months)**.
 **Cumulative note:** the roadmap started at 26 weeks. Every detailed plan so far has grown, which is
 normal once designs are concrete. If you want to hold the total nearer 9 months, C here (and later the
 lean options for P5, P7 and the capstone) is the lever.
 
-**Core plan, week by week** (would be roadmap weeks 28–33)
+**Core plan, week by week** (roadmap weeks 28–33)
 
 | Week | Roadmap week | Milestone | Features | Exit check |
 |---|---|---|---|---|
@@ -261,4 +261,4 @@ about 2–2.5 hours. F9 is built against fixture register rows; real rows arrive
 | Docling bbox → pdf.js highlight mismatch | Citation UX | Page-level highlight + snippet fallback |
 | Preview environments need many services (Neon branch, ai-service staging, Redis, Blob) | Flaky previews | Preview env template; shared staging ai-service; seeded branch from a template branch |
 | Scope creep (custom playbooks, SSO, redlining, mobile) | Timeline | Out-of-scope list in [01 §1.7](../01-requirements.md#17-scope) is binding |
-| Plan longer than the roadmap slot | Later projects slip | Options A/B/C; roadmap updated once an option is chosen |
+| Plan longer than the roadmap slot | Later projects slip | **Option B chosen** (6 weeks); roadmap updated; deferred pages added only while interviewing |

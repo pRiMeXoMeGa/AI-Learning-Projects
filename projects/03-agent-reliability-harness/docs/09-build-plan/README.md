@@ -194,8 +194,8 @@ JDs, and that's the gap this project exists to close.
 **Roadmap impact (applied):** Projects 3 and 4 had 4 weeks. P3 now takes 8 weeks (roadmap weeks 16–23)
 and P4 (A2A) follows as its own 2-week block (weeks 24–25). That adds **6 weeks**, taking the
 [roadmap](../../../../04-roadmap.md) from ~31 to **~37 weeks (about 8.5 months)**. By then you'll already be applying (from week 15), so a longer P3 is not a
-bottleneck for starting the job search. *(Later, Project 4's own build plan grew it to 4 weeks, so the roadmap is
-now ~39 weeks.)*
+bottleneck for starting the job search. *(Later, Project 4's own build plan grew it to 4 weeks, so the roadmap was
+~39 weeks; Project 6's plan then took it to ~42.)*
 
 **Core plan, week by week** (roadmap weeks 16–23)
 

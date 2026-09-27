@@ -10,7 +10,7 @@
 (agents, generative UI parts, tool approvals, resumable streams), durable workflows, multi-tenant SaaS
 (RLS, RBAC), usage-based billing, preview environments, E2E testing
 **Status:** 🟡 System design, tech stack and build plan done (no code yet).
-**Build plan:** full ~89 h; **core plan ~82 h, 6 weeks** (recommended, awaiting your choice); lean ~70 h
+**Core plan (Option B) chosen: ~82 h, 6 weeks** (roadmap weeks 28–33); settings and audit-log pages deferred
 **Builds on:** [Project 1](../01-rag-eval-lab/README.md) (parsing, retrieval, citation checks, evals) ·
 [Project 3](../03-agent-reliability-harness/README.md) (statistics code)
 

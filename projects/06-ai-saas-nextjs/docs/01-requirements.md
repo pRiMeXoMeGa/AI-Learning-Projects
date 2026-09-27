@@ -165,4 +165,4 @@ flowchart LR
 - An LLM gateway (that's [Project 7](../../../03-projects.md)).
 - Sandboxed code execution (that's Project 5).
 
-**Time box:** 3 weeks in the roadmap (weeks 28–30). The build plan will size it.
+**Time box:** 6 weeks, roadmap weeks 28–33 (core plan, [build plan §9.5](09-build-plan/README.md#95-timeline-option-b-core-plan-chosen)).

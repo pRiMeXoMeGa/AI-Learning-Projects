@@ -156,7 +156,7 @@ cards, `act` chains, approvals the Commander can't intercept) and the **measured
 drops both. A's extras (partner tenant, poisoned KB) add depth but no new headline.
 
 **Roadmap impact (applied):** P4 grows from 2 to 4 weeks (roadmap weeks 24–27), which adds **2 weeks** and
-takes the [roadmap](../../../../04-roadmap.md) from ~37 to **~39 weeks (about 9 months)**.
+takes the [roadmap](../../../../04-roadmap.md) from ~37 to **~39 weeks (about 9 months)**. *(Project 6's plan later took it to ~42 weeks.)*
 
 **Core plan, week by week** (roadmap weeks 24–27)
 

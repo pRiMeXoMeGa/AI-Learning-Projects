@@ -23,7 +23,8 @@ the [glossary](11-glossary.md).
 | Understand the design | [Requirements](01-requirements.md) → [Architecture](02-architecture.md) → [Low-level design](03-low-level-design.md) | 45 min |
 | Understand how it's measured | [Evaluation design](04-evaluation-design.md) | 15 min |
 | Understand speed and cost | [Non-functional design](06-non-functional.md) | 10 min |
-| Start building | The tech stack, build plan and setup guide come next (not written yet) | — |
+| Understand the technology choices | [Tech stack](08-tech-stack.md) | 15 min |
+| Start building | The build plan and setup guide come next (not written yet) | — |
 
 ## 0.3 The mental model: a lab with a glovebox
 
@@ -84,5 +85,5 @@ Charts drawn as HTML or SVG can carry scripts. A Vega-Lite spec is JSON that our
 renders, so the sandbox never gets to put code in your browser. ([ADR-006](07-decisions.md))
 
 **Is this the code?**
-Not yet. These are the design documents, written before any code. The tech stack, build plan and setup
-guide come next.
+Not yet. These are the design documents and the [tech-stack rationale](08-tech-stack.md), written before
+any code. The build plan and setup guide come next.

@@ -36,7 +36,7 @@ stateDiagram-v2
 | Setting | gVisor (`runsc`) container | E2B microVM |
 |---|---|---|
 | Image | `analyst-sandbox:<digest>` | Template built from the same Dockerfile |
-| Network | `--network=none` | Internet access disabled for the sandbox (verify the exact API in week 1) |
+| Network | `--network=none` | Created with `allow_internet_access=False` (E2B enables internet **by default**); `updateNetwork` never called |
 | Filesystem | Read-only rootfs; `/data` read-only; `/scratch` tmpfs 512 MB; `/tmp` tmpfs 64 MB | `/data` copied in, then made read-only (`chmod -R a-w`, root-owned); `/scratch` quota |
 | User | Non-root uid 10001; no capabilities (`--cap-drop=ALL`); `no-new-privileges` | Non-root user in the template |
 | Limits | `--cpus=1 --memory=2g --pids-limit=64`; ulimits (`nofile`, `fsize`) | Sandbox CPU/RAM settings; per-execution timeout |

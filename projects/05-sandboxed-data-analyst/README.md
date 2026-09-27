@@ -9,7 +9,7 @@
 **Target roles:** Agent Engineer, AI Full-stack Engineer (and security-minded AI roles)
 **Gaps it closes:** sandboxed code execution, isolation technologies (microVM vs gVisor), output-handling
 security, generative UI with safe charts, code-writing agents with self-repair, data-agent evaluation
-**Status:** 🟡 System design done (no code yet). Tech stack, build plan and setup guide come next.
+**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
 **Builds on:** [Project 6](../06-ai-saas-nextjs/README.md) (Next.js shell, AI SDK 7, auth) ·
 [Project 2](../02-mcp-hub/README.md) (MCP server patterns, OAuth) · [Project 3](../03-agent-reliability-harness/README.md) (runner, statistics)
 
@@ -28,10 +28,10 @@ security, generative UI with safe charts, code-writing agents with self-repair, 
 | 5 | [Security & Threat Model](docs/05-security-threat-model.md) | The 2026 escape lesson applied, output paths, threats → controls → tests, gVisor vs Firecracker, OWASP mapping |
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, cost, observability, failure modes, scaling |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 10 decisions with alternatives and consequences |
+| 8 | [Tech Stack](docs/08-tech-stack.md) | E2B, gVisor on a dedicated VM, FastMCP broker, sandbox image, Vega-Lite rendering, why each, versions, week-1 checks |
 | 11 | [Glossary](docs/11-glossary.md) | Sandboxing, output-safety and analysis terms in plain English |
 
-Numbers 8–10 and 12 are reserved for the tech stack, build plan, setup guide and market review, matching
-Projects 1–6.
+Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching Projects 1–6.
 
 ## The system at a glance
 

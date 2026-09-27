@@ -8,7 +8,8 @@
 **Target roles:** Agent Engineer (primary)
 **Gaps it closes:** A2A protocol (1.0), cross-framework interop, Google ADK, agent identity and
 delegation security, long-running task patterns, a numbers-backed "MCP vs A2A" answer
-**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
+**Status:** 🟡 System design, tech stack and build plan done (no code yet).
+**Build plan:** full ~66 h; **core plan ~58 h, 4 weeks** (recommended, awaiting your choice); lean ~45 h
 **Builds on:** [Project 3](../03-agent-reliability-harness/README.md) (OpsSim, Triage Agent, approvals,
 harness), [Project 2](../02-mcp-hub/README.md) (Keycloak, pinning pattern, audit chain),
 [Project 1](../01-rag-eval-lab/README.md) (retrieval)
@@ -29,9 +30,11 @@ harness), [Project 2](../02-mcp-hub/README.md) (Keycloak, pinning pattern, audit
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Per-hop latency budget, cost, one trace across hops, failure modes, scaling |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 13 decisions with alternatives and consequences |
 | 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology, why it was chosen, alternatives rejected, profile value, versions, week-1 checks (incl. Keycloak delegation caveat) |
+| 9 | [Build Plan](docs/09-build-plan/README.md) | 18 features in 5 milestones (+3 optional): dependency diagram, options A/B/C, 4-week core timeline, a page per feature |
+| 10 | [Setup Guide](docs/10-setup-guide.md) | What you need and when, `.env`, first run (stub models first), cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | A2A, identity and orchestration terms in plain English |
 
-Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching Projects 1–3.
+Number 12 is reserved for the market alignment review, matching Projects 1–3.
 
 ## The system at a glance
 

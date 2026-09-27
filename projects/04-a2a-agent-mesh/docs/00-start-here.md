@@ -25,7 +25,7 @@ the [glossary](11-glossary.md).
 | Understand how it's measured | [Evaluation design](04-evaluation-design.md) | 15 min |
 | Understand speed, cost and failures | [Non-functional design](06-non-functional.md) | 10 min |
 | Understand the technology choices | [Tech stack](08-tech-stack.md) | 15 min |
-| Start building | The build plan and setup guide come next (not written yet) | — |
+| Start building | This page → [Setup guide](10-setup-guide.md) → [Build plan](09-build-plan/README.md) → the feature page you're on | 30 min |
 
 ## 0.3 The mental model: an incident war room with badge-checked specialists
 
@@ -94,5 +94,5 @@ If it did, a compromised orchestrator could reuse approvals. A2A 1.0 recommends 
 out of band, straight to the agent that needs them. ([ADR-005](07-decisions.md))
 
 **Is this the code?**
-Not yet. These are the design documents and the [tech-stack rationale](08-tech-stack.md), written before
-any code. The build plan and setup guide come next.
+Not yet. These are the design documents, the [tech-stack rationale](08-tech-stack.md) and the
+[build plan](09-build-plan/README.md), written before any code.

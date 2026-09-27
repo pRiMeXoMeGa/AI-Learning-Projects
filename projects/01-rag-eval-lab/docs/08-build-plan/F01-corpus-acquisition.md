@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M1 (2 companies) → M3 (20 companies) | F0 | 3 h | F2 |
+| M1 (2 companies) → M3 (20 companies) | F0 | 5 h (incl. XBRL facts) | F2, F11, F18 |
 
 **Goal:** Download the primary 10-K HTML document for each (company, fiscal year) **idempotently**, in
 line with SEC fair-access rules, and record filing metadata.
@@ -61,6 +61,9 @@ configs/corpus.yaml                  # the 20 tickers + fiscal years
 - [ ] Blob layout `raw/{ticker}/{accession}.html`; sha256 stored on `documents`
 - [ ] CLI `rag-lab ingest fetch`; arq job wrapper
 - [ ] Phase A: PEP + KO, 3 years. Phase B: all 20.
+- [ ] **XBRL company facts** (added after the [11 · market review](../11-market-alignment-review.md)): fetch `data.sec.gov/api/xbrl/companyfacts/CIK##########.json`
+      per company; load 10-K facts (`form = 10-K`, fiscal year, concept, unit, value, accession) into `xbrl_facts`;
+      same rate limiter and allow-list
 
 ## Acceptance criteria
 - Running fetch twice makes **0 downloads and 0 DB writes** on the second run

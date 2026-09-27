@@ -22,6 +22,7 @@ project. Terms are grouped by topic. Use your browser's find (Ctrl/Cmd + F) to j
 | **Contextual header** | A short line added to each chunk, like "PepsiCo · FY2024 · Item 7 · Gross margin" | Helps search tell companies and years apart (A5) |
 | **Parent-child chunks** | Search small chunks, but give the LLM their larger "parent" section | Ablation A7 |
 | **Index version** | One combination of chunking strategy × embedding model, stored side by side | e.g. `v2-structural-512-ctx__emb-large-1024` |
+| **XBRL facts** | Machine-readable numbers (revenue, net income…) that companies tag in their SEC filings, available from the SEC API | Cross-checks numeric answers; the agent's `get_financial_fact` tool |
 | **Idempotent** | Running the same job twice has the same result as running it once | Ingestion skips unchanged filings (content hash) |
 
 ## Search and retrieval
@@ -39,6 +40,7 @@ project. Terms are grouped by topic. Use your browser's find (Ctrl/Cmd + F) to j
 | **halfvec** | pgvector's 16-bit vector type, half the storage of normal floats | Used for all embeddings (ADR-003) |
 | **Sparse / keyword search** | Finding chunks that contain the question's exact words | Postgres full-text search; good at names, tickers, line items |
 | **BM25 / ts_rank_cd** | Formulas that score how well a text matches keywords | `ts_rank_cd` now, BM25 via `pg_search` if needed (ADR-004) |
+| **pg_textsearch / pg_search** | Postgres extensions that add true BM25 ranking | Ablation A2b |
 | **Hybrid search** | Running dense and sparse search together and merging the results | The default retrieval (A2 onwards) |
 | **RRF** (Reciprocal Rank Fusion) | Merge ranked lists by giving each item `1 / (60 + rank)` from each list and summing | How dense and sparse results are combined (F5) |
 | **Reranker / cross-encoder** | A model that reads the question and one passage *together* and scores the match; slower but more accurate than embeddings | Re-orders 40 candidates to the best 8 (F6) |
@@ -66,6 +68,7 @@ project. Terms are grouped by topic. Use your browser's find (Ctrl/Cmd + F) to j
 | Term | Meaning | In this project |
 |---|---|---|
 | **Agent** | An LLM in a loop that decides which tools to call, looks at the results, and decides what to do next | The research agent in agent mode (F18) |
+| **MCP** (Model Context Protocol) | The open standard for connecting AI agents to tools and data | The service's `/mcp` endpoint (`search_filings`, `ask_filings`) |
 | **Agentic RAG** | RAG where an agent decides what to search and when it has enough evidence, instead of one fixed search | `mode: agent` |
 | **Tool / tool calling** | A function the LLM can ask to run, with arguments in JSON | `search_filings`, `read_chunk_context`, `list_filings`, `calculate`, `finish` |
 | **LangGraph** | A framework for building agents as graphs of steps (nodes) that share a state | Used only for the agent loop (ADR-015) |
@@ -89,6 +92,7 @@ project. Terms are grouped by topic. Use your browser's find (Ctrl/Cmd + F) to j
 | **Precision@k** | Share of the top k results that are actually relevant | Measures noise in the context |
 | **MRR** | Average of 1 / (position of the first relevant result) | Rewards putting the right chunk first |
 | **nDCG** | A ranking score that rewards relevant results more when they're higher up | Secondary retrieval metric |
+| **Nugget / nugget recall** | A nugget is one essential fact an answer must contain; nugget recall = share of nuggets present and correct | Our `key_facts`; scored per nugget (F12) |
 | **Faithfulness** | Share of the answer's claims supported by the retrieved sources | Main hallucination metric (Ragas) |
 | **Answer correctness** | Whether the answer contains the key facts and no contradictions | Judged with a rubric (DeepEval GEval) |
 | **Deterministic metric** | A metric computed by code, with no LLM involved, so it's the same every run | Recall, numeric accuracy, citation validity; gated tightly |
@@ -96,6 +100,7 @@ project. Terms are grouped by topic. Use your browser's find (Ctrl/Cmd + F) to j
 | **Rubric** | Written scoring rules with example answers for each score | Stored as versioned judge prompts |
 | **Calibration / Cohen's κ (kappa)** | Checking the judge against your own labels; κ measures agreement beyond chance (1 = perfect, 0 = chance) | Judge trusted only if κ ≥ 0.6 |
 | **Ragas / DeepEval** | Open-source libraries of LLM evaluation metrics | Faithfulness (Ragas), rubric judges (DeepEval) |
+| **Long-context baseline (A-LC)** | Answering by putting a whole document in the prompt instead of retrieving chunks | Compared with RAG on cost, latency and correctness |
 | **Ablation** | Changing one thing at a time to measure its effect | A0 → A7, plus AG1 / AG2 for the agent (F14) |
 | **Baseline** | The score to beat, usually the simplest version or the `main` branch | A0 for ablations; `main@latest` for the gate |
 | **CI eval gate** | An automated check that fails a pull request if quality drops | GitHub Actions + `gate.yaml` (F13) |

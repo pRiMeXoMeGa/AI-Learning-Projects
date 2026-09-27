@@ -21,6 +21,7 @@ Unfamiliar terms are explained in the [glossary](10-glossary.md).
 | Explain the project in an interview | This page → [Glossary](10-glossary.md) → [Decisions](06-decisions.md) → interview talking points at the bottom of each [feature page](08-build-plan/README.md#84-feature-index) | 30 min |
 | Start building | This page → [Setup guide](09-setup-guide.md) → [Build plan](08-build-plan/README.md) → the feature page you're working on | 45 min |
 | Understand a design choice | [Decisions](06-decisions.md) (short) → [Tech stack](07-tech-stack.md) (detailed) | 15 min |
+| Check the design against the 2026 market | [Market alignment review](11-market-alignment-review.md) | 15 min |
 | Review the whole design | [Requirements](01-requirements.md) → [Architecture](02-architecture.md) → [Low-level design](03-low-level-design.md) → [Evaluation](04-evaluation-design.md) → [Non-functional](05-non-functional.md) | 2 h |
 
 ## 0.3 The mental model: a research library
@@ -138,6 +139,7 @@ flowchart TB
     S7 --> S8["8 · Build plan<br/>20 features, week by week"]
     S8 --> S9["9 · Setup guide<br/>accounts, keys, first run"]
     S0 -.-> S10["10 · Glossary<br/>look up any term"]
+    S7 -.-> S11["11 · Market review<br/>2026 alignment check"]
 ```
 
 ## 0.8 FAQ

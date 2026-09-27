@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| Phase A (M2): v0 = 30 Qs · Phase B (M4): v1 = 150 + 20 holdout, judge labels | F2 (canonical text) | 8 h | F12, F13, F14 |
+| Phase A (M2): v0 = 30 Qs · Phase B (M4): v1 = 150 + 20 holdout, judge labels | F2 (canonical text), F1 (XBRL) | 9 h | F12, F13, F14 |
 
 **Goal:** Tools to create, review and version a golden dataset whose ground truth is **evidence spans in
 the canonical text** (ADR-007), plus the human labels needed for judge calibration.
@@ -70,6 +70,10 @@ data/labels/judge_calibration_v1.jsonl
   - [ ] ≥ 40% hand-written or heavily edited; 10 prompt-injection probe questions
   - [ ] Label 50 answers for judge calibration
   - [ ] Re-anchoring script + test
+  - [ ] **XBRL cross-check:** where a numeric answer maps to an XBRL concept, compare it with `xbrl_facts` and flag
+        mismatches for review (catches labelling errors)
+  - [ ] **Review metadata** on every item: reviewer, decision, date, source revision (parser version + accession)
+  - [ ] **Poisoned-document probes:** 3 questions over a test filing with injected hidden text, to prove it is stripped
 - Phase C (v1.1, done in [F19](F19-trajectory-evals.md))
   - [ ] Add `expected_trajectory` to the 55 multi-step items and 10 new calculation questions
 

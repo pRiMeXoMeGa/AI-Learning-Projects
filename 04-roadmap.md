@@ -5,7 +5,8 @@ roadmap skips fundamentals and goes straight to your gaps: **evals → observabi
 Next.js → public portfolio**.
 
 > **Updated:** Projects 1 and 2 now follow their detailed build plans:
-> - **Project 1:** full plan incl. agentic mode, 20 features, ~94 h, **7 weeks**
+> - **Project 1:** full plan incl. agentic mode and the 2026 market-review updates, 20 features, ~102 h,
+>   **7 weeks** at ~14.5 h/week
 >   ([build plan](projects/01-rag-eval-lab/docs/08-build-plan/README.md))
 > - **Project 2:** **core plan (Option B)**, 20 features, ~103 h, **8 weeks**
 >   ([build plan](projects/02-mcp-hub/docs/09-build-plan/README.md)); admin console, Tasks and the GitHub
@@ -18,7 +19,7 @@ Next.js → public portfolio**.
 | Weeks | Focus | Project | Gap closed | Output |
 |---|---|---|---|---|
 | **0 (3 days)** | Résumé fixes | — | Typos, timeline issues, headline | Updated CV + LinkedIn |
-| **1–7** | Evals + observability + agentic RAG | #1 RAG Eval Lab (full plan) | Ragas/DeepEval, CI gates, Langfuse/OTel, rerankers, pgvector, LangGraph agent + trajectory evals, Terraform on Azure | Deployed demo + ablation report + agent-vs-pipeline report + post |
+| **1–7** | Evals + observability + agentic RAG | #1 RAG Eval Lab (full plan) | Ragas/DeepEval, CI gates, Langfuse/OTel, rerankers, BM25 + pgvector, XBRL structured facts, long-context vs RAG, LangGraph agent + trajectory evals, MCP, Terraform on Azure | Deployed demo + ablation report + agent-vs-pipeline report + post |
 | **8–15** | Remote MCP + MCP security | #2 MCP Hub (core plan) | MCP 2026-07-28, OAuth 2.1 (CIMD, token exchange), MCP gateway, OPA, TS SDK, tool-design + security evals | Open-source server on PyPI/npm + MCP Registry, secure gateway, 3 reports |
 | **16–19** | Agent reliability | #3 Agent Harness (+ #4 A2A) | Agent SDKs, HITL, memory, framework comparison, A2A | Framework comparison report |
 | **20–22** | Full-stack | #6 AI SaaS on Next.js | Next.js, Vercel AI SDK, resumable streams, billing | Deployed SaaS |
@@ -30,13 +31,13 @@ Next.js → public portfolio**.
 
 | Week | Milestone | Features | Exit check |
 |---|---|---|---|
-| 1 | M1 Skeleton | F0 Foundation · F1 EDGAR fetch · F2 Parsing · F3a fixed-512 chunking | Parsed filings with sections for 2 companies |
+| 1 | M1 Skeleton | F0 Foundation · F1 EDGAR fetch + XBRL facts · F2 Parsing (+ hidden-text guard) · F3a fixed-512 chunking | Parsed filings with sections for 2 companies |
 | 2 | M1 → M2 | F4 Embedding · F5a Dense retrieval · F8a Basic generation · F9 API/SSE · F10 Observability | Streamed answer via `curl`; traces in Langfuse |
 | 3 | M2 Measure | F11a Golden set v0 (30 Qs) · F12 Eval runner | **Baseline A0 recorded** |
-| 4 | M3 Improve | F3b Structural/tables/ctx · F5b Hybrid + filters · F6 Reranking · F7 Query understanding · F8b Citations + abstention · F14a Ablations | A0–A7 results table |
+| 4 | M3 Improve | F3b Structural/tables/ctx · F5b Hybrid + BM25 + filters · F6 Reranking · F7 Query understanding · F8b Citations + abstention · F14a Ablations (A0–A7, A2b, A-emb, A-rr) | Ablation results table |
 | 5 | M4 Protect | F11b Golden set v1 (150 + 20 holdout), judge labels · F13 CI gate | Demo bad PR **blocked** by the gate |
 | 6 | M5 Agentic | F18 LangGraph research agent (tools, guard, router, `step` events) · F19 Trajectory evals, agent vs pipeline | Agent-vs-pipeline report; `auto` router set from the numbers |
-| 7 | M6 Ship | F15 Streamlit UI · F16 Azure deploy · F17 Feedback loop · F14b Report + blog | Public demo URL, README results, post |
+| 7 | M6 Ship | F15 Streamlit UI · F9 MCP interface · F16 Azure deploy · F14b A-LC + report + blog · (F17 feedback loop, stretch) | Public demo URL, README results, post |
 
 ## Project 2 in detail (weeks 8–15, core plan)
 
@@ -111,7 +112,8 @@ RAG · Hybrid Search · Pinecone · Azure AI Search · Azure OpenAI · Azure AI 
 Structured Outputs · Pydantic · Guardrails · PII Redaction · Prompt-Injection Defense · HITL ·
 React · TypeScript · Kafka · Docker · Kubernetes · Terraform
 
-**Add as you finish each project:** Evals (Ragas, DeepEval, promptfoo) · LLM-as-Judge · Agentic RAG ·
+**Add as you finish each project:** Evals (Ragas, DeepEval, promptfoo) · LLM-as-Judge · Agentic RAG · BM25 ·
+XBRL / structured + unstructured retrieval · Long-context vs RAG ·
 Trajectory Evals · Langfuse · LangSmith · OpenTelemetry · Rerankers · pgvector · Remote MCP / OAuth 2.1 ·
 A2A · OpenAI Agents SDK · Claude Agent SDK · E2B / Sandboxed Code Execution · Next.js ·
 Vercel AI SDK · Generative UI · Semantic Caching · LiteLLM · Model Routing

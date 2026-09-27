@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M5 Agentic | F5, F6, F8, F10 (F7 for routing) | 8 h | F19, agent panel in F15 |
+| M5 Agentic | F5, F6, F8, F10 (F7 for routing), F1 (XBRL) | 9 h | F19, agent panel in F15 |
 
 **Goal:** Add a second way to answer questions: a **read-only research agent** that plans, calls
 retrieval tools several times, checks whether it has enough evidence, and then answers with the **same
@@ -54,6 +54,7 @@ flowchart LR
         T2["read_chunk_context(chunk_id, window=1)"]
         T3["list_filings(ticker?)"]
         T4["calculate(expression)"]
+        T6["get_financial_fact(ticker, concept,<br/>fiscal_year)"]
         T5["finish(reason)"]
     end
     subgraph CORE["existing ragkit stages"]
@@ -62,11 +63,13 @@ flowchart LR
         R3["F3 neighbours / parent chunks"]
         DOCS[("documents table")]
         CALC["safe AST evaluator<br/>(+ − × ÷, round; no eval())"]
+        XB[("xbrl_facts table<br/>(F1)")]
     end
     T1 --> R5 --> R6
     T2 --> R3
     T3 --> DOCS
     T4 --> CALC
+    T6 --> XB
     T5 -.->|"ends the loop"| X(( ))
 ```
 
@@ -76,6 +79,7 @@ flowchart LR
 | `read_chunk_context` | The chunk plus its neighbours or parent section | Tables and multi-paragraph explanations are often split across chunks |
 | `list_filings` | Available `(ticker, fiscal_year)` pairs | Stops the agent searching for years that don't exist, which is a common source of hallucination |
 | `calculate` | A number | LLMs are unreliable at arithmetic; the tool is deterministic and easy to test |
+| `get_financial_fact` | The reported XBRL value (concept, unit, period, accession) | Numeric questions are the main failure mode in financial RAG; structured facts give an exact value to cross-check the text against. The answer still cites the filing text |
 | `finish` | — | An explicit "I'm done" signal, which makes trajectories easy to score |
 
 All tool outputs are wrapped in `<tool_result>` tags and treated as **untrusted data** (same rule as
@@ -150,7 +154,7 @@ agent:
   max_total_tokens: 40000
   timeout_s: 45
   parallel_tool_calls: true
-  tools: [search_filings, read_chunk_context, list_filings, calculate, finish]
+  tools: [search_filings, read_chunk_context, list_filings, calculate, get_financial_fact, finish]
   evidence_max_tokens: 8000    # budget for the final answer context
 
 # configs/pipelines/AG2-auto.yaml  (same agent block, plus:)

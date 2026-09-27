@@ -92,7 +92,7 @@ flowchart TB
 
 | Container | Responsibility | Tech |
 |---|---|---|
-| **Query API** | Online query pipeline **and agentic mode**, SSE streaming, document/eval-run read APIs | FastAPI, Pydantic v2, asyncio, LangGraph (agent mode only) |
+| **Query API** | Online query pipeline **and agentic mode**, SSE streaming, document/eval-run read APIs, **MCP interface** (`/mcp`) | FastAPI, Pydantic v2, asyncio, LangGraph (agent mode only), FastMCP |
 | **Ingestion worker** | Download → parse → chunk → embed → index, incremental and idempotent | arq (async Redis queue) or Celery |
 | **Eval runner** | Runs a pipeline config over a golden-set version, scores it, stores results, enforces the gate | Python, Ragas, DeepEval, custom metrics |
 | **PostgreSQL** | Documents, chunks, vectors (pgvector HNSW), full-text (tsvector GIN), eval runs | Postgres 16 + pgvector ≥ 0.7 |
@@ -154,6 +154,10 @@ flowchart LR
   side by side, and a pipeline config picks one.
 - **Idempotent.** Filing identity = accession number; content identity = SHA-256 of the HTML. Chunk
   identity = hash(index_version, document_id, char_start, char_end).
+- **XBRL facts:** the same fetcher downloads each company's XBRL company-facts JSON into an `xbrl_facts`
+  table, used by the agent and to validate numeric golden answers.
+- **Hidden-text guard:** text hidden by HTML styling is excluded from canonical text and reported
+  (ingestion-time poisoning, OWASP LLM08).
 - **SEC fair-access rules:** a descriptive `User-Agent` header with contact email, and ≤ 10 requests/second.
 
 ## 2.6 Data flow B: online query

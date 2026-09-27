@@ -123,6 +123,18 @@ CREATE INDEX chunks_tsv_gin ON chunks USING gin (tsv);
 
 -- Filters
 CREATE INDEX chunks_filter ON chunks (index_version, (metadata->>'ticker'), ((metadata->>'fiscal_year')::int), section_item);
+
+-- Structured facts from SEC XBRL company facts (one row per reported value in a 10-K)
+CREATE TABLE xbrl_facts (
+    ticker        text NOT NULL,
+    concept       text NOT NULL,           -- e.g. 'us-gaap:Revenues'
+    unit          text NOT NULL,           -- 'USD', 'USD/shares', 'pure'
+    fiscal_year   int  NOT NULL,
+    period_end    date NOT NULL,
+    value         numeric NOT NULL,
+    accession_no  text NOT NULL,           -- links back to the filing
+    PRIMARY KEY (ticker, concept, unit, period_end, accession_no)
+);
 ```
 
 **Design notes**
@@ -134,9 +146,9 @@ CREATE INDEX chunks_filter ON chunks (index_version, (metadata->>'ticker'), ((me
 - **Filtered ANN**: with HNSW plus a `WHERE` filter, pgvector can return fewer than `k` rows. We set
   `hnsw.ef_search = 100` and enable `hnsw.iterative_scan = relaxed_order` (pgvector ≥ 0.8) so filtered
   queries still return `k` results.
-- **Sparse ranking**: Postgres `ts_rank_cd` is not true BM25 (it has no IDF saturation). This is fine for
-  a baseline. ADR-004 describes a switch to ParadeDB `pg_search` (real BM25) if sparse recall turns out
-  to be the bottleneck.
+- **Sparse ranking**: Postgres `ts_rank_cd` is not true BM25 (no IDF/length saturation). Since 2026, true
+  BM25 is available inside Postgres through `pg_textsearch` (v1.0, April 2026) and ParadeDB `pg_search`, so
+  BM25 is measured as its own ablation (A2b, `sparse.method: bm25`) rather than only "if needed" (ADR-004).
 
 ## 3.2 Chunking strategies (index versions)
 
@@ -171,7 +183,7 @@ query:
 
 retrieval:
   dense:  { enabled: true, top_k: 50, ef_search: 100 }
-  sparse: { enabled: true, top_k: 50 }
+  sparse: { enabled: true, top_k: 50, method: fts }   # fts (ts_rank_cd) | bm25 (pg_textsearch / pg_search)
   fusion: { method: rrf, k: 60, top_n: 40 }
 
 rerank:
@@ -263,6 +275,7 @@ You answer questions about SEC 10-K filings using ONLY the numbered sources.
 | `POST` | `/v1/eval/runs` | Start an eval run `{pipeline_config_id, golden_version, split}` |
 | `GET` | `/v1/eval/runs/{id}` | Run status + aggregate scores |
 | `GET` | `/v1/eval/runs/{a}/compare/{b}` | Per-question and aggregate diff |
+| `POST` | `/mcp` | MCP endpoint (FastMCP, Streamable HTTP): tools `search_filings`, `ask_filings` |
 | `POST` | `/v1/feedback` | `{trace_id, score: 1\|-1, comment?}` → pushed to Langfuse |
 | `GET` | `/healthz`, `/readyz` | Liveness / readiness (DB + Redis reachable) |
 
@@ -345,7 +358,7 @@ The online path doesn't cache answers in this project (semantic caching is Proje
 | Framework | LangGraph `StateGraph`, used **only** in `ragkit/agent` (see [ADR-015](06-decisions.md)) |
 | Nodes | `plan` → `act` → `guard` → `tools` → `observe` → `reflect` → (`act` again, or `answer`) |
 | State | `question`, `filters`, `sub_questions`, `messages`, `evidence` (chunk_id → best-scored chunk), `calculations`, `trajectory`, `budget`, `status` |
-| Tools | `search_filings`, `read_chunk_context`, `list_filings`, `calculate`, `finish`, all read-only with Pydantic argument schemas |
+| Tools | `search_filings`, `read_chunk_context`, `list_filings`, `calculate`, `get_financial_fact` (XBRL), `finish`, all read-only with Pydantic argument schemas |
 | Answer | The F8 generator over the evidence pool (ranked by rerank score, `evidence_max_tokens` budget); calculator results are passed as `<calc>` blocks, and citations must still point at the source numbers |
 | Budgets | 6 steps, 12 tool calls, 40k tokens, 45 s; duplicate `(tool, normalised args)` calls return the cached result |
 | Checkpointing | LangGraph Postgres checkpointer (`agent` schema) in the API; in-memory in evals |

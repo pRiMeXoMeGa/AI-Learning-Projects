@@ -70,6 +70,9 @@ migrations/0002_hnsw_indexes.py      # helper to create partial HNSW per version
 - [ ] Batch writer using `psycopg` COPY or `executemany`; `halfvec` conversion
 - [ ] Per-version partial HNSW index (`m=16, ef_construction=64`) + GIN on `tsv`
 - [ ] Embedding cost report: total tokens per version
+- [ ] **A-emb candidates (2026 update):** `text-embedding-3-large` @1024 (baseline, Azure), **Qwen3-Embedding-0.6B**
+      (open, runs locally), and one current commercial model (e.g. Cohere Embed v4 via Azure AI Foundry, or Voyage):
+      each is just another adapter + index version
 
 ## Acceptance criteria
 - Second run of the embed job: 100% cache hits, 0 provider calls

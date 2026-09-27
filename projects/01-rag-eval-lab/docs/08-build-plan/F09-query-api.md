@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M1 (+ `mode` field and `step` events in M5, from F18) | F8 | 4 h | F15, F16, F17, F18 |
+| M1 (+ `mode` field and `step` events in M5, from F18; MCP interface in M6) | F8 | 6 h | F15, F16, F17, F18 |
 
 **Goal:** Expose the pipeline through FastAPI with **SSE streaming**, API-key auth, rate limiting and
 problem+json errors, following the contract in [03 §3.6](../03-low-level-design.md).
@@ -71,6 +71,9 @@ src/api/schemas.py                   # request/response/event models
 - [ ] Problem+json error mapping (422, 429, 502, 504)
 - [ ] OpenAPI docs cleaned up with examples
 - [ ] (M5) `mode: pipeline | agent | auto` request field and the `step` SSE event ([F18](F18-agentic-rag.md))
+- [ ] **MCP interface** (added after the [11 · market review](../11-market-alignment-review.md)): a FastMCP server mounted at `/mcp` exposing `search_filings`
+      (ranked, cited chunks) and `ask_filings` (full answer with citations), calling the same `RAGPipeline`; same
+      API-key auth; test with MCP Inspector and Claude Desktop
 
 ## Acceptance criteria
 - `curl -N` shows events in the contract order; the first `token` arrives within the TTFT budget (local)

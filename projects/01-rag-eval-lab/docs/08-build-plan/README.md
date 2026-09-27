@@ -164,34 +164,36 @@ flowchart LR
 | ID | Feature | Milestone | Depends on | Effort (h) | Page |
 |---|---|---|---|---|---|
 | F0 | Project foundation | M1 | — | 4 | [F00](F00-foundation.md) |
-| F1 | Corpus acquisition (EDGAR) | M1 | F0 | 3 | [F01](F01-corpus-acquisition.md) |
-| F2 | Parsing & section detection | M1 | F1 | 5 | [F02](F02-parsing-sections.md) |
+| F1 | Corpus acquisition (EDGAR + XBRL facts) | M1 | F0 | 5 | [F01](F01-corpus-acquisition.md) |
+| F2 | Parsing & section detection | M1 | F1 | 5.5 | [F02](F02-parsing-sections.md) |
 | F3 | Chunking & index versions | M1 → M3 | F2 | 5 | [F03](F03-chunking.md) |
 | F4 | Embedding & indexing | M1 | F3 | 4 | [F04](F04-embedding-indexing.md) |
-| F5 | Hybrid retrieval | M1 → M3 | F4, (F7) | 5 | [F05](F05-hybrid-retrieval.md) |
+| F5 | Hybrid retrieval | M1 → M3 | F4, (F7) | 6 | [F05](F05-hybrid-retrieval.md) |
 | F6 | Reranking | M3 | F5 | 2 | [F06](F06-reranking.md) |
 | F7 | Query understanding | M3 | F0 | 4 | [F07](F07-query-understanding.md) |
 | F8 | Answer generation | M1 → M3 | F5 | 5 | [F08](F08-answer-generation.md) |
-| F9 | Query API & streaming | M1 | F8 | 4 | [F09](F09-query-api.md) |
+| F9 | Query API, streaming & MCP interface | M1 | F8 | 6 | [F09](F09-query-api.md) |
 | F10 | Observability | M2 | F0 | 4 | [F10](F10-observability.md) |
-| F11 | Golden dataset builder | M2 → M4 | F2 | 8 | [F11](F11-golden-dataset.md) |
-| F12 | Eval runner & metrics | M2 | F8, F10, F11 | 8 | [F12](F12-eval-runner.md) |
+| F11 | Golden dataset builder | M2 → M4 | F2 | 9 | [F11](F11-golden-dataset.md) |
+| F12 | Eval runner & metrics | M2 | F8, F10, F11 | 8.5 | [F12](F12-eval-runner.md) |
 | F13 | CI eval gate | M4 | F12 | 4 | [F13](F13-ci-gate.md) |
-| F14 | Ablation study & report | M3 → M6 | F12 | 5 | [F14](F14-ablation-report.md) |
+| F14 | Ablation study & report | M3 → M6 | F12 | 5.5 | [F14](F14-ablation-report.md) |
 | F15 | Streamlit UI | M6 | F9, F12 | 4 | [F15](F15-streamlit-ui.md) |
 | F16 | Azure deployment | M6 | F9, F13 | 5 | [F16](F16-azure-deployment.md) |
 | F17 | Online feedback loop | M6 (stretch) | F9, F10 | 2 | [F17](F17-feedback-loop.md) |
-| F18 | Agentic RAG mode (LangGraph) | M5 | F5, F6, F8, F10 | 8 | [F18](F18-agentic-rag.md) |
+| F18 | Agentic RAG mode (LangGraph) | M5 | F5, F6, F8, F10 | 9 | [F18](F18-agentic-rag.md) |
 | F19 | Trajectory evals (agent vs pipeline) | M5 | F11, F12, F18 | 6 | [F19](F19-trajectory-evals.md) |
-| | **Total** | | | **~94 h** | |
+| | **Total** | | | **~102 h** | |
 
 ## 8.5 Timeline
 
-At **12–15 h/week**, about 94 hours takes **7 weeks**. **Decision: the full plan is used, including
+At **12–15 h/week**, about 102 hours takes **7 weeks at ~14.5 h/week**. (The plan grew from ~94 h after the
+[market alignment review](../11-market-alignment-review.md) added XBRL facts, true BM25, a long-context baseline,
+an MCP interface, ingestion-poisoning checks and nugget recall.) **Decision: the full plan is used, including
 the agentic milestone (M5).** The [roadmap](../../../../04-roadmap.md) gives Project 1 weeks 1–7 and moves
 the later projects back accordingly.
 
-> **If you're short on time:** M5 is self-contained. Skipping F18–F19 brings the plan back to ~80 h and
+> **If you're short on time:** M5 is self-contained. Skipping F18–F19 brings the plan back to ~87 h and
 > 6 weeks, and the project still closes the evals and observability gap. The agent then moves back to
 > Project 3.
 
@@ -269,4 +271,6 @@ gantt
 | Judge disagrees with humans (κ < 0.6) | Gate unreliable | Gate on deterministic metrics first; iterate on the rubric |
 | Scope creep (UI polish, write-actions for the agent, multi-agent) | Timeline | The out-of-scope list in [01 §1.8](../01-requirements.md) is binding; the agent stays read-only and single-agent |
 | Agent cost or latency blows up | Eval spend, slow demo | Hard budgets in the guard (steps, tool calls, tokens, time); `auto` mode sends only complex questions to the agent; eval cache applies to agent LLM calls too |
+| BM25 extension not available on Azure Flexible Server | A2b result can't be deployed | Measure locally; in the cloud keep `ts_rank_cd` or run ParadeDB in a container; document the gap |
+| 2026 model landscape keeps moving | Candidate lists go stale | Models are config aliases (`models.yaml`); the ablation harness makes a new candidate a one-line change |
 | Agent is not better than the pipeline | "Wasted" milestone | That's still a valid, publishable result: the report says so and the router stays on `pipeline` |

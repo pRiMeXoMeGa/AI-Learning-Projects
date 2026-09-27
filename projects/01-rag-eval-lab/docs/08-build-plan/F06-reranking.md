@@ -51,6 +51,8 @@ src/ragkit/retrieval/rerank.py       # stage logic: threshold, top_n, fallback
 - [ ] Threshold and top-N from config; expose `top_score` for abstention
 - [ ] Timeout + fallback path, trace flag
 - [ ] Micro-benchmark: Cohere vs BGE (CPU) latency for 40 docs
+- [ ] **A-rr candidates (2026 update):** Cohere Rerank v4 (default), **Qwen3-Reranker-0.6B** (open, top of 2026
+      open-weight leaderboards) and `bge-reranker-v2-m3` (most deployed open model); compare quality lift and latency
 
 ## Acceptance criteria
 - Rerank p95 < 400 ms (Cohere) for 40 candidates

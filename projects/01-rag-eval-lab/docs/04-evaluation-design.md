@@ -60,9 +60,11 @@ golden set.
   "expected_filters": { "ticker": ["PEP"], "fiscal_year": [2023, 2024] },
   "answerable": true,
   "numeric_answers": [{ "value": 54.6, "unit": "%", "tolerance": 0.05 }],
+  "xbrl_checks": [{ "concept": "us-gaap:GrossProfit", "fiscal_year": 2024, "matches": true }],
   "split": "smoke",
   "created_by": "synthetic+human",
-  "reviewed": true
+  "review": { "reviewer": "you", "decision": "approved", "date": "2026-10-20",
+              "source_revision": "docling 2.x / parser 1.3 / 0000077476-25-000007" }
 }
 ```
 *(The numbers above are illustrative placeholders, not real figures.)*
@@ -114,6 +116,7 @@ These metrics are deterministic and need **no LLM**, so they are cheap and stabl
 | Metric | Tool | Method | Notes |
 |---|---|---|---|
 | **Faithfulness** | Ragas | Claims in the answer are checked for support by the retrieved context | Main hallucination metric |
+| **Nugget recall** | Custom judge, per nugget | Each `key_fact` is a **nugget**; the judge checks each one separately (present and correct?). Score = nuggets hit / nuggets | Claim-level scoring correlates better with humans than one holistic score (RAGChecker, TREC RAG AutoNuggetizer) |
 | **Answer correctness** | Custom judge (DeepEval `GEval`) | Rubric: are all `key_facts` present and correct, with no contradictions? Score 1–5, then normalised | Uses the reference answer and key facts |
 | **Numeric accuracy** | Custom, deterministic | Extract numbers from the answer; compare to `numeric_answers` within tolerance | No LLM, so fully reliable |
 | **Citation precision** | Custom | Share of cited chunks that actually support their sentence (judge per sentence–citation pair) | |
@@ -154,14 +157,17 @@ Each row adds **one** change to the previous row, and all rows use golden set v1
 |---|---|---|
 | **A0** | `fixed-512`, dense only, top-5, no rerank | Baseline |
 | **A1** | → `structural-512` + table chunks | Table/numeric questions improve significantly |
-| **A2** | → hybrid (dense + sparse, RRF) | Better on exact terms (tickers, line-item names) |
+| **A2** | → hybrid (dense + sparse `ts_rank_cd`, RRF) | Better on exact terms (tickers, line-item names) |
+| A2b | A2 with **true BM25** (`pg_textsearch` / `pg_search`) | BM25 beats `ts_rank_cd`; 2026 text+table benchmarks even show BM25 beating strong dense models |
 | **A3** | → reranker (40 → 8) | Largest precision@8 and faithfulness gain |
-| **A4** | → query rewrite / multi-query | Cross-year and cross-company recall improves |
+| A-rr | A3 with other rerankers: Cohere Rerank v4 · Qwen3-Reranker-0.6B · bge-reranker-v2-m3 | Open rerankers close most of the gap at lower cost; latency differs a lot |
+| **A4** | → query rewrite / multi-query | **Null hypothesis:** little gain once a strong reranker is in place, especially for numeric questions (2026 evidence); may still help cross-company questions. HyDE is excluded (underperforms on financial documents) |
 | **A5** | → contextual headers | Fewer wrong-company / wrong-year retrievals |
 | **A6** | → self-query filters | Same gains as A5 for less cost? (compare) |
 | **A7** | → parent-child expansion | Multi-hop improves; token cost goes up (trade-off) |
-| A-emb | A5 with a different embedding model / dim (1024 vs 3072, bge-m3) | Cost vs. quality of embeddings |
-| A-llmctx | A5 with LLM-generated contextual summaries | Is the ingestion cost worth it? |
+| A-emb | A5 with other embeddings: `text-embedding-3-large` (1024 vs 3072) · Qwen3-Embedding-0.6B (open) · one current commercial model | Cost vs. quality; open models now match closed ones on many benchmarks |
+| A-llmctx *(Could)* | A5 with LLM-generated contextual summaries | Is the ingestion cost worth it? |
+| **A-LC** | **No retrieval:** whole relevant filing (~80k tokens) in a long-context model, single-filing smoke questions, prompt caching | Competitive on single-filing questions but many times the cost and latency per query; RAG wins on cross-filing questions |
 | **AG1** | Best pipeline's retrieval, but answered by the **agent** for every question | Better on comparison / multi-hop / calculation; costs several times more tokens |
 | **AG2** | `auto`: agent only for comparison and multi-hop types | Keeps most of AG1's gain at a fraction of the extra cost |
 

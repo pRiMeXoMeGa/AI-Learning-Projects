@@ -91,6 +91,7 @@ field is kept redactable because Project 6 will reuse this code for private data
 | Threat | Mitigation |
 |---|---|
 | Prompt injection inside retrieved documents (indirect injection) | Sources wrapped in `<source>` tags with a "data, not instructions" rule; no tools or side effects in this pipeline, so the blast radius is limited to answer text; a red-team set of 10 injected passages is included as an eval category |
+| **Ingestion-time poisoning** (OWASP LLM08): hidden text in filings (e.g. `display:none`, white-on-white) | Hidden-text detection in the parser excludes it from canonical text and reports it; poisoned-document probes in the golden set |
 | Prompt injection in the user's question | Output limited to answer + citations; system prompt is not reflected back; injection attempts added to the golden set |
 | API abuse / cost blow-up | API-key auth, per-key rate limit (token bucket in Redis), `max_output_tokens`, request size limits |
 | Secret leakage | Keys only in env / Azure Key Vault; never logged; GitHub secrets are not exposed to fork PRs |

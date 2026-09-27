@@ -29,11 +29,15 @@ while building.
 - **Alternatives:** Full 3,072 dims as `halfvec` (4× memory); a smaller model.
 - **Consequences:** Small storage and fast search. The quality impact is measured explicitly in ablation A-emb.
 
-### ADR-004: Start with Postgres full-text search; switch to real BM25 only if needed
-- **Context:** `ts_rank_cd` is not BM25, and hybrid quality depends on the sparse signal.
-- **Decision:** Start with built-in FTS. If A2 shows sparse recall is the bottleneck, switch to ParadeDB
-  `pg_search` (BM25 inside Postgres).
-- **Consequences:** Simple start. The switch is a retriever adapter change, measured as its own ablation.
+### ADR-004: Start with Postgres full-text search, and measure true BM25 as its own ablation
+- **Context:** `ts_rank_cd` is not BM25, and hybrid quality depends on the sparse signal. In 2026 true BM25
+  runs inside Postgres (`pg_textsearch` v1.0 from April 2026; ParadeDB `pg_search`).
+- **Decision:** Built-in FTS for A2 (works everywhere, including managed Postgres); **A2b** measures BM25 via
+  one of the extensions. Use BM25 as the default if it wins significantly **and** is available where the
+  service is deployed.
+- **Consequences:** The switch is a retriever adapter change. Azure Flexible Server's extension allow-list
+  must be checked; if neither extension is allowed, the cloud keeps FTS (or runs ParadeDB in a container)
+  and the README states the gap. *(Updated after the [market review](11-market-alignment-review.md).)*
 
 ### ADR-005: Reciprocal Rank Fusion for hybrid search
 - **Decision:** RRF with k = 60 over dense and sparse lists (and over multi-query lists).
@@ -134,3 +138,30 @@ while building.
   with an LLM classifier (an extra call; F7's question type is already available).
 - **Consequences:** A clear, defensible cost/quality story. If the agent doesn't win anywhere, that's
   reported honestly and the default stays `pipeline`.
+
+### ADR-018: Use SEC XBRL facts alongside the filing text
+- **Context:** Numeric questions are the biggest failure mode in financial RAG, and SEC publishes every
+  reported value as structured XBRL facts. Current 10-K systems combine structured facts with text.
+- **Decision:** Ingest XBRL company facts into `xbrl_facts`. The agent gets a `get_financial_fact` tool;
+  golden numeric answers are cross-checked against XBRL. Answers still **cite the filing text**, so the
+  citation contract doesn't change.
+- **Alternatives:** Text only (misses an exact source of truth); a knowledge graph (GraphRAG), which is more
+  work for questions that are mostly fact and table lookups.
+- **Consequences:** A cheap, exact numeric signal. XBRL concept names differ between companies, so the tool
+  returns candidates for a concept search rather than assuming one name.
+
+### ADR-019: Measure a long-context baseline (A-LC)
+- **Context:** With long-context models, "why not just put the whole filing in the prompt?" is a standard
+  2026 design question, and one 10-K (~80k tokens) fits.
+- **Decision:** Run A-LC on single-filing smoke questions with prompt caching, and report correctness, p95
+  latency and cost per query against the best RAG configuration.
+- **Consequences:** A data-backed answer to the RAG-vs-long-context question. Run on the smoke subset only,
+  to control cost.
+
+### ADR-020: Expose the service over MCP as well as REST
+- **Context:** Agents increasingly consume retrieval through MCP rather than bespoke APIs.
+- **Decision:** A FastMCP server at `/mcp` with `search_filings` and `ask_filings`, calling the same
+  pipeline. REST/SSE stays the main API for the UI.
+- **Consequences:** About 2 hours of work; any MCP client (Claude Desktop, IDEs, Project 2's gateway) can
+  use the RAG service.
+

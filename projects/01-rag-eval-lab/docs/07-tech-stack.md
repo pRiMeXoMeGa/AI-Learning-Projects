@@ -80,10 +80,13 @@ flowchart TB
 | Parsing | **Docling** | Structure- and table-aware, gives stable offsets, open source | Unstructured, LlamaParse, BeautifulSoup only |
 | Tokenisation | **tiktoken** | Exact token budgets for chunking and context | Character heuristics |
 | Vector + keyword + metadata | **PostgreSQL 16 + pgvector** | One datastore does everything at this scale | Pinecone, Qdrant, Azure AI Search, Elasticsearch |
+| True BM25 (ablation A2b) | **`pg_textsearch`** or ParadeDB **`pg_search`** | Real BM25 inside Postgres since 2026 | Elasticsearch / OpenSearch |
+| Structured financial data | **SEC XBRL company facts API** | Exact reported numbers for cross-checks and an agent tool | Text-only; GraphRAG |
+| Agent-facing interface | **FastMCP** (MCP server at `/mcp`) | Agents consume retrieval over MCP in 2026 | REST only |
 | Cache / queue | **Redis 7** | Job queue + embedding/LLM caches | In-memory, disk cache |
 | Generation LLM | **Azure OpenAI** (default), **Anthropic** (alt) | Your Azure experience + a different family for judging | Open-weight via vLLM (optional) |
-| Embeddings | **OpenAI `text-embedding-3-large` @1024d** (+ **BGE-M3** local) | Strong quality, Matryoshka dimensions, cheap | Cohere Embed, Voyage |
-| Reranker | **Cohere Rerank** (+ **BGE-reranker** local) | Best quality-per-effort gain in RAG | No reranker, LLM-as-reranker |
+| Embeddings | **OpenAI `text-embedding-3-large` @1024d** (baseline) vs **Qwen3-Embedding-0.6B** (open) vs one current commercial model | Baseline available on Azure; 2026 open models match closed ones, so the default is chosen by ablation A-emb | Gemini Embedding, BGE-M3 |
+| Reranker | **Cohere Rerank v4** (default) vs **Qwen3-Reranker-0.6B** and **bge-reranker-v2-m3** (open) | Best quality-per-effort gain in RAG; open options compared in A-rr | zerank-2, Voyage rerank-2.5, LLM-as-reranker |
 | RAG framework | **None (plain Python)** | Every stage visible and measurable | LangChain, LlamaIndex, Haystack |
 | Agent framework (agentic mode only) | **LangGraph** | Stateful graph, parallel tool calls, checkpoints, streaming; most-requested agent framework in JDs | Hand-written loop, OpenAI Agents SDK, Claude Agent SDK |
 | Eval: RAG metrics | **Ragas** | Standard faithfulness / relevancy metrics | TruLens |
@@ -209,18 +212,28 @@ flowchart TB
 - **Model IDs** are aliases in `configs/models.yaml`. We don't hard-code a model version; you pick the
   current best "fast" and "strong" models when you build.
 
-#### Embeddings: OpenAI `text-embedding-3-large` at 1024 dims (primary) + BGE-M3 (local comparison)
+#### Embeddings: `text-embedding-3-large` at 1024 dims (baseline) + 2026 candidates chosen by ablation
 - **Role:** Dense representations of chunks and queries.
 - **Why:** Strong retrieval quality; **Matryoshka** support lets us request 1024 dims, which fit
   pgvector's HNSW limits as `halfvec` (ADR-003); low cost for ~5M tokens per index version.
   BGE-M3 (open source, runs locally) gives a **cost vs. quality data point** for ablation A-emb.
-- **Not chosen:** Cohere Embed and Voyage (both strong; could be added as extra ablation rows).
+- **2026 update ([market review](11-market-alignment-review.md)):** `text-embedding-3-large` is a 2024 model.
+  2026 leaderboards are led by models such as **Qwen3-Embedding** (open, self-hostable, 32k context), Voyage,
+  Cohere Embed v4 and Gemini Embedding, and open models now match closed ones on retrieval. A-emb therefore
+  compares the baseline with **Qwen3-Embedding-0.6B** (runs locally) and one current commercial model; the
+  winner on *this* corpus becomes the default. One 2026 text+table benchmark even found BM25 beating
+  `text-embedding-3-large`, which is why A2b exists.
+- **Not chosen as fixed defaults:** any single model picked from a leaderboard. Rankings on MTEB don't
+  transfer reliably to 10-K tables, so the choice is measured.
 
-#### Reranker: Cohere Rerank (primary) + BGE-reranker (local cross-encoder)
+#### Reranker: Cohere Rerank v4 (default) + open cross-encoders compared in A-rr
 - **Role:** Re-order the 40 fused candidates and keep the top 8.
 - **Why:** A cross-encoder reranker is usually the **largest single quality gain** in RAG for the effort;
   it's named explicitly in senior JDs ("re-ranking strategy selection") and **missing from your résumé** (C4).
   The local BGE reranker gives a self-hosting comparison (latency, cost).
+- **2026 update:** A-rr compares **Cohere Rerank v4** with **Qwen3-Reranker-0.6B** (top open-weight
+  reranker in 2026 comparisons, Apache 2.0) and **bge-reranker-v2-m3** (the most deployed open model).
+  zerank-2 and Voyage rerank-2.5 are strong commercial alternatives.
 - **Not chosen:** LLM-as-reranker (slower and more expensive per query); no reranker (that's ablation
   row A2, the baseline to beat).
 
@@ -279,11 +292,16 @@ flowchart TB
   (better suited to ML-experiment workflows).
 - **Deployment:** Langfuse Cloud's free tier for development. Self-hosting needs ClickHouse, Redis and
   object storage, which is documented but not run by default.
+- **2026 note:** ClickHouse acquired Langfuse in January 2026; it remains open source. Because instrumentation
+  goes through OpenTelemetry, switching to Phoenix or another backend stays a configuration change.
 
 #### OpenTelemetry
 - **Role:** Standard instrumentation for traces and metrics (`rag_request_duration_seconds`, tokens, cost).
 - **Why:** Vendor-neutral, so traces could be sent to Grafana, Datadog or Azure Monitor without code
   changes. Named in staff-level JDs.
+- **2026 note:** the OTel **GenAI semantic conventions** (`gen_ai.*`) are still marked "Development"; the core
+  attributes (operation, provider, model, token usage) are stable in practice. Use them, and pin the
+  semantic-conventions version.
 
 ### Interface layer
 
@@ -337,6 +355,7 @@ flowchart TB
 | Docling, structure-aware chunking | Chunking ablation by question type |
 | uv, testcontainers, Terraform on Azure Container Apps | Repo + deployed demo |
 | Agentic RAG with LangGraph, trajectory evals, cost-aware routing | Agent-vs-pipeline report, agent step traces, gate rules for agents |
+| Structured + unstructured retrieval (XBRL), true BM25, long-context vs. RAG, MCP | A2b / A-LC rows, `get_financial_fact` tool, MCP server |
 
 **Deliberately not in this project** (covered elsewhere): agents that act (write tools, HITL approvals),
 multi-agent systems and agent-framework comparisons (Project 3), LiteLLM and
@@ -355,4 +374,6 @@ the design:
 | Pydantic | 2.x | Model JSON schema for structured outputs |
 | Redis | 7.x | — |
 | Langfuse | v3 (SDK with OTel support) | OTel-based tracing, datasets |
+| pg_textsearch / pg_search | pg_textsearch 1.0 / current pg_search | True BM25 (A2b); check the Azure extension allow-list |
+| FastMCP | current 4.x | MCP interface (2026-07-28 protocol) |
 | LangGraph | 1.x | Stable `StateGraph` API, Postgres checkpointer, streaming of node updates |

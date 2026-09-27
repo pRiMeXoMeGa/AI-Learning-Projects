@@ -30,6 +30,7 @@ regressions**. Every retrieval improvement must come with numbers.
 | Companies | 20 CPG / consumer companies (e.g. PepsiCo, Coca-Cola, P&G, Colgate-Palmolive, Kimberly-Clark, Mondelez, General Mills, Keurig Dr Pepper, Hershey, Kraft Heinz, Clorox, Church & Dwight, Estée Lauder, Tyson Foods, Conagra, Campbell's, Hormel, J.M. Smucker, McCormick, Molson Coors) |
 | Years | Last 3 fiscal years, giving **about 60 filings** (check each company has 3 consecutive 10-Ks; swap out any that were acquired or file 20-F) |
 | Format | EDGAR HTML (primary document) |
+| Structured data | **XBRL company facts** from the SEC API for the same companies and years: exact reported values used to cross-check numeric answers and as an agent tool (added after the [market review](11-market-alignment-review.md)) |
 | Why this corpus | Real enterprise-style text: long documents, dense tables, cross-year and cross-company comparisons, and a vocabulary that is identical across companies (every 10-K has "Item 1A. Risk Factors"), which makes retrieval hard. It also relates to your CPG domain background. |
 
 ## 1.4 Functional requirements
@@ -53,6 +54,8 @@ regressions**. Every retrieval improvement must come with numbers.
 | FR-15 | **Agentic mode:** a read-only research agent (LangGraph) that plans, calls retrieval and calculation tools several times, and answers with the same citation and abstention contract. Request field `mode: pipeline \| agent \| auto`; `auto` routes by question type | Should |
 | FR-16 | **Trajectory evals:** score the agent's tool calls (validity, selection, search coverage, efficiency, redundancy) and compare agent vs. pipeline on the same golden set | Should |
 | FR-17 | Agent steps are streamed to the client (`step` SSE events) and traced as nested spans | Should |
+| FR-18 | Ingest **XBRL facts** and expose them to the agent (`get_financial_fact`) and to golden-set validation | Should |
+| FR-19 | **MCP interface**: `search_filings` and `ask_filings` tools over the same pipeline, so any MCP client or agent can use the service | Should |
 
 ## 1.5 Non-functional requirements
 
@@ -102,4 +105,5 @@ separate vector database. The engineering difficulty is in **quality measurement
 - Agents that **act** (write tools, side effects), human-in-the-loop approvals, multi-agent systems and
   agent-framework comparisons (→ Project 3). The agent here is read-only and single-agent.
 - Semantic caching and model routing (→ Project 7)
-- Fine-tuning embedding or generation models
+- Fine-tuning generation models. Embedding fine-tuning is an optional backlog ablation
+  ([11 §11.5](11-market-alignment-review.md))

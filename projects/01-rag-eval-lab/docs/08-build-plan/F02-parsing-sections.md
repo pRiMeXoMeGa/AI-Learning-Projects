@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M1 | F1 | 5 h | F3, F11 |
+| M1 | F1 | 5.5 h | F3, F11 |
 
 **Goal:** Convert raw 10-K HTML into a **canonical text with stable character offsets**, a heading tree,
 tables, and **10-K Item sections** (1, 1A, 7, 7A, 8 …). These offsets are the coordinate system for both
@@ -80,6 +80,9 @@ notebooks/spike_docling.ipynb        # the spike (step 1)
 - [ ] Table serialiser: Markdown with header row, caption and the preceding sentence as context
 - [ ] Store `parser_version` (Docling version + our code version) on the document
 - [ ] Pin the Docling version in `pyproject.toml`
+- [ ] **Hidden-text detection** (OWASP LLM08, see [11 · market review](../11-market-alignment-review.md)): flag HTML text hidden with `display:none`,
+      `visibility:hidden`, zero font size or text colour equal to the background; exclude it from canonical text
+      and record it in a `parse_warnings` report
 
 ## Acceptance criteria
 - For ≥ 95% of filings, Items 1, 1A, 7, 7A and 8 are detected with plausible lengths (a report lists outliers)

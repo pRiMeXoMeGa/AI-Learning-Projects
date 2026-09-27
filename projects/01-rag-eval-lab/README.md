@@ -26,6 +26,7 @@ reranking, measured retrieval quality, and **agentic RAG with trajectory evals**
 | 8 | [Build Plan](docs/08-build-plan/README.md) | 20 features in 6 milestones: master dependency diagram, timeline, and a page per feature with diagrams, tasks and acceptance criteria |
 | 9 | [Setup Guide](docs/09-setup-guide.md) | Accounts and API keys (and when you need them), `.env`, first run, cost safety, troubleshooting |
 | 10 | [Glossary](docs/10-glossary.md) | Plain-English definitions of every term, and where each one is used |
+| 11 | [Market Alignment Review](docs/11-market-alignment-review.md) | Every approach checked against 2026 industry practice (~30 sources): what's aligned, what was updated, what was rejected and why |
 
 ## The system at a glance
 
@@ -74,6 +75,7 @@ flowchart LR
 3. A 150-question golden dataset, versioned in git
 4. An eval harness plus a GitHub Actions gate that fails PRs on quality regressions
 5. An ablation results table and a Langfuse latency/cost dashboard
-6. An agentic mode (LangGraph research agent) plus an **agent-vs-pipeline report** that decides, per
+6. An **MCP interface** and **XBRL-backed numeric checks**, plus a long-context-vs-RAG comparison
+7. An agentic mode (LangGraph research agent) plus an **agent-vs-pipeline report** that decides, per
    question type, when the agent is worth its cost
-7. A blog/LinkedIn post about the findings
+8. A blog/LinkedIn post about the findings

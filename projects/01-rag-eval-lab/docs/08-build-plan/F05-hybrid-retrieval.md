@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| Phase A (M1): dense only · Phase B (M3): sparse, RRF, filters, multi-query | F4 (F7 for multi-query) | 5 h | F6, F8 |
+| Phase A (M1): dense only · Phase B (M3): sparse, RRF, filters, multi-query, BM25 option | F4 (F7 for multi-query) | 6 h | F6, F8 |
 
 **Goal:** Given one or more queries and optional filters, return a fused and deduplicated candidate list
 from **dense (pgvector)** and **sparse (Postgres FTS)** retrieval, with every intermediate score kept for
@@ -68,6 +68,9 @@ src/ragkit/retrieval/retriever.py    # HybridRetriever orchestrates per cfg
   - [ ] Soft section filter fallback; overlap dedupe
   - [ ] Multi-query: fuse all per-query lists in one RRF
   - [ ] Config switches `dense.enabled`, `sparse.enabled`, `fusion.top_n`
+  - [ ] **True BM25 option** (`sparse.method: bm25`) via `pg_textsearch` (Tiger Data, v1.0 GA April 2026) or
+        ParadeDB `pg_search`, for ablation **A2b**; check which one Azure Flexible Server allows, and fall back to
+        `ts_rank_cd` in the cloud if neither is available (see [11 · market review](../11-market-alignment-review.md))
 
 ## Acceptance criteria
 - Retrieval p95 (dense + sparse, 1 query) < 150 ms on the full corpus, local Docker

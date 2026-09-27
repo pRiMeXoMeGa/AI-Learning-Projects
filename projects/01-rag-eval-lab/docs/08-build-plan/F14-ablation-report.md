@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| Phase A (M3): run A0–A7 · Phase B (M6): final report (+ agent rows from F19), holdout, blog | F12 (+ F3 versions, F6, F7) | 5 h | README, blog post |
+| Phase A (M3): run A0–A7 + A2b, A-emb, A-rr · Phase B (M6): A-LC, final report (+ agent rows from F19), holdout, blog | F12 (+ F3 versions, F6, F7) | 5.5 h | README, blog post |
 
 **Goal:** Run the ablation ladder from [04 §4.7](../04-evaluation-design.md), test significance, pick the
 final default pipeline, check it once on the holdout, and publish the results.
@@ -18,8 +18,11 @@ flowchart LR
     A4 --> A5["A5 + contextual<br/>headers"]
     A5 --> A6["A6 + self-query<br/>filters"]
     A6 --> A7["A7 + parent-child<br/>expansion"]
-    A5 -.-> AE["A-emb<br/>1024 vs 3072 vs bge-m3"]
-    A5 -.-> AL["A-llmctx<br/>LLM contextual summaries"]
+    A2 -.-> A2B["A2b<br/>true BM25 vs ts_rank_cd"]
+    A3 -.-> ARR["A-rr<br/>Cohere v4 vs Qwen3 vs bge"]
+    A5 -.-> AE["A-emb<br/>te3-large vs Qwen3-Emb vs commercial"]
+    A5 -.-> AL["A-llmctx (Could)<br/>LLM contextual summaries"]
+    A7 -.-> ALC["A-LC<br/>whole filing in context<br/>vs best RAG"]
 ```
 
 ## Diagram: study procedure
@@ -57,6 +60,9 @@ reports/ablation.md, reports/figures/*.png
 - [ ] Charts; per-type heatmap; cost/quality frontier
 - [ ] Choose the default pipeline; set it in `configs/pipelines/default.yaml`
 - [ ] Holdout run (once); record the result
+- [ ] **A-LC (long-context baseline):** on single-filing smoke questions, put the whole relevant filing (~80k tokens)
+      in context with prompt caching; compare correctness, p95 latency and cost per query with the best RAG config
+- [ ] A-llmctx is **Could** (run only if time and budget allow)
 - [ ] Blog/LinkedIn post: one finding, one chart, a link to the repo
 
 ## Acceptance criteria

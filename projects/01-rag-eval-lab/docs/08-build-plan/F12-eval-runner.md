@@ -2,7 +2,7 @@
 
 | Milestone | Depends on | Effort | Unblocks |
 |---|---|---|---|
-| M2 | F8, F10, F11 | 8 h | F13, F14, F15, F19 |
+| M2 | F8, F10, F11 | 8.5 h | F13, F14, F15, F19 |
 
 **Goal:** `rag-lab eval run --pipeline A3 --golden v1 --split full` runs the pipeline **in-process**
 over the golden set, computes all metrics in [04 §4.3–4.6](../04-evaluation-design.md) with bootstrap CIs,
@@ -75,6 +75,8 @@ src/ragkit/cache/llm_cache.py        # response cache (eval mode only)
 - [ ] Runner persistence + Langfuse dataset run + scores per trace
 - [ ] Bootstrap CIs, per-type breakdown, `compare` command, Markdown report
 - [ ] Judge calibration command: `rag-lab eval calibrate --labels …` → κ, Spearman ρ
+- [ ] **Nugget recall:** share of `key_facts` (nuggets) present and correct in the answer, judged per nugget
+      (claim-level, as in RAGChecker / TREC RAG AutoNuggetizer); reported next to holistic correctness
 - [ ] **Record baseline A0 on golden v0** (M2 exit)
 
 ## Acceptance criteria

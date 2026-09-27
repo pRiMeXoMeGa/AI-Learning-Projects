@@ -67,7 +67,10 @@ building.
 - **Alternatives:** Shared API keys between agents (no user identity, no audience); mTLS only (proves the
   agent, not the user it acts for).
 - **Consequences:** Per-user authorization and audit at every hop. Keycloak's token-exchange permissions
-  must be configured carefully (tested by A5–A7).
+  must be configured carefully (tested by A5–A7). `act` needs Keycloak's **Token Exchange Delegation**
+  feature (still experimental/preview in 26.7), with the Commander's token as `actor_token`. Pin a version
+  with the 2026 fix that makes standard exchange reject `act`-carrying tokens
+  ([08 §8.3](08-tech-stack.md#keycloak--267-token-exchange-with-delegation)).
 
 ### ADR-007: Signed Agent Cards and a registry with pinning
 - **Context:** A2A lets cards be signed but doesn't require clients to verify them. Spoofing and card

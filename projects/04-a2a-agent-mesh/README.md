@@ -8,7 +8,7 @@
 **Target roles:** Agent Engineer (primary)
 **Gaps it closes:** A2A protocol (1.0), cross-framework interop, Google ADK, agent identity and
 delegation security, long-running task patterns, a numbers-backed "MCP vs A2A" answer
-**Status:** 🟡 System design done (no code yet). Tech stack, build plan and setup guide come next.
+**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
 **Builds on:** [Project 3](../03-agent-reliability-harness/README.md) (OpsSim, Triage Agent, approvals,
 harness), [Project 2](../02-mcp-hub/README.md) (Keycloak, pinning pattern, audit chain),
 [Project 1](../01-rag-eval-lab/README.md) (retrieval)
@@ -28,10 +28,10 @@ harness), [Project 2](../02-mcp-hub/README.md) (Keycloak, pinning pattern, audit
 | 5 | [Security & Threat Model](docs/05-security-threat-model.md) | A2A-specific threats → controls → tests, OWASP ASI07 and others, audit, residual risks |
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Per-hop latency budget, cost, one trace across hops, failure modes, scaling |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 13 decisions with alternatives and consequences |
+| 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology, why it was chosen, alternatives rejected, profile value, versions, week-1 checks (incl. Keycloak delegation caveat) |
 | 11 | [Glossary](docs/11-glossary.md) | A2A, identity and orchestration terms in plain English |
 
-Numbers 8–10 and 12 are reserved for the tech stack, build plan, setup guide and market review, matching
-Projects 1–3.
+Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching Projects 1–3.
 
 ## The system at a glance
 

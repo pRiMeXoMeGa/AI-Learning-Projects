@@ -126,6 +126,9 @@ Child-state → Commander-state mapping:
 | Push webhook (agent → Commander) | Token set in the push config (`authentication`), verified by the receiver | Matches the push config's token; task ID belongs to the Commander |
 | Agent → MCP tools | Agent's own client token (`aud=opsdesk`) + the user in `_meta` for audit | As in Project 3 |
 
+**Exchange mechanics:** the Commander calls the token endpoint with the user token as `subject_token` and
+its own client token as `actor_token` (Keycloak's delegation feature), so the result carries `act`.
+
 **Exchange policy (Keycloak):** only the Commander may exchange tokens, only for the audiences of
 registered agents, and only with a scope that matches the skill being called. Remote agents **can't**
 exchange: they are leaves. A delegation depth limit of 2 is enforced by counting the nested `act` claims.

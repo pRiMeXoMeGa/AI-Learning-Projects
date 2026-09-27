@@ -21,7 +21,7 @@ help. Each project here does three things:
 | 3 | **Agent Reliability Harness**: one agent, four implementations | Agent | Reliability evals (pass^k), agent SDKs, HITL, crash/resume, memory, tracing | 8 wks (core plan) |
 | 4 | **A2A Agent Mesh** | Agent | A2A 1.0, cross-framework interop, agent identity & delegation security, MCP vs A2A | 4 wks (core plan) |
 | 5 | **Sandboxed Data-Analyst Agent** with generative UI | Agent, Full-stack | Sandboxing, code-execution security, generative UI | 3 wks |
-| 6 | **Full-stack AI SaaS on Next.js** | Full-stack | Next.js, Vercel AI SDK, resumable streams, billing, multi-tenancy | 3–4 wks |
+| 6 | **Full-stack AI SaaS on Next.js** (ClauseDesk) | Full-stack | Next.js 16, AI SDK 7, durable workflows, resumable streams, RLS multi-tenancy, Stripe usage billing | 6 wks proposed (core plan); roadmap update pending |
 | 7 | **LLM Gateway & Cost Router** | GenAI | Semantic cache, routing, cost/latency metrics, OTel | 2 wks |
 | 8 | *(optional)* **Realtime Voice Agent** | Full-stack | Realtime/voice UX | 2 wks |
 | 🏆 | **Capstone: Demand-Planning Copilot for CPG** | All three | Everything, in your own domain | 5–6 wks |

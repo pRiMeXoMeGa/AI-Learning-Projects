@@ -9,7 +9,8 @@
 **Gaps it closes:** Next.js (App Router, Server Components/Actions, caching, `proxy.ts`), Vercel AI SDK
 (agents, generative UI parts, tool approvals, resumable streams), durable workflows, multi-tenant SaaS
 (RLS, RBAC), usage-based billing, preview environments, E2E testing
-**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
+**Status:** 🟡 System design, tech stack and build plan done (no code yet).
+**Build plan:** full ~89 h; **core plan ~82 h, 6 weeks** (recommended, awaiting your choice); lean ~70 h
 **Builds on:** [Project 1](../01-rag-eval-lab/README.md) (parsing, retrieval, citation checks, evals) ·
 [Project 3](../03-agent-reliability-harness/README.md) (statistics code)
 
@@ -29,9 +30,11 @@
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, rendering strategy, cost, observability, failure modes, scaling, testing |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 13 decisions with alternatives and consequences |
 | 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology (Next.js 16.3, AI SDK 7, Workflow SDK, Better Auth, Drizzle + Neon, Stripe…), why, alternatives, versions, week-1 checks |
+| 9 | [Build Plan](docs/09-build-plan/README.md) | 21 features in 6 milestones: dependency diagram, options A/B/C, 6-week core timeline, a page per feature |
+| 10 | [Setup Guide](docs/10-setup-guide.md) | Accounts and keys (and when), `.env.local`, first run, cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | Next.js, AI SDK, SaaS and contract terms in plain English |
 
-Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching Projects 1–4.
+Number 12 is reserved for the market alignment review, matching Projects 1–4.
 
 ## The system at a glance
 

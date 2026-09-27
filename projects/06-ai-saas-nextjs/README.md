@@ -9,7 +9,7 @@
 **Gaps it closes:** Next.js (App Router, Server Components/Actions, caching, `proxy.ts`), Vercel AI SDK
 (agents, generative UI parts, tool approvals, resumable streams), durable workflows, multi-tenant SaaS
 (RLS, RBAC), usage-based billing, preview environments, E2E testing
-**Status:** 🟡 System design done (no code yet). Tech stack, build plan and setup guide come next.
+**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
 **Builds on:** [Project 1](../01-rag-eval-lab/README.md) (parsing, retrieval, citation checks, evals) ·
 [Project 3](../03-agent-reliability-harness/README.md) (statistics code)
 
@@ -28,10 +28,10 @@
 | 5 | [Security & Threat Model](docs/05-security-threat-model.md) | Tenant isolation, Server Actions, stream hijack, prompt injection, uploads, billing abuse, OWASP LLM mapping |
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, rendering strategy, cost, observability, failure modes, scaling, testing |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 13 decisions with alternatives and consequences |
+| 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology (Next.js 16.3, AI SDK 7, Workflow SDK, Better Auth, Drizzle + Neon, Stripe…), why, alternatives, versions, week-1 checks |
 | 11 | [Glossary](docs/11-glossary.md) | Next.js, AI SDK, SaaS and contract terms in plain English |
 
-Numbers 8–10 and 12 are reserved for the tech stack, build plan, setup guide and market review, matching
-Projects 1–4.
+Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching Projects 1–4.
 
 ## The system at a glance
 

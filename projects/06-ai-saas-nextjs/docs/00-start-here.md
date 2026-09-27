@@ -29,7 +29,8 @@ the [glossary](11-glossary.md).
 | Understand how it's measured | [Evaluation design](04-evaluation-design.md) | 15 min |
 | Understand the security story | [Security & threat model](05-security-threat-model.md) | 15 min |
 | Understand speed and cost | [Non-functional design](06-non-functional.md) | 10 min |
-| Start building | The tech stack, build plan and setup guide come next (not written yet) | — |
+| Understand the technology choices | [Tech stack](08-tech-stack.md) | 20 min |
+| Start building | The build plan and setup guide come next (not written yet) | — |
 
 ## 0.3 The mental model: a shared office building with one law library
 
@@ -103,5 +104,5 @@ workflows save progress after each step and resume. ([ADR-004](07-decisions.md))
 No. It extracts and highlights what contracts say, and every page says so.
 
 **Is this the code?**
-Not yet. These are the design documents, written before any code. The tech stack, build plan and setup
-guide come next.
+Not yet. These are the design documents and the [tech-stack rationale](08-tech-stack.md), written before
+any code. The build plan and setup guide come next.

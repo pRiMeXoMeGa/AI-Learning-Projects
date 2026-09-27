@@ -118,6 +118,8 @@ export async function withOrg<T>(orgId: string, fn: (tx: Tx) => Promise<T>) {
 }
 ```
 
+- `withOrg` needs an **interactive transaction**, so tenant queries use Neon's WebSocket `Pool` (not the
+  HTTP driver, which only runs single statements); see [08 §8.3](08-tech-stack.md#data).
 - `orgId` always comes from the **server-side session** (`session.activeOrganizationId`) after a
   membership check. It never comes from the request body or URL alone. The URL slug must match the session.
 - The ai-service connects as its own role and sets `app.org_id` from the **verified service JWT**.

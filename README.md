@@ -23,7 +23,7 @@ these roles:
 | [2. MCP Hub](projects/02-mcp-hub/README.md) | 🟡 System design, tech stack and build plan done (MCP 2026-07-28); core plan chosen (8 weeks); **checked against the 2026 market** |
 | [3. Agent Reliability Harness](projects/03-agent-reliability-harness/README.md) | 🟡 System design, tech stack and build plan done (incident-triage agent × 4 implementations, OpsDesk-50 benchmark); core plan chosen (8 weeks) |
 | [4. A2A Agent Mesh](projects/04-a2a-agent-mesh/README.md) | 🟡 System design done (A2A 1.0 mesh: ADK Commander + 3 agents from 3 frameworks, signed cards, cross-agent approvals, MCP-vs-A2A comparison), tech stack and build plan done; core plan chosen (4 weeks) |
-| [6. AI SaaS on Next.js](projects/06-ai-saas-nextjs/README.md) | 🟡 System design done (ClauseDesk: Next.js 16, AI SDK 7, durable workflows, RLS multi-tenancy, Stripe usage billing, CUAD evals); tech stack and build plan next |
+| [6. AI SaaS on Next.js](projects/06-ai-saas-nextjs/README.md) | 🟡 System design done (ClauseDesk: Next.js 16, AI SDK 7, durable workflows, RLS multi-tenancy, Stripe usage billing, CUAD evals) and tech stack done; build plan next |
 
 ## TL;DR
 - **Your strengths are already in demand:** LangGraph multi-agent systems, MCP servers, guardrails,

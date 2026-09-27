@@ -56,7 +56,7 @@ Generate random keys with `python -c "import secrets,base64;print(base64.b64enco
 ```mermaid
 flowchart LR
     A["1 · clone · uv sync ·<br/>pnpm install"] --> B["2 · .env"]
-    B --> C["3 · make up<br/>(pg, redis, keycloak,<br/>opa, lgtm, nginx)"]
+    B --> C["3 · make up<br/>(pg, redis, keycloak,<br/>lgtm, nginx)"]
     C --> D["4 · make migrate"]
     D --> E["5 · ingest AMFI<br/>(daily + small backfill)"]
     E --> F["6 · server over stdio<br/>in Inspector / Claude Desktop"]

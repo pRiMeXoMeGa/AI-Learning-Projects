@@ -61,8 +61,13 @@ Plain-English definitions of the terms used in these docs, and where each one sh
 | **Rug pull** | A server changing a tool after it was approved | Security eval category |
 | **Tool shadowing** | A malicious tool using the same name as a trusted one | Prevented by `server__tool` names |
 | **Indirect prompt injection** | Instructions hidden in data the model reads (e.g. a tool result) | Result filters + confirmations |
-| **Policy engine / OPA / Rego** | A separate service that answers "is this allowed?"; Rego is its policy language | Allow / deny / confirm / step-up decisions |
-| **PEP / PDP** | Policy Enforcement Point (applies decisions) / Policy Decision Point (makes them) | Gateway / OPA |
+| **Policy engine / Cedar** | Code that answers "is this allowed?"; Cedar is an authorization policy language (used by AWS AgentCore Policy); OPA/Rego is a common alternative | Allow / deny / confirm / step-up decisions |
+| **Tool search mode** | The gateway lists only a search tool and a call tool; the model searches for the tools it needs instead of loading all definitions (progressive disclosure) | `hub__search_tools`, `hub__call_tool`; eval variant T6 |
+| **Lethal trifecta** | Private data + untrusted content + a way to send data out: an agent with all three is exploitable | The threat model breaks it with flow rules and confirmations |
+| **OWASP Top 10 for Agentic Applications** | 2026 list of agent security risks (ASI01–ASI10), e.g. goal hijack, tool misuse | Threat-model mapping |
+| **ID-JAG / Enterprise-Managed Authorization** | An MCP extension (stable June 2026) where the company IdP (e.g. Okta) issues agent access without consent screens | Optional backlog |
+| **Adaptive attack** | An attacker that rewrites a failed injection using the agent's response | Security evals |
+| **PEP / PDP** | Policy Enforcement Point (applies decisions) / Policy Decision Point (makes them) | Gateway / Cedar policies |
 | **Row-level security (RLS)** | Postgres rules that filter rows by user automatically | Holdings and watchlists |
 | **Hash-chained audit log** | Each log entry includes the hash of the previous one, so edits are detectable | `audit_event` |
 | **HMAC** | A signature made with a secret key, proving data wasn't changed | Signs `requestState` |

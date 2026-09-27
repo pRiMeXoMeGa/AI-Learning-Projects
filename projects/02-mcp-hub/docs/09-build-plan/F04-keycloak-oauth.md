@@ -49,7 +49,10 @@ scripts/get_token.py                   # dev helper: auth code + PKCE in a brows
 ```
 
 ## Tasks
-- [ ] **Spike** the three questions above and record the answers
+- [ ] **Spike** the three questions above and record the answers. *Research update ([market review](../12-market-alignment-review.md)):* Keycloak has an
+      official MCP authorization-server guide; **CIMD** is experimental (`--features=cimd` + client policies),
+      **resource indicators** exist since 26.7, and CIMD + resource indicators work together (preview expected in
+      26.8). So pin **Keycloak ≥ 26.7**: the spike now confirms behaviour rather than discovering it
 - [ ] Realm: users with a `tenant` attribute (mapped into tokens), scopes, clients, audience mappers
 - [ ] Token lifetimes: access 10 min, refresh 8 h (demo values)
 - [ ] Token-exchange permission only for the gateway client, only to the upstream audiences

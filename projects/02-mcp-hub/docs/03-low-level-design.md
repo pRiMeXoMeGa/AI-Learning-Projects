@@ -201,57 +201,65 @@ to the remaining lifetime).
 | 3 | AuthN | JWT signature (JWKS cached, refreshed on unknown `kid`), `iss`, `aud == gateway resource`, `exp`/`nbf` (60 s leeway), required scope for the method | `401` + `WWW-Authenticate`, or `403 insufficient_scope` |
 | 4 | Rate limit | Token buckets: per user (60/min), per user+tool (20/min for writes), per tenant (600/min) | `429` + `Retry-After` |
 | 5 | Registry | Resolve `exposed_name` → upstream + definition; status must be `approved`; upstream enabled and healthy | JSON-RPC error "tool not found" (no hint that it exists) |
-| 6 | Policy | OPA decision (§3.5), cached 30 s per identical input | deny → error with a reason code; step-up → `403`; confirm → §3.3 |
+| 6 | Policy | Cedar decision in-process (§3.5), cached 30 s per identical request | deny → error with a reason code; step-up → `403`; confirm → §3.3 |
 | 7 | Credentials | Token exchange for the upstream audience (cached until 60 s before expiry), or the stored per-user token, or none | `502` if exchange fails |
 | 8 | Upstream call | Timeout per server (default 10 s), circuit breaker (5 failures → open 30 s), trace context propagated | `504` / "upstream unavailable" |
 | 9 | Filters | Result size ≤ 256 kB (truncate with notice); `structuredContent` validated against the **pinned** `outputSchema`; injection heuristics; PII redaction | Flag or redact; never silently drop |
 | 10 | Audit + telemetry | Audit event (always, including denials); span attributes; metrics | — |
 
-## 3.5 Policy (OPA)
+## 3.5 Policy (Cedar)
 
-**Input sent to OPA**
+Policies are written in **Cedar** and evaluated **in-process** (`cedarpy`); OPA/Rego is the documented
+alternative (ADR-010, changed after the [market review](12-market-alignment-review.md)).
+
+**Cedar request built by the gateway**
 ```json
 {
-  "tenant": "demo-retail",
-  "user": { "sub": "u-123", "scopes": ["mf:read", "portfolio:read"], "acr": "pwd" },
-  "client_id": "https://client.example/cimd.json",
-  "tool": { "name": "mf__portfolio_remove_holding", "server": "mf", "risk": "destructive",
-            "annotations": { "destructiveHint": true } },
-  "args": { "holding_id": 42 },
-  "context": { "hour_utc": 14, "calls_last_min": 3 }
+  "principal": "User::\"u-123\"",
+  "action": "Action::\"CallTool\"",
+  "resource": "Tool::\"mf__portfolio_remove_holding\"",
+  "context": { "confirmed": false, "taskUsedPortfolio": true, "argBytes": 18 }
 }
 ```
+Entities: `User::"u-123"` (`tenant`, `scopes`), `Tenant::"demo-retail"` (`allowedTools`),
+`Tool::"mf__portfolio_remove_holding"` (`server: "mf"`, `risk: "destructive"`, `requiredScope: "portfolio:write"`).
+The context holds **summaries** (flags, sizes), never raw argument values.
 
-**Output**
+**Gateway decision** (Cedar returns Allow/Deny; the gateway asks two "what if" questions)
 ```json
-{ "decision": "require_confirmation", "reasons": ["destructive_tool"], "required_scope": null }
+{ "decision": "require_confirmation", "policies": ["allow-destructive-when-confirmed"], "policy_version": "sha256:…" }
 ```
-Possible decisions: `allow`, `deny`, `require_confirmation`, `require_scope` (step-up).
+Possible decisions: `allow`, `deny`, `require_confirmation`, `require_scope` (step-up). Order: real request
+→ Allow? If not, would the tool's required scope make it Allow (`require_scope`)? If not, would
+`context.confirmed = true` make it Allow (`require_confirmation`)? Otherwise `deny` with the determining
+`forbid` policy ids.
 
-**Example rules (Rego, abridged)**
-```rego
-package mcphub.authz
-default decision := {"decision": "deny", "reasons": ["default_deny"]}
+**Example policies (abridged)**
+```cedar
+@id("allow-non-destructive")
+permit (principal, action == Action::"CallTool", resource)
+when {
+  principal.tenant.allowedTools.contains(resource) &&
+  principal.scopes.contains(resource.requiredScope) &&
+  resource.risk != "destructive"
+};
 
-allowed_tool if data.tenants[input.tenant].tools[input.tool.name]
-has_scope(s) if s in input.user.scopes
+@id("allow-destructive-when-confirmed")
+permit (principal, action == Action::"CallTool", resource)
+when {
+  principal.tenant.allowedTools.contains(resource) &&
+  principal.scopes.contains(resource.requiredScope) &&
+  resource.risk == "destructive" &&
+  context.confirmed
+};
 
-decision := {"decision": "require_scope", "required_scope": s} if {
-    allowed_tool
-    s := data.tool_scopes[input.tool.name]
-    not has_scope(s)
-}
-decision := {"decision": "require_confirmation", "reasons": ["destructive_tool"]} if {
-    allowed_tool; has_scope(data.tool_scopes[input.tool.name])
-    input.tool.risk == "destructive"
-}
-decision := {"decision": "allow"} if {
-    allowed_tool; has_scope(data.tool_scopes[input.tool.name])
-    input.tool.risk != "destructive"
-}
+@id("no-portfolio-data-to-third-party")
+forbid (principal, action == Action::"CallTool", resource)
+when { context.taskUsedPortfolio && resource.server == "gh" };
 ```
-Policies live in `policies/`, have unit tests (`opa test`), and are shipped as a versioned bundle. The
-bundle version is written into every audit event.
+Policies live in `policies/` with a schema (`cedar validate` in CI), request→decision tests, and an
+**exhaustive property test** (no destructive tool without confirmation). The policy-set hash is written into
+every audit event. Full detail: [F10](09-build-plan/F10-policy-cedar.md).
 
 ## 3.6 Scopes
 
@@ -285,7 +293,7 @@ holdings.
 | `GET` | `/.well-known/oauth-protected-resource` | Protected Resource Metadata (RFC 9728) |
 | `GET` | `/connect/{server}` · `/connect/{server}/callback` | URL-mode consent flow for per-user upstream OAuth |
 | `GET/POST` | `/admin/api/servers`, `/tools`, `/tools/{id}/approve`, `/tenants/{id}/tools`, `/audit`, `/audit/verify` | Admin API (`hub:admin`) |
-| `GET` | `/healthz`, `/readyz` | Liveness / readiness (DB, Redis, OPA, JWKS) |
+| `GET` | `/healthz`, `/readyz` | Liveness / readiness (DB, Redis, policy set loaded, JWKS) |
 
 ## 3.9 Upstream configuration
 

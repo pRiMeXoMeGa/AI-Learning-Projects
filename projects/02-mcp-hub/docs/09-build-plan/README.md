@@ -60,7 +60,7 @@ flowchart TB
         F7["F7 Edge & authn"]
         F8["F8 Registry · aggregation ·<br/>pinning"]
         F9["F9 Routing · token exchange ·<br/>stdio bridge"]
-        F10["F10 Policy (OPA)"]
+        F10["F10 Policy (Cedar)"]
         F11["F11 Confirmations<br/>(signed MRTR state)"]
         F12["F12 Rate limits · filters ·<br/>audit chain"]
     end
@@ -159,7 +159,7 @@ flowchart LR
 
 | ID | Feature | Milestone | Priority | Depends on | Effort (h) | Page |
 |---|---|---|---|---|---|---|
-| F0 | Project foundation | M1 | Must | — | 4 | [F00](F00-foundation.md) |
+| F0 | Project foundation | M1 | Must | — | 4.5 | [F00](F00-foundation.md) |
 | F1 | AMFI ingestion | M1 | Must | F0 | 5 | [F01](F01-amfi-ingestion.md) |
 | F2 | MF read tools & maths | M1 | Must | F1 | 7 | [F02](F02-mf-read-tools.md) |
 | F3 | Transports & release v0.1 | M1 | Must | F2 | 4 | [F03](F03-transports-release.md) |
@@ -167,31 +167,35 @@ flowchart LR
 | F5 | User tools, RLS & interactive tools | M2 | Must | F2, F4 | 6 | [F05](F05-user-tools-interactive.md) |
 | F6 | Own MCP client | M2 | Must | F3, F4 | 7 | [F06](F06-mcp-client.md) |
 | F7 | Gateway edge & authn | M3 | Must | F4 | 5 | [F07](F07-gateway-edge-authn.md) |
-| F8 | Registry, aggregation & pinning | M3 | Must | F7, F3 | 6 | [F08](F08-registry-pinning.md) |
-| F9 | Routing, token exchange & stdio bridge | M3 | Must | F8 | 6 | [F09](F09-routing-token-exchange.md) |
-| F10 | Policy engine (OPA) | M3 | Must | F8 | 4 | [F10](F10-policy-opa.md) |
+| F8 | Registry, aggregation, pinning & tool search | M3 | Must | F7, F3 | 8.5 | [F08](F08-registry-pinning.md) |
+| F9 | Routing, token exchange & stdio bridge | M3 | Must | F8 | 6.5 | [F09](F09-routing-token-exchange.md) |
+| F10 | Policy engine (Cedar) | M3 | Must | F8 | 4 | [F10](F10-policy-cedar.md) |
 | F11 | Stateless confirmations | M3 | Must | F10, F5 | 4 | [F11](F11-confirmations.md) |
-| F12 | Rate limits, filters & audit chain | M3 | Must | F9, F10 | 7 | [F12](F12-ratelimit-filters-audit.md) |
+| F12 | Rate limits, filters & audit chain | M3 | Must | F9, F10 | 8 | [F12](F12-ratelimit-filters-audit.md) |
 | F13 | fx-rates-mcp (TypeScript) | M4 | Must | F4, F8 | 5 | [F13](F13-fx-rates-ts.md) |
 | F14 | Admin console | M4 | Should · **deferred** | F12 | 7 | [F14](F14-admin-console.md) |
-| F15 | Tasks, resources & prompts | M4 | Should · **deferred** | F2 | 3 | [F15](F15-tasks-resources.md) |
+| F15 | MCP Apps chart (core) · Tasks, resources & prompts (deferred) | M4 | Should | F2 | 2 + 3 later | [F15](F15-tasks-resources.md) |
 | F16 | GitHub upstream (URL-mode consent) | M4 | Could · **deferred** | F9, F11 | 4 | [F16](F16-github-upstream.md) |
-| F17 | Tool-design evals | M5 | Must | F6, F9, F13 | 9 (6 in core: 3 variants) | [F17](F17-tool-design-evals.md) |
-| F18 | Security evals | M5 | Must | F6, F11, F12 | 8 | [F18](F18-security-evals.md) |
+| F17 | Tool-design evals | M5 | Must | F6, F9, F13 | 10 (7 in core: T1, T2, T4, T6) | [F17](F17-tool-design-evals.md) |
+| F18 | Security evals (incl. adaptive attacks) | M5 | Must | F6, F11, F12 | 10 | [F18](F18-security-evals.md) |
 | F19 | Conformance, interop & performance | M5 | Must | F12 | 5 | [F19](F19-conformance-perf.md) |
-| F20 | CI gate & release pipeline | M5 | Must | F17, F18, F19 | 3 | [F20](F20-ci-release.md) |
+| F20 | CI gate & release pipeline | M5 | Must | F17, F18, F19 | 3.5 | [F20](F20-ci-release.md) |
 | F21 | Azure deployment | M6 | Must | F12, F13 | 4 | [F21](F21-azure-deployment.md) |
-| F22 | Reports, blog & video | M6 | Must | F20, F21 | 3 | [F22](F22-reports-blog.md) |
-| | **Total: full plan / core plan (chosen)** | | | | **~121 h / ~103 h** | |
+| F22 | Reports, blog & video | M6 | Must | F20, F21 | 3.5 | [F22](F22-reports-blog.md) |
+| | **Total: full plan / core plan (chosen)** | | | | **~132 h / ~114 h** | |
 
 ## 9.5 Timeline: Option B (core plan) chosen
 
 The design was bigger than the roadmap's original 3-week estimate, so two options were compared:
 
-| Option | Scope | Effort | Weeks at ~13.5 h/week |
+| Option | Scope | Effort | Weeks |
 |---|---|---|---|
-| A. Full plan | All 23 features | ~121 h | 9 weeks |
-| **B. Core plan ✅ chosen** | Must features only: F14 admin console, F15 Tasks/resources and F16 GitHub upstream are **deferred**; approvals use the `hubctl` CLI (F8); tool-design evals run **3 variants (T1, T2, T4)** instead of 5 | **~103 h** | **8 weeks** |
+| A. Full plan | All 23 features | ~132 h | ~9–10 weeks |
+| **B. Core plan ✅ chosen** | Must features plus the MCP Apps chart: F14 admin console, F15 Tasks/resources and F16 GitHub upstream are **deferred**; approvals use the `hubctl` CLI (F8); tool-design evals run **T1, T2, T4, T6** | **~114 h** | **8 weeks at ~14 h/week** |
+
+*(Effort grew from ~103 h after the [market alignment review](../12-market-alignment-review.md) added Cedar
+policies, tool search mode (T6), the MCP Apps chart, an injection classifier, adaptive attacks, supply-chain
+scanning and OTel MCP conventions.)*
 
 **Why B:** it keeps everything that makes the project stand out (current protocol, gateway security
 controls, measured attack reduction, tool-design evals, a published server). Full-stack depth comes in
@@ -204,11 +208,11 @@ Project 6. The deferred features (~18 h) are listed below and can be added after
 | 1 | 8 | M1 | F0 Foundation · F1 AMFI ingestion · F2 read tools (start) | NAVs for all schemes in Postgres |
 | 2 | 9 | M1 → M2 | F2 (finish) · F3 release v0.1 · F4 Keycloak | **india-mf-mcp v0.1 on PyPI + MCP Registry**, working in Claude Desktop |
 | 3 | 10 | M2 | F5 user + interactive tools · F6 own client | Client logs in (CIMD/PKCE) and handles a disambiguation form |
-| 4 | 11 | M3 | F7 edge & authn · F8 registry & pinning · F9 (start) | Two replicas serve a filtered `tools/list`; rug pull quarantined |
-| 5 | 12 | M3 | F9 token exchange + stdio bridge · F10 OPA · F11 confirmations | Destructive tool needs confirmation; any replica completes it |
-| 6 | 13 | M3 → M4 | F12 rate limits, filters, audit · F13 fx-rates-mcp | Audit chain verifies; cross-server task works |
-| 7 | 14 | M5 | F17 tool-design evals (T1, T2, T4) · F18 security evals (start) | Tool-design report with CIs |
-| 8 | 15 | M5 → M6 | F18 (finish) · F19 · F20 · F21 · F22 | ASR with vs. without defences; public demo; blog post |
+| 4 | 11 | M3 | F7 edge & authn · F8 registry, pinning, scanner, tool search · F9 (start) | Two replicas serve a filtered `tools/list`; rug pull quarantined |
+| 5 | 12 | M3 | F9 token exchange + stdio bridge · F10 Cedar · F11 confirmations | Destructive tool needs confirmation; any replica completes it |
+| 6 | 13 | M3 → M4 | F12 rate limits, filters (+ classifier), audit · F13 fx-rates-mcp · F15 MCP Apps chart | Audit chain verifies; cross-server task works; NAV chart renders in Claude |
+| 7 | 14 | M5 | F17 tool-design evals (T1, T2, T4, T6) · F18 security evals (start) | Tool-design report with CIs |
+| 8 | 15 | M5 → M6 | F18 (finish, incl. adaptive attacks) · F19 · F20 · F21 · F22 | Static and adaptive ASR with vs. without defences; public demo; blog post |
 
 ```mermaid
 gantt
@@ -229,14 +233,15 @@ gantt
     F7 Edge + authn                  :f7, after f6, 2d
     F8 Registry + pinning            :f8, after f7, 3d
     F9 Routing + token exchange      :f9, after f8, 3d
-    F10 Policy (OPA)                 :f10, after f9, 2d
+    F10 Policy (Cedar)               :f10, after f9, 2d
     F11 Confirmations                :f11, after f10, 2d
     F12 Rate limits + filters + audit :f12, after f11, 3d
     section M4 Breadth
     F13 fx-rates-mcp (TS)            :f13, after f12, 2d
+    F15 MCP Apps NAV chart           :f15, after f13, 1d
     section M5 Measure
-    F17 Tool-design evals (3 variants) :f17, after f13, 3d
-    F18 Security evals               :f18, after f17, 3d
+    F17 Tool-design evals (T1 T2 T4 T6) :f17, after f15, 3d
+    F18 Security evals + adaptive    :f18, after f17, 4d
     F19 Conformance + perf           :f19, after f18, 2d
     F20 CI gate + release            :f20, after f19, 1d
     section M6 Ship
@@ -252,7 +257,7 @@ about 2–2.5 hours.)*
 | Feature | Effort | Value when added |
 |---|---|---|
 | F14 Admin console | 7 h | Visible full-stack piece; approvals with a diff view |
-| F15 Tasks, resources & prompts | 3 h | Wider protocol coverage (Tasks extension) |
+| F15 Tasks, resources & prompts (the MCP Apps chart is now in core) | 3 h | Wider protocol coverage (Tasks extension) |
 | F16 GitHub upstream (URL-mode consent) | 4 h | Third-party upstream auth demo |
 | Tool-design variants T3 (fine-grained) and T5 (no output schemas) | ~3 h | Two more findings for the report |
 
@@ -262,15 +267,15 @@ about 2–2.5 hours.)*
 |---|---|
 | **M1 Useful server** | `uvx india-mf-mcp` works in Claude Desktop over stdio; the HTTP transport passes MCP Inspector checks; v0.1 is on PyPI and listed in the MCP Registry; returns/XIRR maths pass property tests. |
 | **M2 Identity** | The own client completes discovery → CIMD → PKCE → `iss` check → token with the right audience; user tools respect RLS; a disambiguation `input_required` round trip works end to end. |
-| **M3 Gateway core** | Through **one URL and two replicas**: filtered `tools/list`, token exchange per upstream, OPA decisions, stateless confirmations, rate limits, filters, and a verifiable audit chain. Gateway-level security suite at 100%. |
-| **M4 Breadth** | fx-rates-mcp on npm and behind the gateway; cross-server tasks work. (Deferred: console approvals, Tasks, GitHub via URL-mode consent.) |
+| **M3 Gateway core** | Through **one URL and two replicas**: filtered `tools/list`, token exchange per upstream, Cedar decisions, stateless confirmations, rate limits, filters, and a verifiable audit chain. Gateway-level security suite at 100%. |
+| **M4 Breadth** | fx-rates-mcp on npm and behind the gateway; cross-server tasks work; the NAV chart renders as an MCP App in at least one client. (Deferred: console approvals, Tasks, GitHub via URL-mode consent.) |
 | **M5 Measure & protect** | Tool-design report and security report committed with CIs; gateway overhead p95 ≤ 25 ms; interop matrix filled; CI gate blocks a deliberately bad PR. |
 | **M6 Ship** | Public gateway + server endpoints on Azure; README with results and diagrams; threat model published; blog/LinkedIn post; 3-minute video. |
 
 ## 9.7 Definition of done (every feature)
 
-- [ ] Code merged via PR; CI green (lint, types, tests, `opa test` where relevant)
-- [ ] Unit tests for all pure logic; integration test for anything touching Postgres, Redis, Keycloak or OPA
+- [ ] Code merged via PR; CI green (lint, types, tests, Cedar policy tests where relevant)
+- [ ] Unit tests for all pure logic; integration test for anything touching Postgres, Redis or Keycloak
 - [ ] From M3: new gateway behaviour has **gateway-level attack cases** in the security suite
 - [ ] OTel spans and metrics for new code paths
 - [ ] No secrets or tokens in logs (checked by a log-scanning test)

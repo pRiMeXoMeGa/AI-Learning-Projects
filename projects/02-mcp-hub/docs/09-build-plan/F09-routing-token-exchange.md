@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M3 | Must | F8 | 6 h | F12, F16, F17 |
+| M3 | Must | F8 | 6.5 h | F12, F16, F17 |
 
 **Goal:** Forward each allowed call to the right upstream with the **right credential**: an exchanged,
 audience-restricted token (never the client's token), a stored per-user token, or none for a local stdio
@@ -48,7 +48,7 @@ gateway/src/mcphub/router.py               # tools/call path: name → upstream 
 - [ ] Router: exposed name → upstream name; pass `_meta` and trace context
 - [ ] Token exchange with caching; never forward the client's `Authorization` header (test enforces it)
 - [ ] Envelope encryption helper (used for cached and stored tokens)
-- [ ] stdio bridge: run the reference `time` server as a subprocess with CPU/memory limits and restart on crash
+- [ ] stdio bridge: run the reference `time` server **in its own container without network access** (allowed hosts only if the server needs them), with CPU/memory limits and restart on crash
 - [ ] Circuit breaker + per-upstream timeouts; `isError` results on failure
 - [ ] **Attack cases:** token passthrough check (upstream sees only exchanged token), replaying a gateway token at an upstream, wrong-audience token at an upstream
 

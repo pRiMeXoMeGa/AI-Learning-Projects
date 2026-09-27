@@ -63,8 +63,9 @@ building.
 - **Decision:** Write the gateway's control logic (registry, pinning, policy, confirmations, audit) on the
   MCP Python SDK v2, and run a **comparison** against one existing gateway (agentgateway) in the
   performance and security reports.
-- **Alternatives:** Configure an existing gateway (faster, but shows configuration skills rather than
-  protocol and security design); FastMCP's proxy/mount features (good for aggregation, but the security
+- **Alternatives:** Configure an existing gateway such as agentgateway, or use a managed one such as **AWS
+  AgentCore Gateway** (which already supports 2026-07-28 and Cedar policies); faster, but shows
+  configuration skills rather than protocol and security design; FastMCP's proxy/mount features (good for aggregation, but the security
   pipeline would still be custom).
 - **Consequences:** More code, but every control is understood and explainable. The comparison shows you
   know the landscape and can judge build vs. buy.
@@ -82,13 +83,19 @@ building.
   description changes).
 - **Consequences:** Upstream releases need a review step, which is intended.
 
-### ADR-010: OPA (Rego) for policy decisions
-- **Decision:** The gateway is the enforcement point; OPA, as a sidecar with a versioned bundle, is the
-  decision point.
-- **Alternatives:** Cedar (analysable, in-process, less common in job descriptions); rules hard-coded in
-  Python (fast to write, hard to audit and test separately).
-- **Consequences:** Policies are testable on their own (`opa test`), versioned, and written into every
-  audit event. A few milliseconds per decision, reduced with caching.
+### ADR-010: Cedar for policy decisions (changed from OPA)
+- **Decision:** The gateway is the enforcement point; **Cedar** policies, evaluated in-process with a schema,
+  are the decision point. The gateway turns Cedar's Allow/Deny into allow / deny / require_scope /
+  require_confirmation with two "what if" evaluations.
+- **Why changed:** the [market review](12-market-alignment-review.md) found that AWS built AgentCore Policy
+  (GA March 2026), the best-known MCP gateway policy layer, on Cedar. Cedar is purpose-built for
+  authorization, needs no sidecar (lower latency, one fewer container), and its schema validation and
+  analysis tooling let you **prove** properties such as "no destructive tool without confirmation".
+- **Alternatives:** OPA/Rego (general-purpose, widely used in platform teams; the previous choice, still a
+  good alternative); rules hard-coded in Python (hard to review and test separately).
+- **Consequences:** Policies are testable and versioned on their own, and the policy-set hash is written
+  into every audit event. Decisions that need data outside the request (e.g. "did this task touch portfolio
+  data?") are passed as context flags computed by the gateway.
 
 ### ADR-011: Stateless confirmations with a signed `requestState`
 - **Decision:** Pending confirmations live in the client's retry, as an HMAC-signed state bound to user,

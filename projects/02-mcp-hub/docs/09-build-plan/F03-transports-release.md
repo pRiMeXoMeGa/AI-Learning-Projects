@@ -54,6 +54,7 @@ servers/india-mf-mcp/README.md                    # install for Claude Desktop, 
 - [ ] SQLite snapshot build (CI artifact) and first-run download with checksum
 - [ ] PyPI trusted publishing; `server.json`; publish to the MCP Registry
 - [ ] README with copy-paste config for Claude Desktop, VS Code and Claude Code
+- [ ] README **comparison table** with the existing Indian MF MCP servers (see [01 §1.2](../01-requirements.md))
 
 ## Acceptance criteria
 - Fresh machine: one config snippet → the tools appear in Claude Desktop

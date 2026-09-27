@@ -20,7 +20,7 @@ these roles:
 | Project | Status |
 |---|---|
 | [1. RAG Eval Lab](projects/01-rag-eval-lab/README.md) | 🟡 System design, tech stack, build plan and agentic mode done; guides added; **checked against the 2026 market** (review + updates) |
-| [2. MCP Hub](projects/02-mcp-hub/README.md) | 🟡 System design, tech stack and build plan done (MCP 2026-07-28); core plan chosen (8 weeks) |
+| [2. MCP Hub](projects/02-mcp-hub/README.md) | 🟡 System design, tech stack and build plan done (MCP 2026-07-28); core plan chosen (8 weeks); **checked against the 2026 market** |
 
 ## TL;DR
 - **Your strengths are already in demand:** LangGraph multi-agent systems, MCP servers, guardrails,

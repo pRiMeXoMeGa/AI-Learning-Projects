@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M3 | Must | F9, F10 | 7 h | F14, F18, F19, F21 |
+| M3 | Must | F9, F10 | 8 h | F14, F18, F19, F21 |
 
 **Goal:** Limit how fast anyone can call tools, clean up what comes back from upstreams, and record every
 call in a **hash-chained** audit log that reviewers can verify.
@@ -66,6 +66,8 @@ migrations/versions/0005_audit.py       # table, INSERT-only grants
 - [ ] Rate limiter as one Lua script (atomic across buckets); in-memory fallback for reads if Redis is down
 - [ ] Filters in the order above; each filter adds span attributes and metrics
 - [ ] Injection heuristics: a small, documented rule set (tuned later with F18's false-positive numbers)
+- [ ] **Injection classifier option** ([market review](../12-market-alignment-review.md)): an open prompt-injection classifier (e.g. Llama Prompt Guard 2) as a
+      second filter mode (`filters.injection: off | heuristic | classifier`), run on text fields of results; F18 compares the modes
 - [ ] Audit events for **every** exit path (including 401/403/429 and denials)
 - [ ] Chain per replica; verification endpoint; daily anchor export
 - [ ] Log scanner test: no tokens or raw arguments in logs

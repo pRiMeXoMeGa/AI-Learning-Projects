@@ -8,7 +8,7 @@ Next.js → public portfolio**.
 > - **Project 1:** full plan incl. agentic mode and the 2026 market-review updates, 20 features, ~102 h,
 >   **7 weeks** at ~14.5 h/week
 >   ([build plan](projects/01-rag-eval-lab/docs/08-build-plan/README.md))
-> - **Project 2:** **core plan (Option B)**, 20 features, ~103 h, **8 weeks**
+> - **Project 2:** **core plan (Option B)** incl. the 2026 market-review updates, ~114 h, **8 weeks** at ~14 h/week
 >   ([build plan](projects/02-mcp-hub/docs/09-build-plan/README.md)); admin console, Tasks and the GitHub
 >   upstream are deferred
 >
@@ -20,7 +20,7 @@ Next.js → public portfolio**.
 |---|---|---|---|---|
 | **0 (3 days)** | Résumé fixes | — | Typos, timeline issues, headline | Updated CV + LinkedIn |
 | **1–7** | Evals + observability + agentic RAG | #1 RAG Eval Lab (full plan) | Ragas/DeepEval, CI gates, Langfuse/OTel, rerankers, BM25 + pgvector, XBRL structured facts, long-context vs RAG, LangGraph agent + trajectory evals, MCP, Terraform on Azure | Deployed demo + ablation report + agent-vs-pipeline report + post |
-| **8–15** | Remote MCP + MCP security | #2 MCP Hub (core plan) | MCP 2026-07-28, OAuth 2.1 (CIMD, token exchange), MCP gateway, OPA, TS SDK, tool-design + security evals | Open-source server on PyPI/npm + MCP Registry, secure gateway, 3 reports |
+| **8–15** | Remote MCP + MCP security | #2 MCP Hub (core plan) | MCP 2026-07-28, OAuth 2.1 (CIMD, token exchange), MCP gateway, Cedar policies, tool search, MCP Apps, TS SDK, tool-design + security evals | Open-source server on PyPI/npm + MCP Registry, secure gateway, 3 reports |
 | **16–19** | Agent reliability | #3 Agent Harness (+ #4 A2A) | Agent SDKs, HITL, memory, framework comparison, A2A | Framework comparison report |
 | **20–22** | Full-stack | #6 AI SaaS on Next.js | Next.js, Vercel AI SDK, resumable streams, billing | Deployed SaaS |
 | **23–24** | Sandboxing + generative UI | #5 Data-Analyst Agent | E2B, sandbox security, generative UI | Repo + threat model |
@@ -46,10 +46,10 @@ Next.js → public portfolio**.
 | 8 | M1 Useful server | F0 Foundation · F1 AMFI ingestion · F2 read tools (start) | NAVs for all schemes in Postgres |
 | 9 | M1 → M2 | F2 read tools + maths · F3 transports + release · F4 Keycloak | **india-mf-mcp v0.1 on PyPI + MCP Registry** |
 | 10 | M2 Identity | F5 user + interactive tools · F6 own client (OAuth, MRTR) | Client login (CIMD/PKCE) + disambiguation form work |
-| 11 | M3 Gateway core | F7 edge & authn · F8 registry & pinning · F9 routing (start) | Two replicas; rug pull quarantined |
-| 12 | M3 Gateway core | F9 token exchange + stdio bridge · F10 OPA · F11 confirmations | Stateless confirmations across replicas |
-| 13 | M3 → M4 | F12 rate limits, filters, audit chain · F13 fx-rates-mcp (TS) | Audit chain verifies; cross-server task works |
-| 14 | M5 Measure | F17 tool-design evals (T1, T2, T4) · F18 security evals (start) | Tool-design report with CIs |
+| 11 | M3 Gateway core | F7 edge & authn · F8 registry, pinning, scanner, tool search · F9 routing (start) | Two replicas; rug pull quarantined |
+| 12 | M3 Gateway core | F9 token exchange + stdio bridge · F10 Cedar policies · F11 confirmations | Stateless confirmations across replicas |
+| 13 | M3 → M4 | F12 rate limits, filters, audit chain · F13 fx-rates-mcp (TS) · F15 MCP Apps chart | Audit chain verifies; cross-server task works |
+| 14 | M5 Measure | F17 tool-design evals (T1, T2, T4, T6) · F18 security evals (start) | Tool-design report with CIs |
 | 15 | M5 → M6 Ship | F18 (finish) · F19 conformance + perf · F20 CI gate · F21 Azure · F22 reports + blog | ASR with vs. without defences; public demo; post |
 
 ```mermaid
@@ -113,7 +113,8 @@ Structured Outputs · Pydantic · Guardrails · PII Redaction · Prompt-Injectio
 React · TypeScript · Kafka · Docker · Kubernetes · Terraform
 
 **Add as you finish each project:** Evals (Ragas, DeepEval, promptfoo) · LLM-as-Judge · Agentic RAG · BM25 ·
-XBRL / structured + unstructured retrieval · Long-context vs RAG ·
+XBRL / structured + unstructured retrieval · Long-context vs RAG · Cedar · MCP Apps · Tool Search ·
+OWASP Agentic Top 10 ·
 Trajectory Evals · Langfuse · LangSmith · OpenTelemetry · Rerankers · pgvector · Remote MCP / OAuth 2.1 ·
 A2A · OpenAI Agents SDK · Claude Agent SDK · E2B / Sandboxed Code Execution · Next.js ·
 Vercel AI SDK · Generative UI · Semantic Caching · LiteLLM · Model Routing

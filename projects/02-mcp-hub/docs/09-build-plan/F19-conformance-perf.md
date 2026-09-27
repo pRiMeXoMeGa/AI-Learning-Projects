@@ -54,7 +54,8 @@ reports/performance.md
 - [ ] Interop matrix filled in with versions and notes
 - [ ] k6 scenarios with thresholds; overhead from spans, not just end-to-end time
 - [ ] agentgateway comparison: same upstreams, same load; compare overhead and which controls exist
-- [ ] Performance tuning pass if targets are missed (caches, OPA decision cache, audit batching)
+- [ ] Feature comparison (desk study) with **AWS AgentCore Gateway** (managed, 2026-07-28, Cedar policies): what you'd get by buying instead of building
+- [ ] Performance tuning pass if targets are missed (caches, policy decision cache, audit batching)
 
 ## Acceptance criteria
 - Contract + conformance tests green in CI

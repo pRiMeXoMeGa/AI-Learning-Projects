@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M5 | Must | F17, F18, F19 | 3 h | F21, F22 |
+| M5 | Must | F17, F18, F19 | 3.5 h | F21, F22 |
 
 **Goal:** One CI pipeline that blocks protocol, security and tool-quality regressions, and release
 pipelines that publish both servers with signed provenance.
@@ -11,7 +11,7 @@ pipelines that publish both servers with signed provenance.
 
 ```mermaid
 flowchart TB
-    PR[pull request] --> L["lint · types · unit<br/>(Python · TS · opa test)"]
+    PR[pull request] --> L["lint · types · unit<br/>(Python · TS · Cedar policy tests)"]
     L --> I["integration + contract + OAuth<br/>(compose services)"]
     I --> S["gateway-level security suite<br/>must be 100%"]
     S --> E["tool-design smoke<br/>15 tasks · T1 · 1 model · cached"]
@@ -40,6 +40,7 @@ configs/gate.yaml                     # tool-design smoke thresholds
 - [ ] Combine the checks above; cache dependencies and the LLM response cache
 - [ ] PR comment with eval and security results
 - [ ] Image scanning + SBOM for gateway images; Dependabot for all ecosystems
+- [ ] **Agent/MCP scanner in CI** (e.g. Snyk Agent Scan) on india-mf-mcp and fx-rates-mcp tool definitions before each release
 - [ ] Branch protection: all checks required on `main`
 - [ ] **Demo PR:** weaken a tool description (T4-style) and show the gate blocking it
 

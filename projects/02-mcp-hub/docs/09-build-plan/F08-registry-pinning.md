@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M3 | Must | F7, F3 | 6 h | F9, F10, F13, F14 |
+| M3 | Must | F7, F3 | 8.5 h | F9, F10, F13, F14, F17 (T6) |
 
 **Goal:** Know every upstream tool, expose only **approved** definitions under **namespaced** names,
 filter the list per caller, and **quarantine** any definition that changes after approval.
@@ -55,6 +55,11 @@ migrations/versions/0004_gateway_registry.py
 - [ ] Namespacing and collision detection (two servers can't claim the same exposed name)
 - [ ] Filtered list cache keyed by (tenant, scope set, registry version)
 - [ ] CLI approvals with a readable diff
+- [ ] **Scanner at approval** ([market review](../12-market-alignment-review.md)): run Snyk Agent Scan (or an equivalent) on new or changed definitions and show
+      its findings next to the diff; a high-severity finding blocks approval
+- [ ] **Tool search mode** (`tools_mode: search`, per tenant): `tools/list` returns only `hub__search_tools(query)`
+      and `hub__call_tool(name, arguments)`; search ranks the caller's allowed tools by name/description match and
+      returns full definitions; `hub__call_tool` goes through the **same** policy, confirmation and audit pipeline
 - [ ] **Attack cases:** rug pull (definition change), shadowing (duplicate name), unapproved tool call
 
 ## Acceptance criteria

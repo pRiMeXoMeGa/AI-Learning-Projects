@@ -31,7 +31,7 @@ flowchart TB
     end
     subgraph L2["Gateway"]
         GW["MCP Python SDK v2 · Starlette · Uvicorn ·<br/>httpx · PyJWT · Pydantic v2"]
-        OPA["Open Policy Agent (Rego)"]
+        CED["Cedar policies (in-process)"]
         PII["Presidio (PII redaction)"]
     end
     subgraph L3["MCP servers"]
@@ -79,7 +79,7 @@ flowchart TB
 | JWT validation | **PyJWT** (+ JWKS client) | Small, well-audited, fast | Authlib / joserfc (larger; used if more JOSE features are needed) |
 | Validation / config | **Pydantic v2** | Tool schemas, config, API models in one library | dataclasses + jsonschema |
 | Authorization server | **Keycloak** | Full OIDC, token exchange, runs locally in Docker | Auth0, Entra ID, WorkOS, Ory Hydra |
-| Policy engine | **Open Policy Agent (Rego)** | Separate, testable, versioned policy; widely known | Cedar, hard-coded rules |
+| Policy engine | **Cedar** (in-process via `cedarpy`) | Purpose-built for authorization; used by AWS AgentCore Policy for MCP gateways; provable properties | OPA/Rego, hard-coded rules |
 | PII redaction | **Microsoft Presidio** | Proven PII detection; matches your Responsible-AI experience | Regex only, cloud PII APIs |
 | Local data for the stdio package | **SQLite snapshot** | Works offline with `uvx`, no Postgres needed (ADR-018) | Calling the hosted API |
 | Database | **PostgreSQL 16** | Partitioning, row-level security, trigram search, JSONB, one DB for everything | TimescaleDB (time-series extras not needed) |
@@ -90,7 +90,7 @@ flowchart TB
 | Tracing / metrics / logs | **OpenTelemetry → Grafana LGTM** | Distributed traces across client, gateway and servers in one container | Jaeger + Prometheus separately, vendor APM |
 | LLM tracing | **Langfuse** | Same tool as Project 1 for LLM calls and eval runs | LangSmith |
 | Load testing | **k6** | Scriptable, good percentile reports | Locust |
-| Testing | **pytest, hypothesis, testcontainers, vitest, `opa test`, Playwright** | Each layer tested with its natural tool | — |
+| Testing | **pytest, hypothesis, testcontainers, vitest, Cedar policy tests, Playwright** | Each layer tested with its natural tool | — |
 | Protocol checking | **MCP Inspector** (+ official conformance tests where available) | The standard debugging tool for MCP | Manual clients only |
 | Packaging | **uv** (Python), **pnpm** (TS) | Fast, lockfiles | Poetry, npm |
 | Publishing | **PyPI + npm (trusted publishing) + official MCP Registry** | Installable with one command; signed provenance | Only GitHub releases |
@@ -156,6 +156,9 @@ flowchart TB
   (RFC 8693) for the gateway, and admin roles for the console.
 - **Why:** Open source, runs locally in Docker, supports OIDC and token exchange, and is common in
   enterprises (C2, C5). Keeping identity outside the hub follows ADR-004.
+- **2026 status:** Keycloak publishes an official guide for acting as an **MCP authorization server**: CIMD is
+  experimental (`--features=cimd`), resource indicators exist since 26.7, CIMD + resource indicators work
+  together, and both are expected to reach *preview* in 26.8. Pin Keycloak ≥ 26.7.
 - **Not chosen:** Auth0 / Entra ID / WorkOS (hosted and polished, but less transparent locally, and free
   tiers limit features like token exchange); Ory Hydra (lighter, but no built-in user management);
   writing our own (security risk).
@@ -172,14 +175,17 @@ flowchart TB
 - **Not chosen:** Authlib or joserfc (more features than needed on the hot path); token introspection on
   every call (a network round trip per request).
 
-#### Open Policy Agent (Rego)
-- **Role:** The **policy decision point**: allow / deny / require confirmation / require step-up.
-- **Why:** Policy separate from code, unit-testable with `opa test`, versioned bundles written into audit
-  events; widely used in platform and security teams (C2, C3).
-- **Not chosen:** **Cedar** (in-process and formally analysable, a strong choice; less common in JDs);
-  hard-coded Python rules (hard to review and test separately).
-- **Revisit:** If the sidecar round trip threatens the latency budget, evaluate OPA compiled to Wasm and
-  run in-process.
+#### Cedar (changed from OPA after the market review)
+- **Role:** The **policy decision point**: Allow/Deny for every tool call, turned into allow / deny /
+  require confirmation / require step-up by the gateway.
+- **Why:** Purpose-built authorization language with a **schema**, **in-process** evaluation (no sidecar, < 1 ms),
+  and analysis tooling for proving policy properties. AWS chose Cedar for **AgentCore Policy**, its MCP
+  gateway policy layer (GA March 2026), which makes it the most relevant policy language for this role (C3),
+  and it builds on your security background (C2).
+- **Not chosen:** **OPA/Rego** (general-purpose and very common in platform teams; the previous choice and a
+  strong alternative); hard-coded Python rules (hard to review and test separately).
+- **Revisit:** If policies need data Cedar can't express as entities/context, or the team already runs OPA,
+  switch back: the gateway's policy interface is small.
 
 #### Microsoft Presidio
 - **Role:** Redacts PII in audit-log arguments and, optionally, in tool results.
@@ -262,9 +268,9 @@ flowchart TB
   2026-07-28.
 - **Why:** The standard tool reviewers and interviewers know.
 
-#### pytest · hypothesis · testcontainers · vitest · `opa test` · Playwright
+#### pytest · hypothesis · testcontainers · vitest · Cedar policy tests · Playwright
 - pytest + hypothesis for returns/XIRR maths and parsers; testcontainers for real Postgres, Redis and
-  Keycloak in integration tests; vitest for the TS server; `opa test` for every policy rule; Playwright for
+  Keycloak in integration tests; vitest for the TS server; `cedar validate` plus request→decision tests and an exhaustive property check for the policies; Playwright for
   the console's approval flow.
 
 ### Delivery
@@ -280,7 +286,7 @@ flowchart TB
   verify the publisher.
 
 #### Docker Compose (+ nginx round-robin)
-- **Role:** The whole system locally, including Keycloak, OPA and **two gateway replicas**.
+- **Role:** The whole system locally, including Keycloak and **two gateway replicas**.
 - **Why:** Statelessness bugs appear on day one instead of in the cloud.
 
 #### GitHub Actions
@@ -304,7 +310,7 @@ flowchart TB
 | Remote MCP with OAuth 2.1: CIMD, PKCE, RFC 8707/9728/9207, step-up, token exchange | Gateway + client, OAuth flow tests |
 | MCP gateway design: registry, pinning, policy, confirmations, audit | Repo, admin console, security report |
 | MCP TypeScript SDK | fx-rates-mcp on npm |
-| OPA / Rego policy-as-code | Policy bundle with tests |
+| Cedar policy-as-code (as in AWS AgentCore Policy) | Policies, schema, exhaustive safety check |
 | MCP security: tool poisoning, rug pulls, confused deputy, injection | Threat model + attack success rates |
 | Tool-design evaluation across model families | Tool-design report with CIs |
 | OpenTelemetry distributed tracing, k6 load testing | Latency dashboards, overhead numbers |
@@ -326,8 +332,8 @@ Pin exact versions in the lockfiles when you start building. These minimums matt
 | MCP TypeScript SDK | v2 | 2026-07-28 support |
 | Python / Node | 3.12 / 24 LTS | Current runtimes |
 | PostgreSQL | 16 | Declarative partitioning, RLS, current managed-service default |
-| OPA | 1.x | Rego v1 syntax (`if`, `contains`) |
-| Keycloak | Latest 26.x at build time | Token exchange; **check CIMD and resource-indicator support** |
+| Cedar / cedarpy | Cedar 4.x language via current `cedarpy` | Schema validation, annotations (`@id`) |
+| Keycloak | ≥ 26.7 (26.8 when released) | Token exchange; CIMD (`--features=cimd`) and resource indicators |
 | Redis | 7.x | Lua scripting, `SET NX EX` |
 | React | 19 | Current |
 

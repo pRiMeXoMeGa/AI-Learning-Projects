@@ -75,8 +75,9 @@ Growth"), so runs are reproducible.
 | **T3** | **Fine-grained**: 20 small tools (separate tools per period, per metric) | More calls and tokens; more wrong-tool choices |
 | **T4** | T1 with **minimal descriptions** (one short line, no "when not to use") | Lower success on comparison and multi-step tasks |
 | **T5** | T1 **without output schemas** (text-only results) | More misread numbers in calculation tasks |
+| **T6** | T1 behind the gateway's **tool search mode** (`hub__search_tools` + `hub__call_tool`) | Far fewer tokens per turn (2026 reports: ~85% with tool search) for a small success cost; the gap grows with more servers |
 
-**Core plan (chosen):** T1, T2 and T4 run first; T3 and T5 are added later if time allows
+**Core plan (chosen):** T1, T2, T4 and T6 run first; T3 and T5 are added later if time allows
 ([build plan §9.5](09-build-plan/README.md#95-timeline-option-b-core-plan-chosen)).
 
 Each variant runs with **two model families** (a Claude model and an OpenAI model, set in
@@ -129,6 +130,8 @@ gateway in a test tenant, plus crafted client requests.
 | Scope escalation | 3 | Calling a write tool with a read-only token | Scope checks, step-up |
 | Header smuggling | 3 | `Mcp-Name` says a read tool, the body calls a write tool | Header/body match check |
 
+| **Adaptive attacks** | 6 | An attacker model rewrites a failed injection up to 5 times, using the agent's refusal as feedback | Whether defences hold beyond static test strings (2026 research: adaptive attacks beat most detectors) |
+
 ### Two ways to run them
 1. **Gateway-level suite (deterministic, no LLM):** crafted requests straight to the gateway. Runs on
    **every PR** and must pass 100% (e.g. "IDOR request is denied and audited").
@@ -169,7 +172,7 @@ points*. A defence that blocks attacks but also blocks normal use isn't a good d
 
 ```mermaid
 flowchart TB
-    PR[Pull request] --> U["unit tests + lint<br/>Python · TypeScript · opa test"]
+    PR[Pull request] --> U["unit tests + lint<br/>Python · TypeScript · Cedar policy tests"]
     U --> CT["contract + OAuth tests<br/>(compose: keycloak, postgres, redis)"]
     CT --> SEC["gateway-level security suite<br/>must be 100%"]
     SEC --> SMK["tool-design smoke<br/>15 tasks × T1 × 1 model (cached)"]

@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M5 | Must | F6, F9, F13 | 9 h full · **6 h core (T1, T2, T4)** | F20, F22 |
+| M5 | Must | F6, F9, F13, F8 (search mode) | 10 h full · **7 h core (T1, T2, T4, T6)** | F20, F22 |
 
 **Goal:** Measure how **tool granularity, description style and output schemas** change agent task
 success, reliability and token cost, for **two model families**, using the design in
@@ -32,7 +32,8 @@ flowchart LR
     V -->|T3| C["20 fine-grained tools"]
     V -->|T4| D["T1 with one-line descriptions"]
     V -->|T5| E["T1 without output schemas"]
-    A & B & C & D & E --> SAME["same maths and data underneath<br/>(only the tool surface changes)"]
+    V -->|T6| F["T1 behind gateway search mode<br/>(hub__search_tools + hub__call_tool)"]
+    A & B & C & D & E & F --> SAME["same maths and data underneath<br/>(only the tool surface changes)"]
 ```
 
 ## Deliverables / files
@@ -50,7 +51,7 @@ reports/tool-design.md
 ## Tasks
 - [ ] Freeze the snapshot; write `expected.py` so answers are never hand-typed
 - [ ] Write the 60 tasks (7 types, [04 §4.3](../04-evaluation-design.md)); ≥ 50% hand-written
-- [ ] Variant surfaces T2–T5 behind a flag (core plan: T1, T2, T4 only)
+- [ ] Variant surfaces T2–T5 behind a flag, plus **T6** = T1 through the gateway's tool search mode (core plan: T1, T2, T4, T6)
 - [ ] Runner with cache, budget guard and resume; smoke set of 15 tasks
 - [ ] Scoring incl. final-state checks (e.g. watchlist contents in the DB after the task)
 - [ ] Report: overall and per task type, per model, with CIs; token cost of `tools/list` per variant

@@ -50,6 +50,21 @@ flowchart LR
 | C5 | **Admin console** | Small React + TypeScript app: approve tool definitions, view diffs, manage tenant allow-lists, browse the audit log. |
 | C6 | **Eval harness** | Tool-design evals, security (attack) evals, protocol conformance checks and gateway performance tests. |
 
+### Why another Indian mutual-fund MCP server?
+
+At least five open-source ones already exist (AMFI or mfapi.in based). india-mf-mcp must be clearly
+better, and the README says so with a comparison table:
+
+| Differentiator | Why it matters |
+|---|---|
+| Built on MCP **2026-07-28** (stateless) with version negotiation | Most existing servers target older protocol versions |
+| **Hosted remote endpoint** with OAuth, plus local `uvx` | Existing ones are mostly local-only |
+| **Structured outputs** with schemas, and **interactive** disambiguation/confirmation | Fewer model errors; measured in the tool-design evals |
+| **Property-tested** CAGR/XIRR/SIP maths, `as_of` and source on every result | Trustworthy numbers |
+| Per-user **watchlists and portfolio**, plus **FX view** (INR→USD/AED) for NRIs | Real use cases beyond NAV lookup |
+| **MCP Apps** NAV chart | Visual answers in Claude, ChatGPT, VS Code |
+| Published **tool-design evals** | Evidence, not claims |
+
 ## 1.3 Users & use cases
 
 | Actor | Use case |
@@ -75,7 +90,7 @@ flowchart LR
 | FR-6 | Published to **PyPI** (C1) and **npm** (C2), and listed in the **official MCP Registry** (`server.json`) | Must |
 | FR-7 | A long-running tool (multi-scheme SIP back-test) using the **Tasks extension** | Should |
 | FR-8 | Resources (`mf://scheme/{code}`) and one prompt template (`analyze_fund`) | Should |
-| FR-9 | An **MCP Apps** UI resource (interactive NAV chart) for clients that support it | Could |
+| FR-9 | An **MCP Apps** UI resource (interactive NAV chart) for clients that support it (11 clients incl. Claude, ChatGPT, VS Code by Aug 2026) | Should (core plan) |
 
 ### Gateway (C3)
 
@@ -91,7 +106,9 @@ flowchart LR
 | FR-17 | **Rate limits and quotas** per user, tenant and tool | Must |
 | FR-18 | **Audit log** of every call (who, what, arguments redacted, decision, result status, latency), hash-chained so tampering is detectable | Must |
 | FR-19 | **Response filters**: size cap, output-schema validation, prompt-injection heuristics, PII redaction | Should |
-| FR-20 | **stdio bridging**: expose a local stdio-only server as a remote tool source | Should |
+| FR-20 | **stdio bridging**: expose a local stdio-only server as a remote tool source, running in a container **without network** unless allowed | Should |
+| FR-20b | **Tool search mode**: `hub__search_tools` + `hub__call_tool` so clients load only the tools they need (progressive disclosure) | Should |
+| FR-20c | **Supply-chain scan** of upstream tool definitions at registration/approval | Should |
 | FR-21 | **Per-user upstream OAuth** for a third-party server (GitHub) using URL-mode elicitation, so the client never sees the upstream token | Could |
 
 ### Client, console and evals (C4–C6)
@@ -105,8 +122,9 @@ flowchart LR
 | FR-26 | Protocol conformance and interoperability checks (MCP Inspector + at least 2 third-party clients) | Must |
 
 > **Build scope:** the chosen **core plan** ([build plan §9.5](09-build-plan/README.md#95-timeline-option-b-core-plan-chosen))
-> builds all *Must* requirements. FR-7 (Tasks), FR-8 (resources/prompts), FR-9 (MCP Apps), FR-21 (GitHub
-> upstream) and FR-23 (admin console) are deferred; admin approvals use the `hubctl` CLI.
+> builds all *Must* requirements plus FR-9 (MCP Apps chart), FR-20b (tool search) and FR-20c (scanning).
+> FR-7 (Tasks), FR-8 (resources/prompts), FR-21 (GitHub upstream) and FR-23 (admin console) are deferred;
+> admin approvals use the `hubctl` CLI.
 
 ## 1.5 Non-functional requirements
 

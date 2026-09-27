@@ -14,7 +14,7 @@ gantt
     section Control
     Rate limit (Redis)           :a3, after a2, 2
     Registry lookup (in-memory)  :a4, after a3, 1
-    Policy (OPA, cached)         :a5, after a4, 4
+    Policy (Cedar, in-process)   :a5, after a4, 1
     Upstream token (cache hit)   :a6, after a5, 2
     section After upstream
     Filters + schema check       :a7, after a6, 5
@@ -26,7 +26,7 @@ gantt
 |---|---|---|
 | JWT verification | 2 ms | JWKS cached in memory; refresh only on unknown `kid` |
 | Rate limit | 2 ms | One Redis round trip (Lua script), pipelined |
-| Policy | 4 ms | OPA as a sidecar on localhost; decision cache for identical inputs (30 s) |
+| Policy | 1 ms | Cedar evaluated in-process (no network hop); decision cache for identical requests (30 s) |
 | Upstream token | 2 ms (cache hit) | Cached until 60 s before expiry; a cache miss (~50–150 ms token exchange) happens about once per user per upstream per token lifetime |
 | Filters | 5 ms | Regex heuristics only on the hot path; heavier classifiers off by default |
 | Audit | 2 ms | Written asynchronously in small batches; the hash chain is computed by a single writer to keep ordering |
@@ -64,6 +64,9 @@ flowchart TB
     G1 --> G6["span: gateway.filters (flags)"]
 ```
 
+- Spans follow the **OpenTelemetry MCP semantic conventions** (since January 2026, still "Development", so the
+  version is pinned): span name `tools/call {tool}`, attributes `mcp.method.name`, `mcp.protocol.version`,
+  `gen_ai.tool.name`, plus hub attributes (tenant, decision, policy version).
 - W3C trace context is propagated in HTTP headers on every hop (and in `_meta` where a hop isn't HTTP,
   e.g. the stdio bridge).
 - **Metrics:** `hub_requests_total{method, tool, decision}`, `hub_overhead_seconds` (histogram),
@@ -78,7 +81,7 @@ flowchart TB
 | Failure | Detection | Behaviour |
 |---|---|---|
 | One upstream down | Circuit breaker (5 failures → open 30 s) | Its tools return `isError` "temporarily unavailable"; other tools unaffected; `tools/list` keeps listing them (so model prompts stay stable) |
-| OPA down | Health check / timeout 50 ms | **Fail closed**: deny everything except `server/discover` and `tools/list` |
+| Policy set fails to load or validate | Startup / reload check | **Fail closed**: deny everything except `server/discover` and `tools/list`; keep the last valid policy set on a bad reload |
 | Redis down | Connection errors | Rate limiting **fails closed for write tools** and falls back to an in-memory per-replica limiter for reads; confirmation nonces can't be checked, so confirmations are refused |
 | Keycloak down | JWKS refresh / token exchange errors | Existing user tokens still validate (cached JWKS); cached upstream tokens keep working; new logins and cache misses fail with a clear error |
 | Postgres down | `/readyz` fails | Replica taken out of rotation; audit events buffered in memory up to a limit, then requests are refused (no un-audited calls) |
@@ -92,7 +95,7 @@ flowchart TB
 | More clients | Add gateway replicas: the protocol is stateless and so is the gateway |
 | Many upstream servers | Registry refresher sharded by server; per-server connection pools |
 | High call volume | Move audit writes to a queue (e.g. Kafka / Event Hubs) with a dedicated chain writer |
-| Many tenants | Policy data bundles per tenant; OPA bundle server; per-tenant rate limits |
+| Many tenants | Per-tenant entity data; policy store service (or Amazon Verified Permissions, which also uses Cedar); per-tenant rate limits |
 | Heavy injection scanning | Move the classifier to an async side path that flags rather than blocks |
 | Enterprise identity | Adopt the Enterprise Managed Authorization extension with the company IdP |
 
@@ -101,8 +104,8 @@ flowchart TB
 | Level | What | Tooling |
 |---|---|---|
 | Unit | Returns/XIRR maths (property tests), NAV file parser, requestState signing, header checks, hash chain | pytest, hypothesis, vitest (TS) |
-| Policy | Every Rego rule, including deny paths | `opa test` |
-| Integration | Servers against Postgres; gateway against real Keycloak, Redis, OPA | pytest + testcontainers / compose |
+| Policy | Every Cedar policy incl. deny paths; schema validation; exhaustive "no destructive without confirmation" check | pytest + cedarpy, `cedar validate` |
+| Integration | Servers against Postgres; gateway against real Keycloak, Redis and the real policy set | pytest + testcontainers / compose |
 | Contract | MCP messages: `server/discover`, headers, `input_required`, errors; older-protocol negotiation | pytest + MCP SDK client |
 | Security | Gateway-level attack suite (every PR), end-to-end suite (nightly) | Custom harness |
 | Evals | Tool-design smoke (PR), full matrix (on demand) | Custom harness |

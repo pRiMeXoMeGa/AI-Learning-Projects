@@ -62,9 +62,6 @@ flowchart TB
     subgraph GWC["Gateway (N stateless replicas)"]
         GWA["gateway<br/>Python · MCP SDK v2 · Starlette"]
     end
-    subgraph Policy
-        OPA["OPA sidecar<br/>policy bundle (Rego)"]
-    end
     subgraph Upstreams
         MFS["india-mf-mcp<br/>FastMCP 4 · Streamable HTTP"]
         FXS["fx-rates-mcp<br/>TS SDK · Streamable HTTP"]
@@ -82,7 +79,6 @@ flowchart TB
     OT["OTel Collector → Grafana LGTM"]
 
     LB --> GWA
-    GWA --> OPA
     GWA --> MFS & FXS & BR
     GWA --> PG & RD
     GWA -.-> KC
@@ -95,8 +91,7 @@ flowchart TB
 
 | Container | Responsibility | Tech |
 |---|---|---|
-| **Gateway** | MCP endpoint for clients; token validation; aggregation; routing; registry; policy calls; confirmations; token exchange; filters; audit; admin API | Python 3.12, MCP Python SDK v2, Starlette/Uvicorn, httpx |
-| **OPA** | Evaluates policy decisions from a versioned Rego bundle | Open Policy Agent (sidecar) |
+| **Gateway** | MCP endpoint for clients; token validation; aggregation; routing; registry; in-process Cedar policy; confirmations; token exchange; filters; audit; admin API | Python 3.12, MCP Python SDK v2, Starlette/Uvicorn, httpx |
 | **india-mf-mcp** | MF tools, resources, prompts; per-user watchlists and holdings | Python, FastMCP 4, SQLAlchemy, Postgres |
 | **fx-rates-mcp** | FX tools (rates, conversion, history) | TypeScript, MCP TypeScript SDK v2, Hono, Node 24 LTS |
 | **stdio bridge** | Runs a stdio-only server as a subprocess and exposes it to the gateway | Part of the gateway package |
@@ -117,7 +112,7 @@ flowchart LR
         AUTHN["authn<br/>JWT validation · PRM · challenges"]
         RL["ratelimit<br/>Redis token buckets"]
         REGY["registry<br/>upstreams · tool pinning · aggregation"]
-        POL["policy<br/>OPA client · decision cache"]
+        POL["policy<br/>Cedar (in-process) · decision cache"]
         CONF["confirm<br/>MRTR · signed requestState"]
         CRED["credentials<br/>token exchange · upstream OAuth"]
         UP["upstream<br/>MCP client pool · stdio bridge"]
@@ -178,7 +173,7 @@ sequenceDiagram
     participant C as MCP client
     participant GW as Gateway
     participant R as Redis
-    participant P as OPA
+    participant P as Cedar policy (in-process)
     participant KC as Keycloak
     participant MF as india-mf-mcp
     participant A as Audit (Postgres)
@@ -252,6 +247,11 @@ each upstream (respecting its cache hints), hashes every tool definition, and co
 approved hash. A changed definition goes to **pending review** and disappears from client lists until an
 admin approves it (see [05 Security](05-security-threat-model.md)).
 
+**Tool search mode (per tenant, optional):** instead of the full list, `tools/list` returns two meta-tools,
+`hub__search_tools(query)` and `hub__call_tool(name, arguments)`. The model searches for what it needs and
+loads only those definitions, the 2026 answer to tool-list bloat. Calls through `hub__call_tool` take the same
+auth → policy → confirmation → audit path. Measured as toolset variant T6.
+
 ## 2.9 Data flow E: ingestion (india-mf-mcp)
 
 ```mermaid
@@ -275,7 +275,6 @@ flowchart LR
     subgraph compose["docker compose"]
         gw1[gateway ×2]
         lb[nginx round-robin]
-        opa[opa]
         mf[india-mf-mcp]
         fx[fx-rates-mcp]
         kc[keycloak]
@@ -285,7 +284,7 @@ flowchart LR
         con[admin console]
     end
     lb --> gw1
-    gw1 --> opa & mf & fx & pg & rd & kc
+    gw1 --> mf & fx & pg & rd & kc
     mf & fx --> pg
     con --> lb
     gw1 & mf & fx -.-> lgtm
@@ -323,7 +322,7 @@ anonymous read-only use (strict rate limits), while signed-in features go throug
 │   ├── india-mf-mcp/             # Python, FastMCP 4 (published to PyPI + MCP Registry)
 │   └── fx-rates-mcp/             # TypeScript, MCP TS SDK (published to npm + MCP Registry)
 ├── gateway/                      # Python package: edge, authn, registry, policy, confirm, audit…
-├── policies/                     # Rego policy bundle + tests (opa test)
+├── policies/                     # Cedar policies + schema + tests
 ├── client/                       # own MCP client (Claude + OpenAI adapters), CLI
 ├── console/                      # React + TS admin console
 ├── evals/

@@ -4,7 +4,7 @@
 |---|---|---|---|---|
 | M6 | Must | F12, F13 | 4 h | Public demo |
 
-**Goal:** Deploy the gateway (2+ replicas, no session affinity), both servers, Keycloak, OPA and the
+**Goal:** Deploy the gateway (2+ replicas, no session affinity), both servers, Keycloak and the
 ingest jobs to Azure with Terraform, reusing Project 1's modules.
 
 ## Diagram: Azure resources
@@ -13,7 +13,7 @@ ingest jobs to Azure with Terraform, reusing Project 1's modules.
 flowchart TB
     subgraph RG["Resource group rg-mcp-hub"]
         subgraph CAE["Container Apps Environment"]
-            GW["ca-gateway<br/>2–3 replicas · no affinity<br/>+ OPA sidecar"]
+            GW["ca-gateway<br/>2–3 replicas · no affinity<br/>Cedar in-process"]
             MF["ca-india-mf<br/>0–2 replicas"]
             FX["ca-fx<br/>0–1 replica"]
             KC["ca-keycloak<br/>1 replica"]
@@ -51,7 +51,7 @@ docs/runbook.md          # deploy, rollback, rotate HMAC keys, rotate KEK, disab
 ```
 
 ## Tasks
-- [ ] Reuse Project 1 modules; add Keycloak and the OPA sidecar
+- [ ] Reuse Project 1 modules; add Keycloak
 - [ ] Session affinity **off** for the gateway (tests statelessness in the cloud)
 - [ ] Secrets via Key Vault references; managed identity
 - [ ] Public endpoints: gateway (auth) and india-mf-mcp (anonymous read-only, rate-limited)

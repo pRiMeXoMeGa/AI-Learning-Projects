@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M6 | Must | F20, F21 | 3 h | Job applications |
+| M6 | Must | F20, F21 | 3.5 h | Job applications |
 
 **Goal:** Turn the work into things a hiring manager reads in five minutes: a strong README, three short
 reports, a published threat model, a post and a video.
@@ -39,6 +39,7 @@ flowchart TB
 - [ ] Blog/LinkedIn post: pick **one** finding (e.g. security ASR or tool-design result) with one chart
 - [ ] 3-minute video
 - [ ] Update the résumé bullet template in `03-projects.md` with real numbers
+- [ ] Threat-model summary mapped to OWASP Agentic Top 10 / MCP Top 10 in the README
 
 ## Acceptance criteria
 - A reader can install the server in under 2 minutes from the README

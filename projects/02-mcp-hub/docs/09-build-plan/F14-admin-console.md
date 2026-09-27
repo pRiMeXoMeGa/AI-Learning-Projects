@@ -56,7 +56,7 @@ console/e2e/approve.spec.ts          # Playwright
 - [ ] OIDC login with PKCE; tokens kept in memory, not local storage
 - [ ] Typed API client generated from the admin API's OpenAPI schema
 - [ ] Diff view (JSON, with description text highlighted)
-- [ ] Tenant allow-list editor (writes policy data → OPA bundle reload)
+- [ ] Tenant allow-list editor (writes tenant entity data → policy reload)
 - [ ] Audit browser + verify button
 - [ ] CSP headers and CSRF-safe design (bearer tokens, no cookies for the API)
 

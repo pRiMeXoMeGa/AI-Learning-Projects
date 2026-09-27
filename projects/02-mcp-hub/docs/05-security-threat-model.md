@@ -27,7 +27,7 @@ flowchart LR
     end
     subgraph T["Trusted: MCP Hub"]
         GW["Gateway<br/>(policy enforcement point)"]
-        OPA["OPA<br/>(policy decision point)"]
+        PDP["Cedar policies<br/>(policy decision point, in-process)"]
         OWN["Own servers<br/>india-mf · fx-rates"]
         DB[("Postgres · Redis")]
     end
@@ -37,7 +37,7 @@ flowchart LR
     GW -- "B3: per-user upstream token" --> RS
     RS -- "B4: tool definitions + results" --> GW
     EXT -- "B5: data" --> OWN
-    GW <--> OPA
+    GW <--> PDP
     GW & OWN --> DB
     CL & GW -.-> KC
 ```
@@ -70,7 +70,7 @@ definitions and results from upstream servers, and data from external sources.
 
 | Component | S (spoofing) | T (tampering) | R (repudiation) | I (info disclosure) | D (denial of service) | E (elevation of privilege) |
 |---|---|---|---|---|---|---|
-| Gateway | JWT validation, `iss`/`aud` | Header/body check, signed state | Hash-chained audit | Filtered tool lists, redaction, no tokens in logs | Rate limits, circuit breakers | Default deny, OPA, scopes |
+| Gateway | JWT validation, `iss`/`aud` | Header/body check, signed state | Hash-chained audit | Filtered tool lists, redaction, no tokens in logs | Rate limits, circuit breakers | Default deny, Cedar policies, scopes |
 | Own servers | Validate exchanged tokens | Input schemas, parameterised SQL | Server logs with `trace_id` | Row-level security | Query limits, timeouts | Scope per tool |
 | Keycloak | MFA optional for admin | Admin API restricted | Keycloak events | Short-lived tokens | Managed/replicated in cloud | Realm roles reviewed |
 | Postgres | App roles | Append-only audit table | Audit chain | Encrypted upstream tokens | Connection limits | Separate roles per service |
@@ -115,8 +115,49 @@ flowchart LR
 | LLM06 Excessive Agency | M12, confirmations for destructive tools |
 | LLM10 Unbounded Consumption | M13 |
 
+## 5.7b The lethal trifecta, and how the design breaks it
+
+An agent is exploitable when it has **all three** of: access to private data, exposure to untrusted content,
+and a way to send data out. A user connected to the hub can have all three in one task (holdings via
+`mf__portfolio_*`, untrusted text from any tool result, and an outbound channel such as a third-party
+upstream). The design doesn't rely on detecting injections; it **breaks the chain**:
+
+| Leg | Control |
+|---|---|
+| Private data | Scopes with step-up; per-user tokens; row-level security |
+| Untrusted content | Result filters and an injection classifier (flag, don't trust) |
+| Exfiltration / action | Cedar **flow rule** (portfolio data can't go to third-party tools in the same task); **human confirmation** for destructive tools; tenant allow-lists keep unknown servers out |
+
+## 5.7c Mapping to the OWASP Top 10 for Agentic Applications (2026) and OWASP MCP Top 10
+
+| OWASP Agentic (ASI) | Relevant here | Controls |
+|---|---|---|
+| ASI01 Agent goal hijack | Injected tool descriptions/results | Pinning, filters/classifier, confirmations |
+| ASI02 Tool misuse & exploitation | Destructive or out-of-scope calls | Cedar policies, confirmations, argument limits |
+| ASI03 Identity & privilege abuse | Confused deputy, token passthrough | Token exchange (user `sub`, gateway `act`), audience checks, RLS |
+| ASI04 Agentic supply chain | Malicious or typosquatted MCP servers | Registry approval + scanner, pinned versions, trusted publishing |
+| ASI05 Unexpected code execution | stdio servers run as processes | Containers without network, resource limits |
+| ASI08 Cascading failures | One bad upstream | Circuit breakers, per-upstream timeouts |
+| ASI09 Human–agent trust exploitation | Misleading confirmation text | Summaries built by the gateway from looked-up data, not from model text |
+
+The **OWASP MCP Top 10** (beta, MCP01–MCP10) covers the same ground from the protocol side (tool poisoning,
+token handling, supply chain, excessive permissions); the M1–M16 table above is organised to map onto it once
+it leaves beta.
+
+## 5.7d Real incidents (2025–2026) and which control addresses them
+
+| Incident | What happened | Control in this design | Gap |
+|---|---|---|---|
+| `postmark-mcp` npm backdoor (Sep 2025) | A maintainer added code that BCC'd every email to an attacker | Supply-chain checks, pinned versions, egress limits for servers we run | **Behaviour change without a definition change** isn't caught by pinning (residual risk) |
+| `mcp-remote` RCE, CVE-2025-6514 (CVSS 9.6) | Connecting to a malicious remote server ran commands on the client | Only approved upstreams; the gateway never executes server-provided commands | Client-side bugs are outside the hub |
+| GitHub MCP prompt injection (May 2025) | An issue's text made an agent leak private repo data | Flow rules + confirmations + tenant allow-lists (lethal-trifecta breaking) | Detection alone would miss adaptive variants |
+| Tool poisoning / WhatsApp rug pull (Apr 2025) | Hidden instructions; definitions changed after approval | Scanner at approval, pinning + quarantine | — |
+| `mcp-server-git` RCE chain (CVE-2025-68143/4/5) | Argument injection in a reference server | stdio servers in network-less containers; argument limits | Bugs inside approved servers remain possible |
+
 ## 5.8 Residual risks (stated honestly)
 
+- **Adaptive attacks beat detectors.** 2026 research shows adaptive attacks succeed > 90% of the time against
+  most published defences, which is why the evals include adaptive attacks (F18).
 - **Injection detection is heuristic.** It lowers the attack success rate but can't reach zero; the real
   protection is that injected text alone can't complete a destructive action without human confirmation.
 - **Approved servers can still misbehave at runtime** (return wrong data) without changing their

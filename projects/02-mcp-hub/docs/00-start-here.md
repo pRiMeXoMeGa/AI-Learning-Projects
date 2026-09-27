@@ -21,6 +21,7 @@ the [glossary](11-glossary.md).
 | Understand the design | [Requirements](01-requirements.md) → [Architecture](02-architecture.md) → [Low-level design](03-low-level-design.md) | 1 h |
 | Understand how it's measured | [Evaluation design](04-evaluation-design.md) | 20 min |
 | Understand speed, failures and operations | [Non-functional design](06-non-functional.md) | 15 min |
+| Check the design against the 2026 market | [Market alignment review](12-market-alignment-review.md) | 15 min |
 | Start building | This page → [Setup guide](10-setup-guide.md) → [Build plan](09-build-plan/README.md) → the feature page you're on | 45 min |
 
 ## 0.3 The mental model: an office building with a reception desk

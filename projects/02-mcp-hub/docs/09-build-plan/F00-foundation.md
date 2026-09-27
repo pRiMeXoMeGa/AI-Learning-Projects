@@ -2,9 +2,9 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M1 | Must | — | 4 h | Everything |
+| M1 | Must | — | 4.5 h | Everything |
 
-**Goal:** A monorepo where `docker compose up` starts Postgres, Redis, Keycloak, OPA, the observability
+**Goal:** A monorepo where `docker compose up` starts Postgres, Redis, Keycloak, the observability
 stack and placeholder services, with CI running lint and tests for both Python and TypeScript.
 
 ## Diagram: repository and local stack
@@ -14,7 +14,7 @@ flowchart TB
     subgraph Repo["monorepo"]
         PY["Python workspace (uv)<br/>servers/india-mf-mcp · gateway · client · evals"]
         TS["TS workspace (pnpm)<br/>servers/fx-rates-mcp · console"]
-        POL["policies/ (Rego)"]
+        POL["policies/ (Cedar)"]
         INF["infra/ · keycloak/realm.json"]
         CFG[".env.example · config/*.yaml"]
     end
@@ -22,7 +22,6 @@ flowchart TB
         PG[(postgres:16)]
         RD[(redis:7)]
         KC[keycloak]
-        OPA[opa]
         LGTM[otel-lgtm]
         NG["nginx (round-robin, SSE-safe)"]
     end
@@ -35,7 +34,7 @@ flowchart TB
 flowchart LR
     PR[push / PR] --> PYL["ruff · mypy · pytest"]
     PR --> TSL["eslint · tsc · vitest"]
-    PR --> OPT["opa fmt · opa test"]
+    PR --> OPT["cedar validate ·<br/>policy tests"]
     PYL & TSL & OPT --> SEC["gitleaks · dependency audit"]
     SEC --> OK[✅]
 ```
@@ -56,8 +55,8 @@ libs/telemetry/                 # shared OTel setup (Python)
 - [ ] uv workspace (Python 3.12) and pnpm workspace (Node 24)
 - [ ] Compose services with health checks; nginx with `proxy_buffering off` so streamed responses aren't held back
 - [ ] Alembic with three schemas: `mf`, `gateway`, `audit`; separate DB roles per service
-- [ ] Shared telemetry helper: OTel traces + metrics to the collector in `otel-lgtm`
-- [ ] CI: lint, types, tests, `opa test`, secret scanning (gitleaks)
+- [ ] Shared telemetry helper: OTel traces + metrics to the collector in `otel-lgtm`, using the **OTel MCP semantic conventions** (pinned version)
+- [ ] CI: lint, types, tests, Cedar schema validation + policy tests, secret scanning (gitleaks)
 - [ ] **Spikes (1 hour total):** confirm FastMCP 4 and the TS SDK v2 install and run a hello-world tool on protocol 2026-07-28
 
 ## Acceptance criteria
@@ -66,7 +65,7 @@ libs/telemetry/                 # shared OTel setup (Python)
 - Spike results written in `docs/notes/spikes.md`
 
 ## Tests
-- A smoke test that connects to Postgres, Redis and OPA from a test container
+- A smoke test that connects to Postgres and Redis and loads the Cedar policy set
 
 **Interview talking point:** *"From day one the local stack runs the same shape as production: two
 gateway replicas behind a plain round-robin proxy, so I couldn't accidentally rely on session state."*

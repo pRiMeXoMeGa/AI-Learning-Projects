@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M5 | Must | F6, F11, F12 | 8 h | F20, F22 |
+| M5 | Must | F6, F11, F12 | 10 h | F20, F22 |
 
 **Goal:** Turn the threat model into numbers: the **attack success rate (ASR)** with the gateway's
 defences off vs. on, per attack category and model, plus the **false-positive rate** and utility cost on
@@ -52,6 +52,9 @@ reports/security.md
 - [ ] Defences on/off profiles; run both models × 3 repeats
 - [ ] False-positive run: the normal tool-design smoke tasks with defences on
 - [ ] Tune injection heuristics once, on a **dev split** of cases; report on the rest (no tuning on the test split)
+- [ ] **Adaptive attacks** ([market review](../12-market-alignment-review.md)): an attacker model gets the agent's response to a failed injection and rewrites it,
+      up to 5 attempts per case; report static ASR and adaptive ASR separately
+- [ ] **Filter modes compared:** injection filter `off` vs `heuristic` vs `classifier`, each with ASR, false-positive rate and added latency
 - [ ] Report: ASR table, examples with traces, residual risks
 
 ## Acceptance criteria

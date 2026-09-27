@@ -9,7 +9,8 @@
 **Target roles:** Agent Engineer, AI Full-stack Engineer (and security-minded AI roles)
 **Gaps it closes:** sandboxed code execution, isolation technologies (microVM vs gVisor), output-handling
 security, generative UI with safe charts, code-writing agents with self-repair, data-agent evaluation
-**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
+**Status:** 🟡 System design, tech stack and build plan done (no code yet).
+**Build plan:** full ~64 h; **core plan ~59 h, 4 weeks** (recommended, awaiting your choice); lean ~47 h
 **Builds on:** [Project 6](../06-ai-saas-nextjs/README.md) (Next.js shell, AI SDK 7, auth) ·
 [Project 2](../02-mcp-hub/README.md) (MCP server patterns, OAuth) · [Project 3](../03-agent-reliability-harness/README.md) (runner, statistics)
 
@@ -29,9 +30,11 @@ security, generative UI with safe charts, code-writing agents with self-repair, 
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, cost, observability, failure modes, scaling |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 10 decisions with alternatives and consequences |
 | 8 | [Tech Stack](docs/08-tech-stack.md) | E2B, gVisor on a dedicated VM, FastMCP broker, sandbox image, Vega-Lite rendering, why each, versions, week-1 checks |
+| 9 | [Build Plan](docs/09-build-plan/README.md) | 16 features in 5 milestones: dependency diagram, options A/B/C, 4-week core timeline, a page per feature |
+| 10 | [Setup Guide](docs/10-setup-guide.md) | Accounts and keys (and when), env vars, first run, cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | Sandboxing, output-safety and analysis terms in plain English |
 
-Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching Projects 1–6.
+Number 12 is reserved for the market alignment review, matching Projects 1–6.
 
 ## The system at a glance
 

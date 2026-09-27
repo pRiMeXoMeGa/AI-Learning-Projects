@@ -167,6 +167,12 @@ Small project, but it gives you a strong interview story.
 
 ## 5. Sandboxed Data-Analyst Agent with generative UI  *(Agent, Full-stack)*
 
+📐 **Detailed system design:** [projects/05-sandboxed-data-analyst](projects/05-sandboxed-data-analyst/README.md).
+It is refined to **Analyst**: an AI SDK 7 agent on Project 6's Next.js shell, a **sandbox broker exposed
+over MCP** with two isolation technologies (**E2B Firecracker microVMs** and **self-hosted gVisor**), safe
+Vega-Lite charts, a 21-attack escape/abuse suite, AnalystBench-50 and a DABstep submission; the
+milestones below are refined there.
+
 **Why this project:** Sandbox security is an explicit agent-JD requirement, and your M.Tech in
 Information Security makes this a natural fit. The generative-UI front end also counts toward the
 full-stack role.

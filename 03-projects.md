@@ -18,7 +18,7 @@ help. Each project here does three things:
 |---|---|---|---|---|
 | 1 | **RAG Eval Lab**: measured, eval-gated RAG + agentic mode | GenAI, Agent | Evals, CI gates, reranking, Langfuse, agentic RAG + trajectory evals | 7 wks (full plan) |
 | 2 | **MCP Hub**: remote MCP servers + gateway | Agent, Full-stack | Remote MCP, OAuth 2.1, MCP client, tool-design evals, MCP security | 8 wks (core plan) |
-| 3 | **Agent Reliability Harness**: one agent, three frameworks | Agent | Trajectory evals, agent SDKs, memory, tracing | 3–4 wks |
+| 3 | **Agent Reliability Harness**: one agent, four implementations | Agent | Reliability evals (pass^k), agent SDKs, HITL, crash/resume, memory, tracing | 3–4 wks (to be re-sized in its build plan) |
 | 4 | **A2A Agent Mesh** | Agent | A2A, cross-framework interop | 1–2 wks |
 | 5 | **Sandboxed Data-Analyst Agent** with generative UI | Agent, Full-stack | Sandboxing, code-execution security, generative UI | 3 wks |
 | 6 | **Full-stack AI SaaS on Next.js** | Full-stack | Next.js, Vercel AI SDK, resumable streams, billing, multi-tenancy | 3–4 wks |
@@ -106,6 +106,12 @@ per-tenant policies; open-source MCP server with __ installs/stars."
 ---
 
 ## 3. Agent Reliability Harness: one agent, three frameworks  *(Agent)*
+
+📐 **Detailed system design:** [projects/03-agent-reliability-harness](projects/03-agent-reliability-harness/README.md).
+The domain chosen is **IT incident triage** on a simulated production system (OpsSim), exposed as an MCP
+server. The same agent is built four ways (**raw loop, LangGraph, OpenAI Agents SDK, Claude Agent SDK**) and
+measured with **pass^k**, safety severity, HITL correctness and crash/resume tests; the milestones below
+are refined there.
 
 **Why this project:** Agent JDs ask for **trajectory evals, tracing and framework breadth**. You know
 LangGraph deeply; this shows you can judge frameworks objectively.

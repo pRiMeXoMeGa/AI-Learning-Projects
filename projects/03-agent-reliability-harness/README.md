@@ -1,0 +1,78 @@
+# Project 3: Agent Reliability Harness
+
+> One incident-triage agent built **four ways** (raw loop, LangGraph, OpenAI Agents SDK, Claude Agent
+> SDK) and measured on a simulated production system for **reliability, not just accuracy**: pass^k,
+> safety violations, human-approval correctness, crash/resume without double actions, injection
+> resistance and cost.
+
+**Target roles:** Agent Engineer (primary), GenAI Engineer
+**Gaps it closes:** agent SDK breadth, reliability evals (pass^k, calibration), HITL, durable
+execution/crash recovery, long-term memory, guardrails, cross-framework tracing, a framework comparison
+backed by numbers
+**Status:** 🟡 System design done (no code yet). Tech stack, build plan and setup guide come next.
+
+> **New here?** Start with [0 · Start here](docs/00-start-here.md): the project in plain English, one
+> run's journey, and which document to read next.
+
+## Design documents
+
+| # | Document | What it answers |
+|---|---|---|
+| 0 | [Start Here](docs/00-start-here.md) | The project in plain English, a run's journey, reading paths, FAQ |
+| 1 | [Requirements](docs/01-requirements.md) | Why incident triage, components, functional and non-functional requirements, scenario categories, experiments, budget, success criteria |
+| 2 | [High-Level Architecture](docs/02-architecture.md) | Context, containers, the agent flow, framework mapping, evaluated run, approval pause/resume, crash/resume, injection path, deployment |
+| 3 | [Low-Level Design](docs/03-low-level-design.md) | OpsSim data and fault model, tool catalog with risk levels, scenario format, agent spec, adapter events, approval tokens, idempotency, graders, memory, APIs |
+| 4 | [Evaluation Design](docs/04-evaluation-design.md) | Reliability dimensions, pass^k, statistics, experiments E1–E9, scenario QA, injection evals, failure taxonomy, CI gate, DX scorecard |
+| 5 | [Safety & Threat Model](docs/05-safety-threat-model.md) | Agent-specific threats → controls → tests, lethal trifecta, OWASP Agentic Top 10 mapping, residual risks |
+| 6 | [Non-Functional Design](docs/06-non-functional.md) | Throughput, determinism, cost, observability, harness failure modes, testing |
+| 7 | [Architecture Decision Records](docs/07-decisions.md) | 19 decisions with alternatives and consequences |
+| 11 | [Glossary](docs/11-glossary.md) | Plain-English definitions of agent, reliability, HITL, safety and incident terms |
+
+Numbers 8–10 and 12 are reserved for the tech stack, build plan, setup guide and market review, matching
+Projects 1 and 2.
+
+## The system at a glance
+
+```mermaid
+flowchart LR
+    subgraph H["Harness"]
+        SC["OpsDesk-50<br/>scenarios"]
+        RUN["runner · chaos"]
+        GR["graders · stats ·<br/>failure taxonomy"]
+    end
+    subgraph A["Triage Agent × 4"]
+        A0["raw loop"]
+        A1["LangGraph"]
+        A2["OpenAI Agents SDK"]
+        A3["Claude Agent SDK"]
+    end
+    subgraph E["OpsSim"]
+        MCP["opsdesk-mcp<br/>~20 tools, risk levels"]
+        ST[("per-run state<br/>+ action log")]
+    end
+    APR["Approval service<br/>signed tokens"]
+    MEM["memory-mcp"]
+    LF["Langfuse (OTel)"]
+    SC --> RUN --> A0 & A1 & A2 & A3
+    A0 & A1 & A2 & A3 --> MCP --> ST
+    A0 & A1 & A2 & A3 --> APR
+    A0 & A1 & A2 & A3 -.-> MEM
+    MCP -->|"token check"| APR
+    ST --> GR
+    A0 & A1 & A2 & A3 -.-> LF
+```
+
+## Planned deliverables
+1. **opssim + opsdesk-mcp**: a simulated production system as an MCP server (PyPI), with the
+   **OpsDesk-50** scenarios and a **scoring CLI** anyone can run their agent against
+2. The Triage Agent in **four implementations** sharing one spec, plus a LangGraph multi-agent variant
+3. The **framework comparison report**: pass^k with CIs, safety by severity, HITL, crash/resume,
+   injection, cost per resolved incident, failure-mode mix, DX scorecard
+4. Guard, spotlighting, idempotency and memory experiments, each with effect **and** cost
+5. A demo: LangGraph agent with a live approval inbox (Azure), and a 3-minute video
+6. A blog/LinkedIn post with one headline finding
+
+## Résumé bullet template
+"Built an agent reliability harness (50 incident scenarios, pass^k + safety + HITL metrics) comparing the
+same agent in LangGraph, OpenAI Agents SDK and Claude Agent SDK; guards and approval backstops cut
+unsafe actions from __% to __% and failed runs from __% to __%."

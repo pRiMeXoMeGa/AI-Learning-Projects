@@ -98,7 +98,7 @@ flowchart TB
     DEMO --> APR
 ```
 
-| Container | Tech (details in the tech-stack doc, written next) | Responsibility |
+| Container | Tech (details in [08 Tech stack](08-tech-stack.md)) | Responsibility |
 |---|---|---|
 | **opsdesk-mcp** | Python, FastMCP, Streamable HTTP | Tools over the simulated system; one endpoint per run ID; risk annotations; approval-token check; idempotency |
 | **Simulator core** | Pure Python, SQLite | State, fault model, fix rules, simulated clock, deterministic metric/log generation |
@@ -263,7 +263,7 @@ flowchart TB
         OPS["opsdesk-mcp + simulator"]
         APRS["approval service"]
         MEM["memory-mcp"]
-        PGL[("Postgres 17<br/>+ pgvector")]
+        PGL[("Postgres 16<br/>+ pgvector")]
         LFL["Langfuse (local)"]
         WK["agent workers<br/>(spawned by runner)"]
     end

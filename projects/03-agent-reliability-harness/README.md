@@ -9,7 +9,7 @@
 **Gaps it closes:** agent SDK breadth, reliability evals (pass^k, calibration), HITL, durable
 execution/crash recovery, long-term memory, guardrails, cross-framework tracing, a framework comparison
 backed by numbers
-**Status:** 🟡 System design done (no code yet). Tech stack, build plan and setup guide come next.
+**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
 
 > **New here?** Start with [0 · Start here](docs/00-start-here.md): the project in plain English, one
 > run's journey, and which document to read next.
@@ -26,10 +26,11 @@ backed by numbers
 | 5 | [Safety & Threat Model](docs/05-safety-threat-model.md) | Agent-specific threats → controls → tests, lethal trifecta, OWASP Agentic Top 10 mapping, residual risks |
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Throughput, determinism, cost, observability, harness failure modes, testing |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 19 decisions with alternatives and consequences |
+| 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology, why it was chosen, alternatives rejected, what it adds to your profile, versions, things to verify in week 1 |
 | 11 | [Glossary](docs/11-glossary.md) | Plain-English definitions of agent, reliability, HITL, safety and incident terms |
 
-Numbers 8–10 and 12 are reserved for the tech stack, build plan, setup guide and market review, matching
-Projects 1 and 2.
+Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching Projects 1
+and 2.
 
 ## The system at a glance
 

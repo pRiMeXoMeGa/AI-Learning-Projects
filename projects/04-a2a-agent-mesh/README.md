@@ -9,7 +9,7 @@
 **Gaps it closes:** A2A protocol (1.0), cross-framework interop, Google ADK, agent identity and
 delegation security, long-running task patterns, a numbers-backed "MCP vs A2A" answer
 **Status:** 🟡 System design, tech stack and build plan done (no code yet).
-**Build plan:** full ~66 h; **core plan ~58 h, 4 weeks** (recommended, awaiting your choice); lean ~45 h
+**Core plan (Option B) chosen: ~58 h, 4 weeks** (roadmap weeks 24–27); partner tenant and poisoned-KB attack deferred
 **Builds on:** [Project 3](../03-agent-reliability-harness/README.md) (OpsSim, Triage Agent, approvals,
 harness), [Project 2](../02-mcp-hub/README.md) (Keycloak, pinning pattern, audit chain),
 [Project 1](../01-rag-eval-lab/README.md) (retrieval)

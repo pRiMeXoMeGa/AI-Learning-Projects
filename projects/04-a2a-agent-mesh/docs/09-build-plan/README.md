@@ -95,7 +95,7 @@ flowchart TB
 ```
 
 **Legend:** blue = M1 First A2A agent · green = M2 Agents & trust · amber = M3 Orchestration ·
-pink = M4 Measure · purple = M5 Ship. **F16 is deferred in the recommended core plan** (§9.5).
+pink = M4 Measure · purple = M5 Ship. **F16 is deferred in the chosen core plan** (§9.5).
 
 ## 9.3 Runtime integration map
 
@@ -135,30 +135,30 @@ flowchart LR
 | F15 | CI gate | M5 | Must | F10, F12, F13 | 1.5 | [F15](F15-ci-gate.md) |
 | F16 | Partner tenant (second issuer) | M5 | Should · **deferred** | F6, F7 | 2.5 | [F16](F16-partner-tenant.md) |
 | F17 | Reports, blog & video | M5 | Must | F11–F15 | 3 (2.5 in core) | [F17](F17-reports-blog.md) |
-| | **Total: full plan / core plan (recommended)** | | | | **~66 h / ~58 h** | |
+| | **Total: full plan / core plan (chosen)** | | | | **~66 h / ~58 h** | |
 
 **Optional** (not in either total): F18 gRPC binding on Triage (2 h), F19 Azure deployment (3 h), F20 OpenAI
 Agents SDK as an A2A *client* in the interop matrix (1.5 h). See [F18–F20](F18-optional-extensions.md).
 
-## 9.5 Timeline: three options
+## 9.5 Timeline: Option B (core plan) chosen
 
-The roadmap has **2 weeks** for Project 4 (weeks 24–25). As with Projects 1–3, the design is larger than
+The roadmap originally had **2 weeks** for Project 4 (weeks 24–25). As with Projects 1–3, the design is larger than
 that:
 
 | Option | Scope | Effort | Weeks |
 |---|---|---|---|
 | A. Full plan | All 18 features | ~66 h | ~4.5–5 |
-| **B. Core plan (recommended)** | Everything that makes the headline: four frameworks over A2A 1.0, TCK + interop, signed + pinned cards, token exchange with `act`, cross-agent approval, push/resume, security (A1–A11, A13, A14), resilience, **measured MCP vs A2A**. **Deferred:** F16 partner tenant, A12 poisoned-KB attack. **Slimmed:** 10 mesh scenarios, 40-postmortem corpus | **~58 h** | **4 at ~14.5 h/week** |
+| **B. Core plan ✅ chosen** | Everything that makes the headline: four frameworks over A2A 1.0, TCK + interop, signed + pinned cards, token exchange with `act`, cross-agent approval, push/resume, security (A1–A11, A13, A14), resilience, **measured MCP vs A2A**. **Deferred:** F16 partner tenant, A12 poisoned-KB attack. **Slimmed:** 10 mesh scenarios, 40-postmortem corpus | **~58 h** | **4 at ~14.5 h/week** |
 | C. Lean | B without the Comms agent (the Commander drafts updates itself), without the REST binding, pinning, LLM-in-the-loop attacks or Toxiproxy; `act` via a custom mapper; MCP vs A2A as a written comparison (not measured) | ~45 h | ~3 |
 
 **Why B:** the pieces that make this project different from A2A tutorials are **trust** (signed and pinned
 cards, `act` chains, approvals the Commander can't intercept) and the **measured MCP-vs-A2A answer**. C
 drops both. A's extras (partner tenant, poisoned KB) add depth but no new headline.
 
-**Roadmap impact (to update once you choose):** P4 grows from 2 to 4 weeks with B, which adds **2 weeks**
-and takes the roadmap from ~37 to **~39 weeks (about 9 months)**. With C it adds 1 week (~38 weeks).
+**Roadmap impact (applied):** P4 grows from 2 to 4 weeks (roadmap weeks 24–27), which adds **2 weeks** and
+takes the [roadmap](../../../../04-roadmap.md) from ~37 to **~39 weeks (about 9 months)**.
 
-**Core plan, week by week** (would be roadmap weeks 24–27)
+**Core plan, week by week** (roadmap weeks 24–27)
 
 | Week | Roadmap week | Milestone | Features | Exit check |
 |---|---|---|---|---|
@@ -238,4 +238,4 @@ about 2–2.5 hours.)*
 | TCK gaps or bugs in a young kit | Conformance claims | Report exactly which tests ran; file issues upstream (a good open-source contribution) |
 | Wrapping P3 agents inside executors causes event-loop or subprocess conflicts | Delays in F2–F4 | One process per agent container; Claude SDK subprocess handled as in P3 |
 | Scope creep (gRPC, AP2, public registry, UI) | Timeline | Optional features only after M5; out-of-scope list in [01 §1.8](../01-requirements.md#18-scope) is binding |
-| Plan longer than the roadmap slot | Later projects slip | Options A/B/C above; roadmap updated once an option is chosen |
+| Plan longer than the roadmap slot | Later projects slip | **Option B chosen** (4 weeks); roadmap updated; deferred items added only while interviewing |

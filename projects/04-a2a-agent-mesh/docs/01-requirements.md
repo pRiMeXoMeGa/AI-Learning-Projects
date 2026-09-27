@@ -182,4 +182,4 @@ This follows the A2A 1.0 in-task authorization rules:
 - A new UI: the CLI and the Project 3 inbox are reused.
 - Re-running Project 3's framework comparison.
 
-**Time box:** 2 weeks in the roadmap (weeks 24–25). The build plan will confirm what fits.
+**Time box:** 4 weeks, roadmap weeks 24–27 (core plan, [build plan §9.5](09-build-plan/README.md#95-timeline-option-b-core-plan-chosen)).

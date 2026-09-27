@@ -26,7 +26,8 @@ help. Each project here does three things:
 | 8 | *(optional)* **Realtime Voice Agent** | Full-stack | Realtime/voice UX | 2 wks |
 | 🏆 | **Capstone: Demand-Planning Copilot for CPG** | All three | Everything, in your own domain | 5–6 wks |
 
-**Suggested order:** 1 → 2 → 3 → 6 → 5 → 4 → 7 → Capstone. Projects 1 and 3 close the biggest gap
+**Suggested order:** 1 → 2 → 3 → 4 → 6 → 5 → 7 → Capstone (matches the [roadmap](04-roadmap.md); Project 4
+follows Project 3 because it reuses its agents). Projects 1 and 3 close the biggest gap
 (evals + observability) first. The **capstone reuses components from projects 1–7**, so nothing you build
 is thrown away.
 

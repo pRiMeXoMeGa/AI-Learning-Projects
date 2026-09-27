@@ -114,7 +114,7 @@ flowchart TB
 
 **Legend:** blue = M1 Environment · green = M2 Baseline & harness · amber = M3 Frameworks ·
 teal = M4 Scenarios & production · pink = M5 Measure · purple = M6 Ship.
-**F15, F16 and F21 are deferred in the recommended core plan** (§9.5). They stay in the diagram so their
+**F15, F16 and F21 are deferred in the chosen core plan** (§9.5). They stay in the diagram so their
 dependencies are clear when they're added.
 
 ## 9.3 Runtime integration map: what flows between features
@@ -165,7 +165,7 @@ flowchart LR
 | F20 | CI gate, PyPI release & scoring CLI | M5 | Must | F8, F13 | 4 | [F20](F20-ci-release.md) |
 | F21 | Azure demo deployment | M6 | Could · **deferred** | F17 | 3.5 | [F21](F21-azure-demo.md) |
 | F22 | Report, blog & video | M6 | Must | F18, F19, F20 | 4 | [F22](F22-report-blog.md) |
-| | **Total: full plan / core plan (recommended)** | | | | **~127 h / ~108 h** | |
+| | **Total: full plan / core plan (chosen)** | | | | **~127 h / ~108 h** | |
 
 **Optional features** (not in either total):
 
@@ -175,15 +175,15 @@ flowchart LR
 | F24 | Temporal durable variant of the OpenAI SDK agent | 4 | [F23](F23-optional-extensions.md#f24-temporal-durable-variant) |
 | F25 | Adaptive injection attacks | 3 | [F23](F23-optional-extensions.md#f25-adaptive-injection-attacks) |
 
-## 9.5 Timeline: three options
+## 9.5 Timeline: Option B (core plan) chosen
 
-The roadmap has **4 weeks for Projects 3 and 4 together** (weeks 16–19). The design is larger, as it was
+The roadmap originally had **4 weeks for Projects 3 and 4 together** (weeks 16–19). The design is larger, as it was
 for Projects 1 and 2:
 
 | Option | Scope | Effort | Weeks at ~13.5 h/week |
 |---|---|---|---|
 | A. Full plan | All 23 features | ~127 h | ~9.5 |
-| **B. Core plan (recommended)** | Everything that makes the comparison credible. **Deferred:** F15 memory (S7 scenarios wait with it, so 45 scenarios at first), F16 multi-agent, F21 Azure demo (the demo runs locally and is recorded). **Slimmed:** F17 inbox (one page, no diff view polish), F19 without E9 | **~108 h** | **8** |
+| **B. Core plan ✅ chosen** | Everything that makes the comparison credible. **Deferred:** F15 memory (S7 scenarios wait with it, so 45 scenarios at first), F16 multi-agent, F21 Azure demo (the demo runs locally and is recorded). **Slimmed:** F17 inbox (one page, no diff view polish), F19 without E9 | **~108 h** | **8** |
 | C. Lean | B minus the OpenAI Agents SDK (three implementations: raw, LangGraph, Claude Agent SDK), 40 scenarios, CLI approvals only (no inbox) | ~96 h | ~7 |
 
 **Why B:** it keeps the four-way comparison, pass^k with CIs, HITL, crash/resume, injection and the public
@@ -191,12 +191,12 @@ benchmark, which together are the headline. Memory and multi-agent are good find
 headline, and they can be added while you interview (~12 h). **C** loses the most-asked vendor SDK in
 JDs, and that's the gap this project exists to close.
 
-**Roadmap impact (to update once you choose):** Projects 3 and 4 had 4 weeks. With B, P3 takes 8 weeks,
-and P4 (A2A, 1–2 weeks) follows it. That adds **~5–6 weeks**, taking the roadmap from ~31 to ~36–37
-weeks (about 8.5 months). By then you'll already be applying (from week 15), so a longer P3 is not a
+**Roadmap impact (applied):** Projects 3 and 4 had 4 weeks. P3 now takes 8 weeks (roadmap weeks 16–23)
+and P4 (A2A) follows as its own 2-week block (weeks 24–25). That adds **6 weeks**, taking the
+[roadmap](../../../../04-roadmap.md) from ~31 to **~37 weeks (about 8.5 months)**. By then you'll already be applying (from week 15), so a longer P3 is not a
 bottleneck for starting the job search.
 
-**Core plan, week by week** (would be roadmap weeks 16–23)
+**Core plan, week by week** (roadmap weeks 16–23)
 
 | Week | Roadmap week | Milestone | Features | Exit check |
 |---|---|---|---|---|
@@ -291,4 +291,4 @@ about 2–2.5 hours.)*
 | Provider rate limits slow the matrix | Timeline | Per-provider limiter; run overnight; lower parallelism |
 | Model version changes mid-experiment | Mixed results | Pin dated IDs; record returned model ID; re-run baseline if it changes |
 | Scope creep (more frameworks, real Kubernetes, fancier UI) | Timeline | Optional features F23–F25 only after M6; out-of-scope list in [01 §1.10](../01-requirements.md#110-scope) is binding |
-| Plan longer than the roadmap assumed | Later projects slip | Options A/B/C above; roadmap updated once an option is chosen |
+| Plan longer than the roadmap assumed | Later projects slip | **Option B chosen** (8 weeks); roadmap updated; deferred features added only while interviewing |

@@ -18,8 +18,8 @@ help. Each project here does three things:
 |---|---|---|---|---|
 | 1 | **RAG Eval Lab**: measured, eval-gated RAG + agentic mode | GenAI, Agent | Evals, CI gates, reranking, Langfuse, agentic RAG + trajectory evals | 7 wks (full plan) |
 | 2 | **MCP Hub**: remote MCP servers + gateway | Agent, Full-stack | Remote MCP, OAuth 2.1, MCP client, tool-design evals, MCP security | 8 wks (core plan) |
-| 3 | **Agent Reliability Harness**: one agent, four implementations | Agent | Reliability evals (pass^k), agent SDKs, HITL, crash/resume, memory, tracing | 8 wks proposed (core plan); roadmap update pending |
-| 4 | **A2A Agent Mesh** | Agent | A2A, cross-framework interop | 1–2 wks |
+| 3 | **Agent Reliability Harness**: one agent, four implementations | Agent | Reliability evals (pass^k), agent SDKs, HITL, crash/resume, memory, tracing | 8 wks (core plan) |
+| 4 | **A2A Agent Mesh** | Agent | A2A, cross-framework interop | 2 wks |
 | 5 | **Sandboxed Data-Analyst Agent** with generative UI | Agent, Full-stack | Sandboxing, code-execution security, generative UI | 3 wks |
 | 6 | **Full-stack AI SaaS on Next.js** | Full-stack | Next.js, Vercel AI SDK, resumable streams, billing, multi-tenancy | 3–4 wks |
 | 7 | **LLM Gateway & Cost Router** | GenAI | Semantic cache, routing, cost/latency metrics, OTel | 2 wks |

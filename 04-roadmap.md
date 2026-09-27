@@ -1,19 +1,22 @@
-# ~7.5-Month Roadmap (≈12–15 hrs/week)
+# ~8.5-Month Roadmap (≈12–15 hrs/week)
 
 This assumes your current profile (LangGraph, MCP, RAG, guardrails, FastAPI, React, Azure/AWS). The
 roadmap skips fundamentals and goes straight to your gaps: **evals → observability → agent breadth →
 Next.js → public portfolio**.
 
-> **Updated:** Projects 1 and 2 now follow their detailed build plans:
+> **Updated:** Projects 1–3 now follow their detailed build plans:
 > - **Project 1:** full plan incl. agentic mode and the 2026 market-review updates, 20 features, ~102 h,
 >   **7 weeks** at ~14.5 h/week
 >   ([build plan](projects/01-rag-eval-lab/docs/08-build-plan/README.md))
 > - **Project 2:** **core plan (Option B)** incl. the 2026 market-review updates, ~114 h, **8 weeks** at ~14 h/week
 >   ([build plan](projects/02-mcp-hub/docs/09-build-plan/README.md)); admin console, Tasks and the GitHub
 >   upstream are deferred
+> - **Project 3:** **core plan (Option B)**, ~108 h, **8 weeks** at ~13.5 h/week
+>   ([build plan](projects/03-agent-reliability-harness/docs/09-build-plan/README.md)); memory, the
+>   multi-agent variant and the Azure demo are deferred. Project 4 (A2A) now follows it as its own 2-week block
 >
-> Together that's 5 weeks more than the original 6-month plan, so the whole roadmap is now about
-> **31 weeks (~7.5 months)**. Durations for Projects 3–7 and the capstone are still estimates and will be
+> Together that's 11 weeks more than the original 6-month plan, so the whole roadmap is now about
+> **37 weeks (~8.5 months)**. Durations for Projects 4–7 and the capstone are still estimates and will be
 > revised as each project's build plan is written.
 
 | Weeks | Focus | Project | Gap closed | Output |
@@ -21,11 +24,12 @@ Next.js → public portfolio**.
 | **0 (3 days)** | Résumé fixes | — | Typos, timeline issues, headline | Updated CV + LinkedIn |
 | **1–7** | Evals + observability + agentic RAG | #1 RAG Eval Lab (full plan) | Ragas/DeepEval, CI gates, Langfuse/OTel, rerankers, BM25 + pgvector, XBRL structured facts, long-context vs RAG, LangGraph agent + trajectory evals, MCP, Terraform on Azure | Deployed demo + ablation report + agent-vs-pipeline report + post |
 | **8–15** | Remote MCP + MCP security | #2 MCP Hub (core plan) | MCP 2026-07-28, OAuth 2.1 (CIMD, token exchange), MCP gateway, Cedar policies, tool search, MCP Apps, TS SDK, tool-design + security evals | Open-source server on PyPI/npm + MCP Registry, secure gateway, 3 reports |
-| **16–19** | Agent reliability | #3 Agent Harness (+ #4 A2A) | Agent SDKs, HITL, memory, framework comparison, A2A | Framework comparison report |
-| **20–22** | Full-stack | #6 AI SaaS on Next.js | Next.js, Vercel AI SDK, resumable streams, billing | Deployed SaaS |
-| **23–24** | Sandboxing + generative UI | #5 Data-Analyst Agent | E2B, sandbox security, generative UI | Repo + threat model |
-| **25** | Cost engineering | #7 Gateway & Router | Semantic cache, routing, cost metrics | Cost report |
-| **26–31** | Capstone | 🏆 Demand-Planning Copilot | Brings everything together | Public demo + video + blog |
+| **16–23** | Agent reliability | #3 Agent Reliability Harness (core plan) | LangGraph, OpenAI Agents SDK, Claude Agent SDK, pass^k reliability evals, HITL with signed approvals, crash/resume + idempotency, injection evals, cross-framework OTel tracing | Framework comparison report + OpsDesk benchmark on PyPI + post |
+| **24–25** | Agent interop | #4 A2A Agent Mesh | A2A, Agent Cards, cross-framework delegation (reuses two Project 3 agents) | Repo + MCP-vs-A2A write-up |
+| **26–28** | Full-stack | #6 AI SaaS on Next.js | Next.js, Vercel AI SDK, resumable streams, billing | Deployed SaaS |
+| **29–30** | Sandboxing + generative UI | #5 Data-Analyst Agent | E2B, sandbox security, generative UI | Repo + threat model |
+| **31** | Cost engineering | #7 Gateway & Router | Semantic cache, routing, cost metrics | Cost report |
+| **32–37** | Capstone | 🏆 Demand-Planning Copilot | Brings everything together | Public demo + video + blog |
 
 ## Project 1 in detail (weeks 1–7)
 
@@ -52,9 +56,22 @@ Next.js → public portfolio**.
 | 14 | M5 Measure | F17 tool-design evals (T1, T2, T4, T6) · F18 security evals (start) | Tool-design report with CIs |
 | 15 | M5 → M6 Ship | F18 (finish) · F19 conformance + perf · F20 CI gate · F21 Azure · F22 reports + blog | ASR with vs. without defences; public demo; post |
 
+## Project 3 in detail (weeks 16–23, core plan)
+
+| Week | Milestone | Features | Exit check |
+|---|---|---|---|
+| 16 | M1 Environment | F0 Foundation · F1 OpsSim core · F2 opsdesk-mcp (start) | Seeded ShopLite; bad deploy → rollback → recovery in unit tests |
+| 17 | M1 → M2 | F2 (finish) · F3 scenarios + oracle · F4 spec + guards | **Oracle solves 10 scenarios through MCP**; bad policies caught |
+| 18 | M2 Baseline | F5 approvals · F6 raw loop · F7 runner + graders (start) | Raw loop resolves a scenario with approval; backstop blocks an unapproved rollback |
+| 19 | M2 → M3 | F7 (finish) · F8 stats + report v0 · **prompt freeze** · F9 (start) | **Baseline report v0** with CIs |
+| 20 | M3 Frameworks | F9 LangGraph · F10 OpenAI Agents SDK | Both pass stub tests + dev smoke with HITL |
+| 21 | M3 → M4 | F11 Claude Agent SDK · F12 one trace view · F13 scenarios (start) | Four implementations in one Langfuse view |
+| 22 | M4 | F13 (finish, test split frozen) · F14 chaos + idempotency · F17 inbox | 45 scenarios frozen with hashes; crash/resume results |
+| 23 | M5 → M6 | F18 experiments · F19 failure taxonomy · F20 CI + PyPI · F22 report + post | Framework comparison on the test split; `opssim` on PyPI; post |
+
 ```mermaid
 gantt
-    title ~7.5-month roadmap
+    title ~8.5-month roadmap
     dateFormat YYYY-MM-DD
     axisFormat W%W
     section Prep
@@ -62,8 +79,9 @@ gantt
     section Projects
     P1 RAG Eval Lab (full plan)         :p1, 2026-10-05, 7w
     P2 MCP Hub (core plan)              :p2, after p1, 8w
-    P3 Agent Harness + P4 A2A           :p3, after p2, 4w
-    P6 AI SaaS on Next.js               :p6, after p3, 3w
+    P3 Agent Harness (core plan)        :p3, after p2, 8w
+    P4 A2A Agent Mesh                   :p4, after p3, 2w
+    P6 AI SaaS on Next.js               :p6, after p4, 3w
     P5 Sandboxed Data-Analyst Agent     :p5, after p6, 2w
     P7 Gateway & Router                 :p7, after p5, 1w
     Capstone Demand-Planning Copilot    :cap, after p7, 6w
@@ -74,13 +92,14 @@ gantt
 
 **Start applying at week 15**, once Projects 1 and 2 are public. Together they already show the biggest
 gaps closed: evals and CI gates, observability, agentic RAG with trajectory evals, an MCP platform on the
-current spec, and measured MCP security, on top of your experience. With the longer roadmap, waiting for
-Project 3 (week 19) would delay applications by a month for a smaller gain, so keep building Project 3
-while you interview; it and the capstone make good "what are you working on now?" answers.
+current spec, and measured MCP security, on top of your experience. Waiting for Project 3 (week 23)
+would delay applications by two months for a smaller gain, so build Project 3 while you interview. Its
+baseline report (week 19) and framework comparison (week 23) arrive mid-search and make strong
+"what are you working on now?" answers, as does the capstone.
 
 - **Earliest option: week 7**, after Project 1 alone (evals + observability + agent evaluation).
 - **Short on time?** Project 1's agentic milestone (its week 6) can be skipped, and Project 2's deferred
-  features stay deferred. Each project's build plan says what can be dropped without breaking anything.
+  features stay deferred, as do Project 3's (memory, multi-agent, Azure demo). Each project's build plan says what can be dropped without breaking anything.
 
 ## Weekly rhythm
 - About 60% building, 20% reading docs/papers, 20% writing (README, LinkedIn post).

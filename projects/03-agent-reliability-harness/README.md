@@ -10,7 +10,7 @@
 execution/crash recovery, long-term memory, guardrails, cross-framework tracing, a framework comparison
 backed by numbers
 **Status:** 🟡 System design, tech stack and build plan done (no code yet).
-**Build plan:** full ~127 h; **core plan ~108 h, 8 weeks** (recommended, awaiting your choice); lean ~96 h
+**Core plan (Option B) chosen: ~108 h, 8 weeks** (roadmap weeks 16–23); memory, multi-agent and the Azure demo deferred
 
 > **New here?** Start with [0 · Start here](docs/00-start-here.md): the project in plain English, one
 > run's journey, and which document to read next.

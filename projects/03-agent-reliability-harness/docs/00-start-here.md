@@ -23,7 +23,7 @@ the [glossary](11-glossary.md).
 | Understand the safety story | [Safety & threat model](05-safety-threat-model.md) | 15 min |
 | Understand cost, speed and reproducibility | [Non-functional design](06-non-functional.md) | 15 min |
 | Understand the technology choices | [Tech stack](08-tech-stack.md) | 20 min |
-| Start building | The build plan and setup guide come next (not written yet) | — |
+| Start building | This page → [Setup guide](10-setup-guide.md) → [Build plan](09-build-plan/README.md) → the feature page you're on | 45 min |
 
 ## 0.3 The mental model: a flight simulator for on-call agents
 
@@ -116,5 +116,5 @@ Project 1's agent only reads documents and is compared with a fixed pipeline. Th
 for humans, survives crashes, has memory, and is compared **across frameworks**.
 
 **Is this the code?**
-Not yet. These are the design documents and the [tech-stack rationale](08-tech-stack.md), written before
-any code. The build plan and setup guide come next.
+Not yet. These are the design documents, the [tech-stack rationale](08-tech-stack.md) and the
+[build plan](09-build-plan/README.md), written before any code.

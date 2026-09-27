@@ -21,7 +21,7 @@ these roles:
 |---|---|
 | [1. RAG Eval Lab](projects/01-rag-eval-lab/README.md) | 🟡 System design, tech stack, build plan and agentic mode done; guides added; **checked against the 2026 market** (review + updates) |
 | [2. MCP Hub](projects/02-mcp-hub/README.md) | 🟡 System design, tech stack and build plan done (MCP 2026-07-28); core plan chosen (8 weeks); **checked against the 2026 market** |
-| [3. Agent Reliability Harness](projects/03-agent-reliability-harness/README.md) | 🟡 System design and tech stack done (incident-triage agent × 4 implementations, OpsDesk-50 benchmark); build plan next |
+| [3. Agent Reliability Harness](projects/03-agent-reliability-harness/README.md) | 🟡 System design, tech stack and build plan done (incident-triage agent × 4 implementations, OpsDesk-50 benchmark); core plan 8 weeks proposed, awaiting choice |
 
 ## TL;DR
 - **Your strengths are already in demand:** LangGraph multi-agent systems, MCP servers, guardrails,

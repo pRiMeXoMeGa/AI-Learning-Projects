@@ -9,7 +9,8 @@
 **Gaps it closes:** agent SDK breadth, reliability evals (pass^k, calibration), HITL, durable
 execution/crash recovery, long-term memory, guardrails, cross-framework tracing, a framework comparison
 backed by numbers
-**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
+**Status:** 🟡 System design, tech stack and build plan done (no code yet).
+**Build plan:** full ~127 h; **core plan ~108 h, 8 weeks** (recommended, awaiting your choice); lean ~96 h
 
 > **New here?** Start with [0 · Start here](docs/00-start-here.md): the project in plain English, one
 > run's journey, and which document to read next.
@@ -27,10 +28,11 @@ backed by numbers
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Throughput, determinism, cost, observability, harness failure modes, testing |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 19 decisions with alternatives and consequences |
 | 8 | [Tech Stack](docs/08-tech-stack.md) | Every technology, why it was chosen, alternatives rejected, what it adds to your profile, versions, things to verify in week 1 |
+| 9 | [Build Plan](docs/09-build-plan/README.md) | 23 features in 6 milestones (+3 optional): master dependency diagram, options A/B/C, 8-week core timeline, and a page per feature with diagrams, tasks and acceptance criteria |
+| 10 | [Setup Guide](docs/10-setup-guide.md) | Accounts and keys (and when you need them), `.env`, first run, cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | Plain-English definitions of agent, reliability, HITL, safety and incident terms |
 
-Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching Projects 1
-and 2.
+Number 12 is reserved for the market alignment review, matching Projects 1 and 2.
 
 ## The system at a glance
 

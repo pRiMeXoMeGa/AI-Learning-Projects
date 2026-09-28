@@ -30,7 +30,7 @@ small local model (ONNX) instead of an API to keep it ≤ 10 ms, and experiment 
 | Item | Estimate |
 |---|---|
 | Container Apps (2 small replicas) | ≈ $15–30/month, or scale to zero for the demo |
-| Redis (small tier) | ≈ $15/month, or Upstash free tier |
+| Redis 8 as a container app (demo); Azure Managed Redis as the production path | ≈ $5–10/month (scales to zero with the demo) |
 | Postgres (reuse the existing flexible server) | $0 extra |
 | Evaluation runs (replay W1–W3 across C0–C6, router sweeps) | ≈ $30–60 in model spend (cheap tiers where possible) |
 

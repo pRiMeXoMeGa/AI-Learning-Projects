@@ -165,7 +165,7 @@ flowchart TB
         AD["admin API"]
         PR["Prometheus + Grafana<br/>(or Azure Monitor managed Prometheus)"]
     end
-    RED[("Azure Cache for Redis<br/>(or Upstash)")]
+    RED[("Redis 8 container (demo)<br/>Azure Managed Redis (prod path)")]
     PG[("Postgres Flexible + pgvector")]
     KV["Key Vault<br/>(provider keys)"]
     APPS["P1 · P5 · P6"] --> G1

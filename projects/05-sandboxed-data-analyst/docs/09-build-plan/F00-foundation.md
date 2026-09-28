@@ -37,7 +37,7 @@ flowchart TB
 
 ## Tasks
 - [ ] Monorepo (pnpm + uv); import Project 6's shell packages (auth, UI, AI Elements)
-- [ ] CI: web and Python checks; image build + Trivy + Syft SBOM
+- [ ] CI: web and Python checks; image build + Trivy + Syft SBOM (scanner actions pinned by commit SHA; scan job has no secrets)
 - [ ] Spikes S1–S4 with written decisions
 
 ## Acceptance criteria

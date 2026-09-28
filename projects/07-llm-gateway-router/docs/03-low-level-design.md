@@ -19,7 +19,7 @@ erDiagram
           bool semantic_cache_enabled }
     VIRTUAL_KEY { text id PK
                   text app FK
-                  text key_hash "argon2id"
+                  text key_hash "hmac-sha256 + pepper"
                   text prefix "sb_live_ab12…"
                   text[] model_allow
                   numeric daily_budget_usd

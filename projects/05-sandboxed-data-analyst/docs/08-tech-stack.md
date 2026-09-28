@@ -157,6 +157,9 @@ flowchart TB
   - No compilers beyond what the wheels need; no `curl`, `wget`, `ssh`, `git` or package managers at run time.
 - **Build:** uv with hashed pins. The image is built in CI, scanned with **Trivy**, and an **SBOM** is
   generated with **Syft**. The same image digest is used for the E2B template and gVisor.
+- **Scanner hygiene:** The March 2026 LiteLLM compromise started from a hijacked Trivy CI component. Pin
+  every scanner action to a **commit SHA** (or install the binary from a checksummed release), and run the
+  scan in a job with **no secrets and read-only permissions** (see [Project 7 §8.3](../../07-llm-gateway-router/docs/08-tech-stack.md#supply-chain-the-stacks-own-defences)).
 - **Watch:** **pandas 3.0** changed defaults (copy-on-write, the string dtype). The agent's prompt
   examples and the benchmark's reference code use pandas 3 idioms, and DuckDB handles most aggregation
   anyway.

@@ -9,7 +9,7 @@
 **Target roles:** GenAI Engineer (primary), AI Platform / Full-stack
 **Gaps it closes:** cost and latency engineering, semantic caching (done safely), model routing, gateway
 reliability patterns, FinOps dashboards, OTel metrics, supply-chain security for AI infrastructure
-**Status:** 🟡 System design done (no code yet). Tech stack, build plan and setup guide come next.
+**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
 **Builds on:** [Project 1](../01-rag-eval-lab/README.md) (eval sets, graders) · [Project 6](../06-ai-saas-nextjs/README.md) (ClauseDesk traffic, CUAD graders) ·
 [Project 3](../03-agent-reliability-harness/README.md) (agent traces, statistics) · [Project 4](../04-a2a-agent-mesh/README.md) (Toxiproxy fault tests)
 
@@ -28,9 +28,10 @@ reliability patterns, FinOps dashboards, OTel metrics, supply-chain security for
 | 5 | [Security & Threat Model](docs/05-security-threat-model.md) | Gateway threats → controls → tests, the LiteLLM March 2026 incident as a design input, OWASP mapping |
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, throughput, running cost, metrics and dashboards, failure modes |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 11 decisions with alternatives and consequences |
+| 8 | [Tech Stack](docs/08-tech-stack.md) | Official SDKs, Redis + Lua, pgvector, local ONNX embeddings and router, offline RouteLLM, in-house reliability, supply-chain controls, versions, week-1 checks |
 | 11 | [Glossary](docs/11-glossary.md) | Gateway, caching, routing and security terms in plain English |
 
-Numbers 8–10 and 12 are reserved for the tech stack, build plan, setup guide and market review, matching
+Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching
 Projects 1–6.
 
 ## The system at a glance

@@ -32,7 +32,7 @@ flowchart LR
 |---|---|---|---|
 | T1 | **Supply-chain compromise** of a dependency or CI tool (the 2026 LiteLLM/Trivy pattern) | Few dependencies; `uv` lockfile with hashes; GitHub Actions pinned by commit SHA; minimal CI secrets (OIDC to Azure, no long-lived keys); image scan; SBOM; no `.pth`/startup hooks allowed (check in CI); runtime egress restricted to provider endpoints | CI supply-chain job; egress test |
 | T2 | **Provider key theft** | Keys only in Key Vault → process memory; never logged; never returned; rotated; the gateway identity can read only its own secrets | Log scanner; config review |
-| T3 | **Virtual key leakage / brute force** | Argon2id-hashed at rest; prefix for identification; per-key limits; revocation; alerts on anomalies (spend spike, new IP ranges) | Unit tests; anomaly alert test |
+| T3 | **Virtual key leakage / brute force** | Stored as HMAC-SHA256 with a server-side pepper (keys are 256-bit random, so a slow hash only adds latency); prefix for identification; per-key limits; revocation; alerts on anomalies (spend spike, new IP ranges) | Unit tests; anomaly alert test |
 | T4 | **Cross-tenant cache leakage** | Tenant in every cache scope; separate partitions; no global cache | P1 test |
 | T5 | **Semantic cache poisoning / collision** | Write rules (no untrusted context), per-tenant write limits, scope by system prompt + tools, threshold per app, verify-on-hit for high-risk apps, TTL | P2–P4 tests |
 | T6 | **Budget bypass** (parallel requests racing the budget check) | Atomic reserve-then-reconcile in Redis (reserve the estimate, settle the actual); fail closed if the budget store is down | Concurrency test |

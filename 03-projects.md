@@ -22,7 +22,7 @@ help. Each project here does three things:
 | 4 | **A2A Agent Mesh** | Agent | A2A 1.0, cross-framework interop, agent identity & delegation security, MCP vs A2A | 4 wks (core plan) |
 | 5 | **Sandboxed Data-Analyst Agent** with generative UI (Analyst) | Agent, Full-stack | Sandboxing (E2B microVMs + gVisor), code-execution and output-handling security, safe generative UI, data-agent evals | 4 wks (core plan) |
 | 6 | **Full-stack AI SaaS on Next.js** (ClauseDesk) | Full-stack | Next.js 16, AI SDK 7, durable workflows, resumable streams, RLS multi-tenancy, Stripe usage billing | 6 wks (core plan) |
-| 7 | **LLM Gateway & Cost Router** (Switchboard) | GenAI | Gateway reliability, prompt/exact/scoped semantic caching with poisoning tests, learned routing on Pareto curves, FinOps metrics, supply-chain security | 4 wks proposed (core plan); roadmap update pending |
+| 7 | **LLM Gateway & Cost Router** (Switchboard) | GenAI | Gateway reliability, prompt/exact/scoped semantic caching with poisoning tests, learned routing on Pareto curves, FinOps metrics, supply-chain security | 4 wks (core plan) |
 | 8 | *(optional)* **Realtime Voice Agent** | Full-stack | Realtime/voice UX | 2 wks |
 | 🏆 | **Capstone: Demand-Planning Copilot for CPG** | All three | Everything, in your own domain | 5–6 wks |
 

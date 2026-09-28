@@ -167,4 +167,4 @@ flowchart LR
 - Billing end customers (Project 6 does that).
 - Multi-region deployment.
 
-**Time box:** 1 week in the roadmap (week 38). The build plan will size it.
+**Time box:** 4 weeks in the roadmap (weeks 38–41), the core plan (Option B) of the [build plan](09-build-plan/README.md).

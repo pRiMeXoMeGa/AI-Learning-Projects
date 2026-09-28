@@ -10,7 +10,7 @@
 **Gaps it closes:** cost and latency engineering, semantic caching (done safely), model routing, gateway
 reliability patterns, FinOps dashboards, OTel metrics, supply-chain security for AI infrastructure
 **Status:** 🟡 System design, tech stack and build plan done (no code yet).
-**Build plan:** full ~67.5 h; **core plan ~60.5 h, 4 weeks** (recommended, awaiting your choice); lean ~52 h
+**Core plan (Option B) chosen: ~60.5 h, 4 weeks** (roadmap weeks 38–41); pass-through, hedging, the agent workload and extra comparisons deferred
 **Builds on:** [Project 1](../01-rag-eval-lab/README.md) (eval sets, graders) · [Project 6](../06-ai-saas-nextjs/README.md) (ClauseDesk traffic, CUAD graders) ·
 [Project 3](../03-agent-reliability-harness/README.md) (agent traces, statistics) · [Project 4](../04-a2a-agent-mesh/README.md) (Toxiproxy fault tests)
 

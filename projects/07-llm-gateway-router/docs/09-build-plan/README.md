@@ -138,14 +138,14 @@ flowchart LR
 | F18 | Deploy, CI gate, demo, report & video | M5 | Must | F15–F17 | 3.5 | [F18](F18-ship.md) |
 | | **Total: full plan / core plan** | | | | **~67.5 h / ~60.5 h** | |
 
-## 9.5 Timeline: three options
+## 9.5 Timeline: Option B (core plan) chosen
 
-The roadmap gives Project 7 **1 week** (week 38). Like every project before it, the design is larger:
+The roadmap originally gave Project 7 **1 week** (week 38). Like every project before it, the design is larger:
 
 | Option | Scope | Effort | Weeks |
 |---|---|---|---|
 | A. Full plan | All features at full scope | ~67.5 h | ~4.5 |
-| **B. Core plan (recommended)** | The whole gateway (keys, budgets, ledger, reliability, dashboards), all three cache layers with the full cache study and poisoning tests P1–P4, all five routing policies with Pareto curves, trace replay on **W1 + W2**, the C0–C6 cost report, overhead + build-vs-buy **vs the LiteLLM proxy**, ClauseDesk switched over, Azure deploy and the CI gate. **Deferred:** `/v1/messages` pass-through, hedged requests, the W3 agent workload, the external routing-benchmark check, the managed-gateway comparison, P1/P5 integrations | **~60.5 h** | **4 at ~15 h/week** |
+| **B. Core plan ✅ chosen** | The whole gateway (keys, budgets, ledger, reliability, dashboards), all three cache layers with the full cache study and poisoning tests P1–P4, all five routing policies with Pareto curves, trace replay on **W1 + W2**, the C0–C6 cost report, overhead + build-vs-buy **vs the LiteLLM proxy**, ClauseDesk switched over, Azure deploy and the CI gate. **Deferred:** `/v1/messages` pass-through, hedged requests, the W3 agent workload, the external routing-benchmark check, the managed-gateway comparison, P1/P5 integrations | **~60.5 h** | **4 at ~15 h/week** |
 | C. Lean | B with **three routing policies** (`fixed`, `rules`, `classifier`; no RouteLLM, no cascade), **W1 only**, no build-vs-buy run (overhead only), local Docker Compose demo instead of an Azure deploy | ~52 h | ~3.5 |
 
 **Why B:**
@@ -156,12 +156,10 @@ The roadmap gives Project 7 **1 week** (week 38). Like every project before it, 
 - The LiteLLM comparison answers the "why not just use X?" question with numbers, which interviewers ask
   first.
 
-**Roadmap impact (to update once you choose):** With B, P7 grows from 1 to 4 weeks, which adds **3 weeks**
-and takes the roadmap from ~44 to **~47 weeks (about 11 months)**. With C it adds 2.5 weeks (~46.5 weeks).
-If you want to hold the total nearer 10 months, C is the lever here, and the deferred B items can be
-added later while interviewing.
+**Roadmap impact (applied):** P7 grows from 1 to 4 weeks (roadmap weeks 38–41), which adds **3 weeks** and
+takes the [roadmap](../../../../04-roadmap.md) from ~44 to **~47 weeks (about 11 months)**.
 
-**Core plan, week by week** (would be roadmap weeks 38–41)
+**Core plan, week by week** (roadmap weeks 38–41)
 
 | Week | Roadmap week | Milestone | Features | Exit check |
 |---|---|---|---|---|
@@ -247,4 +245,4 @@ about 2–2.5 hours.)*
 | Router labels are noisy (graders disagree at k=2) | Poor classifier | Label with a margin δ; drop ambiguous items; report label agreement |
 | Evaluation spend overruns | Budget | Mock provider for load; cheap tiers for sweeps; per-run spend caps enforced by the gateway itself |
 | A dependency is compromised during the build | The exact risk the project is about | Hash locks, no auto-updates, guarddog on bumps, scanners without secrets |
-| Plan longer than the roadmap slot | Capstone slips | Choose B (4 weeks) or C (3.5 weeks); deferred items only while interviewing |
+| Plan longer than the roadmap slot | Capstone slips | **Option B chosen** (4 weeks); roadmap updated; deferred items added only while interviewing |

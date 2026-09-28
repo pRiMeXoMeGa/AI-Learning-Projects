@@ -13,7 +13,7 @@ these roles:
 | [01-market-analysis.md](01-market-analysis.md) | What JDs ask for, with a breakdown for each target role |
 | [02-tech-stack.md](02-tech-stack.md) | Full tech stack rated for each role, with your current status (✅ / ⚠️ / ❌) |
 | [03-projects.md](03-projects.md) | 7 projects + 1 optional + a CPG demand-planning capstone, mapped to roles and gaps |
-| [04-roadmap.md](04-roadmap.md) | ~10-month plan (week by week for Projects 1–6), certification, interview prep, keywords |
+| [04-roadmap.md](04-roadmap.md) | ~11-month plan (week by week for Projects 1–7), certification, interview prep, keywords |
 
 ## Project design docs
 
@@ -25,7 +25,7 @@ these roles:
 | [4. A2A Agent Mesh](projects/04-a2a-agent-mesh/README.md) | 🟡 System design done (A2A 1.0 mesh: ADK Commander + 3 agents from 3 frameworks, signed cards, cross-agent approvals, MCP-vs-A2A comparison), tech stack and build plan done; core plan chosen (4 weeks) |
 | [5. Sandboxed Data-Analyst Agent](projects/05-sandboxed-data-analyst/README.md) | 🟡 System design done (Analyst: MCP sandbox broker on E2B + gVisor, safe generative-UI charts, escape suite, AnalystBench-50 + DABstep), tech stack and build plan done; core plan chosen (4 weeks) |
 | [6. AI SaaS on Next.js](projects/06-ai-saas-nextjs/README.md) | 🟡 System design done (ClauseDesk: Next.js 16, AI SDK 7, durable workflows, RLS multi-tenancy, Stripe usage billing, CUAD evals), tech stack and build plan done; core plan chosen (6 weeks) |
-| [7. LLM Gateway & Cost Router](projects/07-llm-gateway-router/README.md) | 🟡 System design done (Switchboard: official-SDK gateway, budgets, fallbacks, prompt/exact/scoped semantic caching with poisoning tests, five routing policies on Pareto curves, build-vs-buy), tech stack and build plan done; core plan 4 weeks proposed, awaiting choice |
+| [7. LLM Gateway & Cost Router](projects/07-llm-gateway-router/README.md) | 🟡 System design done (Switchboard: official-SDK gateway, budgets, fallbacks, prompt/exact/scoped semantic caching with poisoning tests, five routing policies on Pareto curves, build-vs-buy), tech stack and build plan done; core plan chosen (4 weeks) |
 
 ## TL;DR
 - **Your strengths are already in demand:** LangGraph multi-agent systems, MCP servers, guardrails,

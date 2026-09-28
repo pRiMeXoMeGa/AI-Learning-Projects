@@ -142,7 +142,7 @@ The roadmap originally gave Project 5 **2 weeks** (weeks 34–35). Once again, t
 - The DABstep submission is cheap and gives an external number.
 
 **Roadmap impact (applied):** P5 grows from 2 to 4 weeks (roadmap weeks 34–37), which adds **2 weeks** and
-takes the [roadmap](../../../../04-roadmap.md) from ~42 to **~44 weeks (about 10 months)**.
+takes the [roadmap](../../../../04-roadmap.md) from ~42 to **~44 weeks (about 10 months)**. *(Project 7's plan later took it to ~47 weeks.)*
 
 **Core plan, week by week** (roadmap weeks 34–37)
 

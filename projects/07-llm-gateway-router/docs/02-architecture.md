@@ -106,7 +106,7 @@ sequenceDiagram
     participant O as OpenAI
     C->>G: POST /v1/chat/completions (model: "smart", stream)
     G->>G: key, limits, budget, caches (miss), route → claude-mid
-    G->>A: messages.stream (first-token timeout 4 s)
+    G->>A: messages.stream (first-token timeout 8 s)
     A-->>G: 529 overloaded (before any token)
     G->>G: retry once (jitter) → 529 again → breaker count++
     G->>O: fallback: openai-mid (tools + JSON supported ✓)

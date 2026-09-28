@@ -9,7 +9,8 @@
 **Target roles:** GenAI Engineer (primary), AI Platform / Full-stack
 **Gaps it closes:** cost and latency engineering, semantic caching (done safely), model routing, gateway
 reliability patterns, FinOps dashboards, OTel metrics, supply-chain security for AI infrastructure
-**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
+**Status:** 🟡 System design, tech stack and build plan done (no code yet).
+**Build plan:** full ~67.5 h; **core plan ~60.5 h, 4 weeks** (recommended, awaiting your choice); lean ~52 h
 **Builds on:** [Project 1](../01-rag-eval-lab/README.md) (eval sets, graders) · [Project 6](../06-ai-saas-nextjs/README.md) (ClauseDesk traffic, CUAD graders) ·
 [Project 3](../03-agent-reliability-harness/README.md) (agent traces, statistics) · [Project 4](../04-a2a-agent-mesh/README.md) (Toxiproxy fault tests)
 
@@ -29,9 +30,11 @@ reliability patterns, FinOps dashboards, OTel metrics, supply-chain security for
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency budget, throughput, running cost, metrics and dashboards, failure modes |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 11 decisions with alternatives and consequences |
 | 8 | [Tech Stack](docs/08-tech-stack.md) | Official SDKs, Redis + Lua, pgvector, local ONNX embeddings and router, offline RouteLLM, in-house reliability, supply-chain controls, versions, week-1 checks |
+| 9 | [Build Plan](docs/09-build-plan/README.md) | 19 features in 5 milestones: dependency diagram, options A/B/C, 4-week core timeline, a page per feature |
+| 10 | [Setup Guide](docs/10-setup-guide.md) | Accounts and keys (and when), env vars, first run, cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | Gateway, caching, routing and security terms in plain English |
 
-Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching
+Number 12 is reserved for the market alignment review, matching
 Projects 1–6.
 
 ## The system at a glance

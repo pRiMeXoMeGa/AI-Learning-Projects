@@ -24,7 +24,7 @@ help. Each project here does three things:
 | 6 | **Full-stack AI SaaS on Next.js** (ClauseDesk) | Full-stack | Next.js 16, AI SDK 7, durable workflows, resumable streams, RLS multi-tenancy, Stripe usage billing | 6 wks (core plan) |
 | 7 | **LLM Gateway & Cost Router** (Switchboard) | GenAI | Gateway reliability, prompt/exact/scoped semantic caching with poisoning tests, learned routing on Pareto curves, FinOps metrics, supply-chain security | 4 wks (core plan) |
 | 8 | *(optional)* **Realtime Voice Agent** | Full-stack | Realtime/voice UX | 2 wks |
-| 🏆 | **Capstone: Demand-Planning Copilot for CPG** (Cadence) | All three | Forecasting (LightGBM, Chronos-2, reconciliation), agent forecast adjustments measured with FVA, approvals, replenishment simulation, everything from 1–7, in your own domain | 6 wks (full plan) |
+| 🏆 | **Capstone: Demand-Planning Copilot for CPG** (Cadence) | All three | Forecasting (LightGBM, Chronos-2, reconciliation), agent forecast adjustments measured with FVA, approvals, replenishment simulation, everything from 1–7, in your own domain | 6 wks (core plan) |
 
 **Suggested order:** 1 → 2 → 3 → 4 → 6 → 5 → 7 → Capstone (matches the [roadmap](04-roadmap.md); Project 4
 follows Project 3 because it reuses its agents). Projects 1 and 3 close the biggest gap

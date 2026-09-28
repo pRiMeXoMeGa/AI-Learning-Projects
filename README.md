@@ -26,7 +26,7 @@ these roles:
 | [5. Sandboxed Data-Analyst Agent](projects/05-sandboxed-data-analyst/README.md) | 🟡 System design done (Analyst: MCP sandbox broker on E2B + gVisor, safe generative-UI charts, escape suite, AnalystBench-50 + DABstep), tech stack and build plan done; core plan chosen (4 weeks) |
 | [6. AI SaaS on Next.js](projects/06-ai-saas-nextjs/README.md) | 🟡 System design done (ClauseDesk: Next.js 16, AI SDK 7, durable workflows, RLS multi-tenancy, Stripe usage billing, CUAD evals), tech stack and build plan done; core plan chosen (6 weeks) |
 | [7. LLM Gateway & Cost Router](projects/07-llm-gateway-router/README.md) | 🟡 System design done (Switchboard: official-SDK gateway, budgets, fallbacks, prompt/exact/scoped semantic caching with poisoning tests, five routing policies on Pareto curves, build-vs-buy), tech stack and build plan done; core plan chosen (4 weeks) |
-| [🏆 Capstone: Demand-Planning Copilot](projects/08-demand-planning-copilot/README.md) | 🟡 System design done (Cadence: models make the numbers, agents propose bounded evidence-cited revisions and orders with approvals, FVA on PlanBench-60, replenishment simulation, reuses P1–P7), tech stack and build plan done; full plan chosen (6 weeks, fits the roadmap) |
+| [🏆 Capstone: Demand-Planning Copilot](projects/08-demand-planning-copilot/README.md) | 🟡 System design done (Cadence: models make the numbers, agents propose bounded evidence-cited revisions and orders with approvals, FVA on PlanBench-60, replenishment simulation, reuses P1–P7), tech stack and build plan done; core plan chosen (6 weeks, fits the roadmap) |
 
 ## TL;DR
 - **Your strengths are already in demand:** LangGraph multi-agent systems, MCP servers, guardrails,

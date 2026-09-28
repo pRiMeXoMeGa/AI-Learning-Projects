@@ -138,50 +138,47 @@ flowchart LR
 | F17 | Agent reliability & design comparison | M4 | Must | F15 | 3 | [F17](F17-reliability-comparison.md) |
 | F18 | RAG evals & red team | M4 | Must | F10, F11, F12 | 3.5 | [F18](F18-rag-redteam.md) |
 | F19 | Deploy, CI gate, report, demo & video | M5 | Must | F6, F13, F14, F16–F18 | 5 | [F19](F19-ship.md) |
-| | **Total: full plan (chosen) / core plan** | | | | **~87.5 h / ~82.5 h** | |
+| | **Total: full plan / core plan (chosen)** | | | | **~87.5 h / ~82.5 h** | |
 
-## 9.5 Timeline: Option A (full plan) chosen
+## 9.5 Timeline: Option B (core plan) chosen
 
 The roadmap gives the capstone **6 weeks** (weeks 42–47). For the first time in this portfolio, the plan
 fits its slot:
 
 | Option | Scope | Effort | Weeks |
 |---|---|---|---|
-| **A. Full plan ✅ chosen** | All features at full scope: everything in B **plus** TimesFM 2.5, the full-M5 foundation-model run on a rented GPU, the blind human comparison on 20 PlanBench scenarios, and the FreshRetailNet stockout sensitivity check | **~87.5 h** | **6 at ~14.5 h/week, no slack** |
-| B. Core plan | Everything in the design including memory and the A2A supplier; TimesFM, the GPU run, the human comparison and the stockout check deferred | ~82.5 h | 6 at ~13.75 h/week, ~5 h slack |
+| A. Full plan (chosen first, then replaced by B) | All features at full scope | ~87.5 h | 6 at ~14.5 h/week, **no slack** |
+| **B. Core plan ✅ chosen** | Everything in the design **including** memory and the A2A supplier: data, four model families (no TimesFM), ensemble + reconciliation, forecast service and report, corpus, MCP tools with roles, revision engine, both agent designs, orders with approvals, the workspace, PlanBench-60, the replenishment study, reliability, RAG and red-team evals, deploy and video. **Deferred:** TimesFM 2.5, the full-M5 foundation-model GPU run (a sample is used), the blind human comparison, the stockout sensitivity check | **~82.5 h** | **6 at ~13.75 h/week, ~5 h slack** |
 | C. Lean | B without memory and the supplier agent, PlanBench-40 instead of 60, no scenario sliders | ~75 h | ~5 |
 
-**Why A:**
-- It's the flagship project, and the four extra items make its headline claims stronger: two foundation
-  models instead of one, results on the full M5 instead of a sample, a "the agent vs a domain expert"
-  comparison, and a measured answer to the censored-demand caveat.
-- It still fits the 6-week slot, so the roadmap doesn't grow.
-
-**The cost is zero slack.** The capstone integrates seven earlier systems, and integration is where
-schedules slip. The fallback is built in: the four items A adds over B are **dropped first, in this order**,
-if the schedule slips: stockout sensitivity (1.5 h), human comparison (1 h), GPU full-M5 run (1 h), TimesFM
-(1.5 h). Dropping all four turns A back into B without touching anything else.
+**Why B:**
+- The capstone integrates seven earlier systems. **Integration is where schedules slip**, so a plan with no
+  slack (A) is the riskiest option for the project that matters most.
+- B keeps every piece that shows up in the résumé bullet: LangGraph, MCP, **A2A**, Next.js, Chronos-2, FVA
+  and the simulation.
+- The deferred items add comparisons, not capabilities. TimesFM and the human baseline are good follow-ups
+  while interviewing.
 
 **Roadmap impact (applied):** none. The capstone stays at roadmap weeks 42–47 and the
-[roadmap](../../../../04-roadmap.md) stays at **~47 weeks (about 11 months)**.
+[roadmap](../../../../04-roadmap.md) stays at **~47 weeks (about 11 months)**. Compared with A, the same six
+weeks now carry ~5 h of slack.
 
-**Full plan, week by week** (roadmap weeks 42–47)
+**Core plan, week by week** (roadmap weeks 42–47)
 
-| Week | Roadmap week | Milestone | Features | Hours | Exit check |
-|---|---|---|---|---|---|
-| 1 | 42 | M1 | F0 foundation + spikes · F1 data platform · F2 baselines + backtests | 13.5 | M5 and FreshRetailNet loaded into the canonical schema; baselines backtested; **our WRMSSE matches the official evaluation** |
-| 2 | 43 | M1 | F3 LightGBM · F4 Chronos-2 + TimesFM 2.5 · F5 ensemble, reconciliation, forecast service | 15 | Reconciled ensemble quantiles served by the API; a scenario re-forecast in ≤ 5 s |
-| 3 | 44 | M1 → M2 | F4 full-M5 GPU run · F6 forecast report · F7 corpus + knowledge · F8 MCP tools · F9 revision engine (start) | 14 | Forecast report on the full M5 committed; MCP tools behind the gateway with four roles |
-| 4 | 45 | M2 → M3 | F9 (finish) · F10 agent graph · F11 orders + approvals + ERP · F12 memory | 14.5 | **End-to-end from the CLI:** review → evidence-backed revision → order → approval → ERP |
-| 5 | 46 | M3 → M4 | F13 supplier (A2A) · F14 workspace · F15 PlanBench-60 + FVA + human comparison | 14.5 | The workspace demo flow works with supplier confirmations; FVA for both designs and for you |
-| 6 | 47 | M4 → M5 | F16 replenishment + stockout sensitivity · F17 reliability · F18 RAG + red team · F19 ship | 16 | Reports, public demo, post and video |
+| Week | Roadmap week | Milestone | Features | Exit check |
+|---|---|---|---|---|
+| 1 | 42 | M1 | F0 foundation + spikes · F1 data platform · F2 baselines + backtests | M5 and FreshRetailNet loaded into the canonical schema; baselines backtested; **our WRMSSE matches the official evaluation** |
+| 2 | 43 | M1 | F3 LightGBM · F4 Chronos-2 · F5 ensemble, reconciliation, forecast service | Reconciled ensemble quantiles served by the API; a scenario re-forecast in ≤ 5 s |
+| 3 | 44 | M1 → M2 | F6 forecast report · F7 corpus + knowledge · F8 MCP tools · F9 revision engine | Forecast report committed; an evidence-backed `scale` action applied and re-reconciled through MCP |
+| 4 | 45 | M2 → M3 | F10 agent graph · F11 orders + approvals + ERP · F12 memory · F13 supplier | **End-to-end from the CLI:** review → revision → order → approval → ERP → supplier confirmation |
+| 5 | 46 | M3 → M4 | F14 workspace · F15 PlanBench-60 + FVA · F16 replenishment | The workspace demo flow works; FVA and simulation results for both designs |
+| 6 | 47 | M4 → M5 | F17 reliability · F18 RAG + red team · F19 ship | Reports, public demo, post and video |
 
-Week 6 is the heaviest (16 h) and has no buffer after it. Check progress at the end of week 4: if F10 or
-F11 isn't done, drop the first two extra items right away rather than in week 6.
+Weeks 3 and 4 are the heaviest (~15 h each). Week 6 is lighter (~11.5 h), which is the slack.
 
 ```mermaid
 gantt
-    title Capstone build timeline (full plan, ~14.5 h/week)
+    title Capstone build timeline (core plan, ~13.75 h/week)
     dateFormat YYYY-MM-DD
     axisFormat W%W
     section M1 Forecasting core
@@ -189,10 +186,9 @@ gantt
     F1 Data platform                :f1, after f0, 2d
     F2 Baselines + backtests        :f2, after f1, 2d
     F3 LightGBM                     :f3, after f2, 2d
-    F4 Chronos-2 + TimesFM          :f4, after f3, 3d
+    F4 Chronos-2                    :f4, after f3, 2d
     F5 Ensemble + service           :f5, after f4, 2d
-    F4b Full-M5 GPU run             :f4b, after f5, 1d
-    F6 Forecast report              :f6, after f4b, 1d
+    F6 Forecast report              :f6, after f5, 1d
     section M2 Agents & actions
     F7 Corpus + knowledge           :f7, after f6, 2d
     F8 MCP servers + policies       :f8, after f7, 2d
@@ -204,8 +200,8 @@ gantt
     F13 Supplier (A2A)              :f13, after f12, 1d
     F14 Workspace                   :f14, after f13, 3d
     section M4 Evaluate
-    F15 PlanBench-60 + FVA + human  :f15, after f14, 3d
-    F16 Replenishment + stockouts   :f16, after f15, 2d
+    F15 PlanBench-60 + FVA          :f15, after f14, 2d
+    F16 Replenishment study         :f16, after f15, 1d
     F17 Reliability + comparison    :f17, after f16, 1d
     F18 RAG + red team              :f18, after f17, 2d
     section M5 Ship
@@ -215,14 +211,14 @@ gantt
 *(Dates are illustrative: the capstone starts after Project 7's 4 weeks. One "d" is one working session
 of about 2–2.5 hours.)*
 
-**Items A adds over B (~5 h), dropped first if the schedule slips**
+**Deferred in B (~5 h)**
 
-| Drop order | Item | Effort | Value |
-|---|---|---|---|
-| 1 | Stockout sensitivity with FreshRetailNet labels | 1.5 h | Quantifies the censored-demand caveat |
-| 2 | Blind human comparison on 20 PlanBench scenarios | 1 h | "The agent vs a domain expert" (you) |
-| 3 | Full-M5 foundation-model backtest on a rented GPU | 1 h | Removes the "sample" caveat |
-| 4 | TimesFM 2.5 (univariate) in the comparison | 1.5 h | A second foundation model in the report |
+| Item | Effort | Value when added |
+|---|---|---|
+| TimesFM 2.5 (univariate) in the comparison | 1.5 h | A second foundation model in the report |
+| Full-M5 foundation-model backtest on a rented GPU | 1 h | Removes the "sample" caveat |
+| Blind human comparison on 20 PlanBench scenarios | 1 h | "The agent vs a domain expert" (you) |
+| Stockout sensitivity with FreshRetailNet labels | 1.5 h | Quantifies the censored-demand caveat |
 
 ## 9.6 Milestone exit criteria
 
@@ -255,4 +251,4 @@ of about 2–2.5 hours.)*
 | M5 terms stricter than assumed | Demo/data plan | F0 spike reads them; M5 results kept as aggregate metrics only |
 | Evaluation spend overruns | Budget | All calls through P7 with an eval budget; cheap models for smoke runs |
 | Scope creep (price optimization, multi-echelon, real ERP) | Timeline | Out-of-scope list in [01 §1.7](../01-requirements.md#17-scope) is binding |
-| No slack in the full plan | Week 6 overruns | Drop A's four extra items in the stated order; checkpoint at the end of week 4 |
+| Integration slips (seven earlier systems) | Weeks 3–4 overrun | **Option B chosen** for its ~5 h slack; checkpoint at the end of week 4; C's cuts (memory, supplier) are the next lever |

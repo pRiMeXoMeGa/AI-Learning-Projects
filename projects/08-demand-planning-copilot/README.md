@@ -10,7 +10,7 @@
 **Why this project:** It's **your domain**. You've built forecasting agents for PepsiCo and Unilever; this
 rebuilds the idea publicly on open data, so you can walk through it in any interview without NDA problems.
 **Status:** 🟡 System design, tech stack and build plan done (no code yet).
-**Full plan (Option A) chosen: ~87.5 h, 6 weeks** (roadmap weeks 42–47, no slack); if it slips, four comparison extras are dropped first, turning it into the core plan
+**Core plan (Option B) chosen: ~82.5 h, 6 weeks** (roadmap weeks 42–47, ~5 h slack); TimesFM, the full-M5 GPU run, the human comparison and the stockout check deferred
 **Builds on:** [P1](../01-rag-eval-lab/README.md) (RAG + evals) · [P2](../02-mcp-hub/README.md) (MCP gateway, OAuth, Cedar) ·
 [P3](../03-agent-reliability-harness/README.md) (LangGraph, approvals, idempotency, pass^k, memory design) ·
 [P4](../04-a2a-agent-mesh/README.md) (A2A supplier agent) · [P5](../05-sandboxed-data-analyst/README.md) (sandbox, safe charts) ·

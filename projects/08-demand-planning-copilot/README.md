@@ -9,7 +9,8 @@
 **Target roles:** all three: GenAI Engineer, Agent Engineer, AI Full-stack Engineer
 **Why this project:** It's **your domain**. You've built forecasting agents for PepsiCo and Unilever; this
 rebuilds the idea publicly on open data, so you can walk through it in any interview without NDA problems.
-**Status:** 🟡 System design and tech stack done (no code yet). Build plan and setup guide come next.
+**Status:** 🟡 System design, tech stack and build plan done (no code yet).
+**Build plan:** full ~87.5 h; **core plan ~82.5 h, 6 weeks** (recommended, awaiting your choice; fits the roadmap slot); lean ~75 h
 **Builds on:** [P1](../01-rag-eval-lab/README.md) (RAG + evals) · [P2](../02-mcp-hub/README.md) (MCP gateway, OAuth, Cedar) ·
 [P3](../03-agent-reliability-harness/README.md) (LangGraph, approvals, idempotency, pass^k, memory design) ·
 [P4](../04-a2a-agent-mesh/README.md) (A2A supplier agent) · [P5](../05-sandboxed-data-analyst/README.md) (sandbox, safe charts) ·
@@ -31,9 +32,11 @@ rebuilds the idea publicly on open data, so you can walk through it in any inter
 | 6 | [Non-Functional Design](docs/06-non-functional.md) | Latency and cost budgets, batch sizing, observability, failure modes |
 | 7 | [Architecture Decision Records](docs/07-decisions.md) | 13 decisions with alternatives and consequences |
 | 8 | [Tech Stack](docs/08-tech-stack.md) | Data (Kaggle M5, FreshRetailNet), Nixtla + LightGBM + Chronos-2 forecasting, reused agent/MCP/web platform, versions, week-1 checks |
+| 9 | [Build Plan](docs/09-build-plan/README.md) | 20 features in 5 milestones: dependency diagram, options A/B/C, 6-week core timeline, a page per feature with stubs for missing platform pieces |
+| 10 | [Setup Guide](docs/10-setup-guide.md) | Accounts and keys (and when), env vars, first run, cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | Demand-planning, forecasting and agent terms in plain English |
 
-Numbers 9, 10 and 12 are reserved for the build plan, setup guide and market review, matching
+Number 12 is reserved for the market alignment review, matching
 Projects 1–7.
 
 ## The system at a glance

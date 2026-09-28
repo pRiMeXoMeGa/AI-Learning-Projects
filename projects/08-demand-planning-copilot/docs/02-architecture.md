@@ -159,7 +159,7 @@ sequenceDiagram
     PL->>I: submit_order(lines, approval_token, idempotency_key)
     I->>I: verify token (signature, scope, amounts, expiry)
     I->>ERP: create PO
-    ERP->>S: A2A message/send (PO)
+    ERP->>S: A2A SendMessage (PO)
     S-->>ERP: confirmed SKU_A, part-filled SKU_B (50), lead time 3 days
     ERP-->>U: status in the approval inbox
 ```

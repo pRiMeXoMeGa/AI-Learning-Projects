@@ -24,7 +24,7 @@ the [glossary](11-glossary.md).
 | Understand the design | [Requirements](01-requirements.md) → [Architecture](02-architecture.md) → [Low-level design](03-low-level-design.md) | 60 min |
 | Understand the security story | [Security](05-security-threat-model.md) | 15 min |
 | Understand performance, cost and operations | [Non-functional design](06-non-functional.md) | 10 min |
-| Start building | [Tech stack](08-tech-stack.md); the build plan and setup guide come next | 20 min |
+| Start building | [Tech stack](08-tech-stack.md) → [Build plan](09-build-plan/README.md) → [Setup guide](10-setup-guide.md) | 45 min |
 
 ## 0.3 The mental model: an S&OP meeting with a very fast analyst team
 
@@ -92,5 +92,5 @@ The reuse is deliberate, but the new parts are the hardest: the forecast service
 revision actions, FVA measurement and the replenishment simulator.
 
 **Is this the code?**
-Not yet. These are the design documents and the [tech stack](08-tech-stack.md), written before any code.
-The build plan and setup guide come next.
+Not yet. These are the design documents, [tech stack](08-tech-stack.md) and [build plan](09-build-plan/README.md),
+written before any code.

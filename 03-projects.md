@@ -220,6 +220,13 @@ pgvector) with resumable streaming, RLS isolation and usage-based billing."
 
 ## 7. LLM Gateway & Cost Router  *(GenAI)*
 
+📐 **Detailed system design:** [projects/07-llm-gateway-router](projects/07-llm-gateway-router/README.md).
+It is refined to **Switchboard**: a supply-chain-hardened FastAPI gateway using the **official provider SDKs
+(no LiteLLM at run time)**, an OpenAI-compatible API, virtual keys, reserve-then-reconcile budgets,
+pre-first-token fallbacks and circuit breakers, **three cache layers** (provider prompt caching, exact, and a
+scoped opt-in semantic cache with verify-on-hit and poisoning tests) and **five routing policies** compared
+on Pareto curves using replayed traces from Projects 1, 3 and 6.
+
 **Why this project:** It builds on your "GenAI Playground (17+ LLMs)" experience and adds the cost/latency
 engineering JDs ask for.
 

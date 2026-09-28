@@ -93,7 +93,7 @@ flowchart TB
 | FR-4 | Hierarchical reconciliation across item → dept → category → store → state → total, so numbers add up | Must |
 | FR-5 | Rolling-origin backtests with versioned runs; metrics stored per series, level and model | Must |
 | FR-6 | Scenario re-forecast for a slice (≤ 200 series) with changed covariates, e.g. "price −10% in week 2" | Must |
-| FR-7 | TimesFM 2.5 as a second foundation model in the comparison | Should |
+| FR-7 | TimesFM 2.5 as a second foundation model in the comparison (univariate) | Should (in the chosen full plan) |
 | FR-8 | Stockout-aware demand (censored sales) on FreshRetailNet-50K | Could |
 
 ### Agents and actions
@@ -161,4 +161,4 @@ flowchart TB
 - Training or fine-tuning foundation models (fine-tuning Chronos-2 is a Could, not planned).
 - New-product forecasting without history (mentioned in the report as a limitation).
 
-**Time box:** 6 weeks in the roadmap (weeks 42–47). The build plan will size it.
+**Time box:** 6 weeks in the roadmap (weeks 42–47), the full plan (Option A) of the [build plan](09-build-plan/README.md).

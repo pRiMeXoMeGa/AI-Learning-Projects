@@ -4,7 +4,7 @@ This assumes your current profile (LangGraph, MCP, RAG, guardrails, FastAPI, Rea
 roadmap skips fundamentals and goes straight to your gaps: **evals → observability → agent breadth →
 Next.js → public portfolio**.
 
-> **Updated:** Projects 1–7 now follow their detailed build plans:
+> **Updated:** Projects 1–7 and the capstone now follow their detailed build plans:
 > - **Project 1:** full plan incl. agentic mode and the 2026 market-review updates, 20 features, ~102 h,
 >   **7 weeks** at ~14.5 h/week
 >   ([build plan](projects/01-rag-eval-lab/docs/08-build-plan/README.md))
@@ -28,9 +28,13 @@ Next.js → public portfolio**.
 >   pass-through, hedged requests, the agent workload, the external routing benchmark, the
 >   managed-gateway comparison and the P1/P5 integrations are deferred
 >
+> - **Capstone:** **full plan (Option A)**, ~87.5 h, **6 weeks** at ~14.5 h/week
+>   ([build plan](projects/08-demand-planning-copilot/docs/09-build-plan/README.md)); it fits its original
+>   slot, with no slack; if it slips, TimesFM, the GPU run, the human comparison and the stockout check are
+>   dropped first
+>
 > Together that's 21 weeks more than the original 6-month plan, so the whole roadmap is now about
-> **47 weeks (~11 months)**. The capstone's duration is still an estimate and will be revised when its
-> build plan is written.
+> **47 weeks (~11 months)**. Every duration now comes from a detailed build plan.
 
 | Weeks | Focus | Project | Gap closed | Output |
 |---|---|---|---|---|
@@ -42,7 +46,7 @@ Next.js → public portfolio**.
 | **28–33** | Full-stack | #6 AI SaaS on Next.js: ClauseDesk (core plan) | Next.js 16 (Server Components/Actions, `"use cache"`, `proxy.ts`), AI SDK 7 (agent, typed UI parts, approvals, resumable streams), durable workflows, Better Auth orgs + Postgres RLS, Stripe usage billing, previews with DB branches, Playwright E2E | Deployed SaaS + CUAD extraction, isolation and billing reports + post |
 | **34–37** | Sandboxing + generative UI | #5 Sandboxed Data-Analyst Agent: Analyst (core plan) | Sandboxed code execution on E2B Firecracker microVMs + self-hosted gVisor, MCP sandbox broker, output-handling security, safe Vega-Lite generative UI, code-writing agent with self-repair, data-agent evals (AnalystBench-50, DABstep) | Escape-suite + provider reports, benchmark + DABstep results, demo + post |
 | **38–41** | Cost engineering | #7 LLM Gateway & Cost Router: Switchboard (core plan) | OpenAI-compatible gateway on the official SDKs, virtual keys + reserve-then-settle budgets, stream-aware retries/breakers/fallbacks, prompt/exact/scoped semantic caching with poisoning tests, five routing policies on Pareto curves, trace replay, FinOps dashboards, supply-chain hardening | Cost report (C0–C6), cache + poisoning study, routing study, overhead + build-vs-buy vs LiteLLM, ClauseDesk before/after + post |
-| **42–47** | Capstone | 🏆 Demand-Planning Copilot | Brings everything together | Public demo + video + blog |
+| **42–47** | Capstone | 🏆 Demand-Planning Copilot: Cadence (full plan) | Forecasting at M5 scale (statsforecast, LightGBM, Chronos-2, TimesFM, MinT reconciliation), LLM agents proposing typed, evidence-cited forecast revisions measured with FVA, orders with signed approvals, replenishment simulation, A2A supplier, planner memory, all of Projects 1–7 integrated | Forecast report, PlanBench-60 FVA report (incl. agent vs you), replenishment + design-comparison + red-team reports, public demo + video + blog |
 
 ## Project 1 in detail (weeks 1–7)
 
@@ -120,6 +124,17 @@ Next.js → public portfolio**.
 | 40 | M2 → M4 | F9 semantic cache · F10 router training data · F11 routing policies · F12 traces + replayer | Scoped semantic hits with verify-on-hit; ONNX router ≤ 2 ms; W1 + W2 replay with quality scores |
 | 41 | M4 → M5 | F13 cache study + poisoning · F14 Pareto study · F15 cost report · F16 overhead + LiteLLM · F17 ClauseDesk switch · F18 ship | Reports committed; ClauseDesk before/after; demo + post + video |
 
+## Capstone in detail (weeks 42–47, full plan)
+
+| Week | Milestone | Features | Exit check |
+|---|---|---|---|
+| 42 | M1 Forecasting core | F0 foundation + spikes · F1 data platform · F2 baselines + backtests | Data loaded; baselines backtested; WRMSSE matches the official evaluation |
+| 43 | M1 | F3 LightGBM · F4 Chronos-2 + TimesFM · F5 ensemble, reconciliation, forecast service | Reconciled quantiles served; scenario ≤ 5 s |
+| 44 | M1 → M2 | F4 full-M5 GPU run · F6 forecast report · F7 corpus · F8 MCP tools · F9 (start) | Forecast report committed; tools behind the gateway with roles |
+| 45 | M2 → M3 | F9 revision engine · F10 agent graph · F11 orders + approvals + ERP · F12 memory | **End to end from the CLI:** review → revision → order → approval → ERP |
+| 46 | M3 → M4 | F13 supplier (A2A) · F14 workspace · F15 PlanBench-60 + FVA + human comparison | Workspace demo flow; FVA for both designs and for you |
+| 47 | M4 → M5 | F16 replenishment + stockouts · F17 reliability · F18 RAG + red team · F19 ship | Reports, public demo, post and video |
+
 ```mermaid
 gantt
     title ~11-month roadmap
@@ -135,7 +150,7 @@ gantt
     P6 AI SaaS on Next.js (core plan)   :p6, after p4, 6w
     P5 Sandboxed Analyst (core plan)    :p5, after p6, 4w
     P7 Switchboard (core plan)          :p7, after p5, 4w
-    Capstone Demand-Planning Copilot    :cap, after p7, 6w
+    Capstone Cadence (full plan)        :cap, after p7, 6w
     section Career
     AI-102 certification prep           :cert, after p1, 8w
     Start applying                      :milestone, after p2, 0d
@@ -150,7 +165,7 @@ mesh (week 27), the ClauseDesk SaaS (week 33), the sandboxed Analyst (week 37) a
 
 - **Earliest option: week 7**, after Project 1 alone (evals + observability + agent evaluation).
 - **Short on time?** Project 1's agentic milestone (its week 6) can be skipped, and Project 2's deferred
-  features stay deferred, as do Project 3's (memory, multi-agent, Azure demo) Project 4's (partner tenant, poisoned-KB attack), Project 6's (settings and audit-log pages) Project 5's (uploads, exports, extra experiments) and Project 7's (pass-through, hedging, extra workloads and comparisons). Each project's build plan says what can be dropped without breaking anything.
+  features stay deferred, as do Project 3's (memory, multi-agent, Azure demo), Project 4's (partner tenant, poisoned-KB attack), Project 6's (settings and audit-log pages), Project 5's (uploads, exports, extra experiments), Project 7's (pass-through, hedging, extra workloads and comparisons) and the capstone's four extras (stockout check, human comparison, GPU run, TimesFM). Each project's build plan says what can be dropped without breaking anything.
 
 ## Weekly rhythm
 - About 60% building, 20% reading docs/papers, 20% writing (README, LinkedIn post).

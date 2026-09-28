@@ -51,7 +51,7 @@ experiments/*.yaml             # E1..E9 definitions
 - [ ] Per-provider limiter (requests + tokens per minute) and the experiment cost cap
 - [ ] All graders ([03 §3.9](../03-low-level-design.md#39-graders)); the task-success rule in one function
 - [ ] Port Project 1's trajectory metrics to the event format
-- [ ] Result record with commit, config hash, scenario hash, SDK versions, returned model ID
+- [ ] Result record with commit, config hash, scenario hash, **grader + scenario semver**, SDK versions, returned model ID
 
 ## Acceptance criteria
 - Oracle and bad-policy runs grade exactly as F3 expects (now through the real graders)

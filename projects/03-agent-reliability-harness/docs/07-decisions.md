@@ -147,6 +147,9 @@ building.
 - **Decision:** Publish opssim + dev scenarios from the start. Publish the 15 test scenarios with the
   report, along with their pre-committed hashes, which prove they weren't changed after tuning.
 - **Consequences:** A reusable public artifact. Contamination risk is low and accepted.
+- **Versioning (added by the market review):** graders and scenarios use semantic versioning; every result
+  records the grader version, and the scoring CLI refuses to compare results across major versions
+  (τ²-bench's July 2026 grading fix showed why).
 
 ### ADR-017: Claude Agent SDK with built-in tools disabled
 - **Context:** The Claude Agent SDK ships file, shell and web tools by default. The other implementations
@@ -158,9 +161,9 @@ building.
 
 ### ADR-018: Framework-native persistence for crash/resume; Temporal as an optional variant
 - **Decision:** E5 tests each framework's own persistence:
-  - LangGraph: Postgres checkpointer.
+  - LangGraph: Postgres checkpointer, run in both `sync` and the default `async` durability mode.
   - OpenAI Agents SDK: `RunState` + sessions.
-  - Claude Agent SDK: session resume.
+  - Claude Agent SDK: session resume from a custom `SessionStore` in Postgres.
   - Raw loop: own message store.
 - **Alternatives:** Put every implementation on Temporal (durable execution becomes identical and stops
   being a framework difference).

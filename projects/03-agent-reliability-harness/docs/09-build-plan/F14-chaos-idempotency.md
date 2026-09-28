@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M4 | Must | F9, F10, F11 | 5 h | F18, F22 |
+| M4 | Must | F9, F10, F11 | 6.5 h | F18, F22 |
 
 **Goal:** Kill agent runs at chosen risky moments, resume them, and measure whether each implementation
 finishes correctly without doing anything twice, with idempotency keys off and on.
@@ -48,6 +48,8 @@ reports/e5-crash-resume.md
 - [ ] Resume path per adapter (already built in F6, F9–F11); a run that can't resume is `resume_failed`, not `infra_error`
 - [ ] Duplicate detection from the action log (same tool + args applied twice, or deduplicated)
 - [ ] Record each framework's checkpoint timing around tool calls (explains duplicates)
+- [ ] LangGraph in both `sync` and `async` (default) durability modes; compare duplicates and resume success *(market review)*
+- [ ] Claude Agent SDK resumes from the Postgres `SessionStore`; record the flush setting *(market review)*
 - [ ] Run E5 on the cheap model first; then the main model for the report
 - [ ] Write up the results table + one trace per framework showing its behaviour at K3
 

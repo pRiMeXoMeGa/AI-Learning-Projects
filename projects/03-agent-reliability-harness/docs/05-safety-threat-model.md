@@ -81,11 +81,20 @@ That is on purpose: it is the realistic setup for an ops agent. Each leg is weak
 | Private data | Config tool **redacts values** unless a scenario needs them; canaries detect leaks |
 | Outward channel | Public channel requires approval; outbox is scanned; messages to pages/channels are graded |
 
+### The environment backstop as a reference monitor
+
+2026 prompt-injection research has converged on **deterministic policies enforced outside the model**
+(CaMeL, FIDES, Progent), because in-model defences that look strong on static benchmarks fall to adaptive
+attacks. The environment's approval-token check is that kind of **reference monitor** for risky actions:
+it doesn't matter what the model was persuaded to do, a risky call without a valid token is refused. E6
+therefore reports static and adaptive attack success separately, and records which layer held
+(spotlighting in the model, or the backstop in the environment).
+
 ## 5.5 Mapping to the OWASP Top 10 for Agentic Applications (2026)
 
 | OWASP (ASI) | Covered by |
 |---|---|
-| ASI01 Agent goal hijack | T1, S4 cases, spotlighting, E6 |
+| ASI01 Agent goal hijack | T1, S4 cases, spotlighting, E6 (static **and adaptive** attacks) |
 | ASI02 Tool misuse & exploitation | T2, risk levels, forbidden-action grading |
 | ASI03 Identity & privilege abuse | Approval tokens bound to run/tool/args; environment-side enforcement |
 | ASI04 Agentic supply chain | Pinned framework versions; tool schema snapshot (T10); MCP-level controls from Project 2 |

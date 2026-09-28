@@ -54,7 +54,7 @@ agents/claude_agent/options.py     # allowed tools = mcp__opsdesk__*, mcp__memor
 
 ## Tasks
 - [ ] Options: only MCP tools allowed, built-in tools disallowed, no filesystem settings loaded ([ADR-017](../07-decisions.md))
-- [ ] Per-run working and session directory, so resume works after `SIGKILL`
+- [ ] Per-run working directory; sessions in a custom Postgres `SessionStore` (immediate flush), so resume works after `SIGKILL` on any worker
 - [ ] `can_use_tool`: approve / deny with message / allow with **updated input** (the edit case)
 - [ ] Hooks: guard checks and normalized events; `max_turns`
 - [ ] Deny-and-resume pattern for long waits

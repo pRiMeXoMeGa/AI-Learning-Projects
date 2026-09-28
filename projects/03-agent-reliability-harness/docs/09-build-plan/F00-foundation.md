@@ -56,6 +56,7 @@ docs/notes/spikes.md
 - [ ] Compose: Postgres 16 + pgvector, Langfuse (local) with health checks
 - [ ] `models.yaml` / `prices.yaml` with the models from the [tech stack](../08-tech-stack.md#models)
 - [ ] DX diary template: date, implementation, hours, what hurt, what helped
+- [ ] Pin an `openai-agents` release after the April 2026 update and re-check the `interruptions`/`RunState` API in the spike *(market review)*
 - [ ] CI: lint, types, unit tests, secret scanning
 
 ## Acceptance criteria

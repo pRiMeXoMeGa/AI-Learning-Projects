@@ -42,8 +42,8 @@ flowchart LR
 
 | Item | Estimate | Control |
 |---|---|---|
-| Core matrix (E1, E3–E6) | ≈ $100–150 | Runner **hard cap** per experiment (`--max-cost`), stops scheduling when reached |
-| E2 + E7–E9 | ≈ $60–120 | Sized in the build plan; subsets allowed |
+| Core matrix (E1, E3–E6, E9) | ≈ $110–165 | Runner **hard cap** per experiment (`--max-cost`), stops scheduling when reached |
+| E2 + E7–E8 | ≈ $55–110 | Sized in the build plan; subsets allowed |
 | Dev iterations | ≈ $1–3 per run of the dev smoke | Use the cheap model tier during development |
 | CI smoke | ≤ $1 per PR | 20 runs on the cheap model |
 | Demo | ≤ $10/month | Per-user daily cap, cheap model, auto-stop |

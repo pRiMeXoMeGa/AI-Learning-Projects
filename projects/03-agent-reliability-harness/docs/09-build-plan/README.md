@@ -156,16 +156,16 @@ flowchart LR
 | F11 | Claude Agent SDK agent | M3 | Must | F6, F7 | 6 | [F11](F11-claude-agent-sdk.md) |
 | F12 | One trace view across frameworks | M3 | Must | F9, F10, F11 | 3 | [F12](F12-tracing.md) |
 | F13 | OpsDesk-50 complete, reporter simulator & freeze | M4 | Must | F3, F7 | 9 (8 in core) | [F13](F13-opsdesk-50.md) |
-| F14 | Chaos mode & idempotency (E5) | M4 | Must | F9, F10, F11 | 5 | [F14](F14-chaos-idempotency.md) |
+| F14 | Chaos mode & idempotency (E5) | M4 | Must | F9, F10, F11 | 6.5 | [F14](F14-chaos-idempotency.md) |
 | F15 | Memory service & memory scenarios (E8) | M4 | Should · **deferred** | F4, F9, F13 | 6 | [F15](F15-memory.md) |
 | F16 | LangGraph multi-agent variant (E7) | M4 | Should · **deferred** | F9 | 4 | [F16](F16-multi-agent.md) |
 | F17 | Demo API & approval inbox | M4 | Should | F5, F9 | 6 (4 in core) | [F17](F17-demo-inbox.md) |
-| F18 | Core experiments (E1–E4, E6) | M5 | Must | F8, F12, F13 | 7 | [F18](F18-core-experiments.md) |
-| F19 | Failure taxonomy, calibration & robustness (E9) | M5 | Must | F18 | 5 (3 in core) | [F19](F19-taxonomy-calibration.md) |
-| F20 | CI gate, PyPI release & scoring CLI | M5 | Must | F8, F13 | 4 | [F20](F20-ci-release.md) |
+| F18 | Core experiments (E1–E4, E6) | M5 | Must | F8, F12, F13 | 8.5 | [F18](F18-core-experiments.md) |
+| F19 | Failure taxonomy, calibration & robustness (E9) | M5 | Must | F18 | 5.5 | [F19](F19-taxonomy-calibration.md) |
+| F20 | CI gate, PyPI release & scoring CLI | M5 | Must | F8, F13 | 4.5 | [F20](F20-ci-release.md) |
 | F21 | Azure demo deployment | M6 | Could · **deferred** | F17 | 3.5 | [F21](F21-azure-demo.md) |
 | F22 | Report, blog & video | M6 | Must | F18, F19, F20 | 4 | [F22](F22-report-blog.md) |
-| | **Total: full plan / core plan (chosen)** | | | | **~127 h / ~108 h** | |
+| | **Total: full plan / core plan (chosen)** | | | | **~131 h / ~114 h** | |
 
 **Optional features** (not in either total):
 
@@ -173,18 +173,20 @@ flowchart LR
 |---|---|---|---|
 | F23 | Microsoft Agent Framework (fifth implementation) | 6 | [F23](F23-optional-extensions.md#f23-microsoft-agent-framework-fifth-implementation) |
 | F24 | Temporal durable variant of the OpenAI SDK agent | 4 | [F23](F23-optional-extensions.md#f24-temporal-durable-variant) |
-| F25 | Adaptive injection attacks | 3 | [F23](F23-optional-extensions.md#f25-adaptive-injection-attacks) |
+| F25 | Adaptive injection attacks (full version; a slim one is in core) | 1.5 | [F23](F23-optional-extensions.md#f25-adaptive-injection-attacks) |
 
 ## 9.5 Timeline: Option B (core plan) chosen
 
 The roadmap originally had **4 weeks for Projects 3 and 4 together** (weeks 16–19). The design is larger, as it was
 for Projects 1 and 2:
 
-| Option | Scope | Effort | Weeks at ~13.5 h/week |
+| Option | Scope | Effort | Weeks |
 |---|---|---|---|
-| A. Full plan | All 23 features | ~127 h | ~9.5 |
-| **B. Core plan ✅ chosen** | Everything that makes the comparison credible. **Deferred:** F15 memory (S7 scenarios wait with it, so 45 scenarios at first), F16 multi-agent, F21 Azure demo (the demo runs locally and is recorded). **Slimmed:** F17 inbox (one page, no diff view polish), F19 without E9 | **~108 h** | **8** |
-| C. Lean | B minus the OpenAI Agents SDK (three implementations: raw, LangGraph, Claude Agent SDK), 40 scenarios, CLI approvals only (no inbox) | ~96 h | ~7 |
+| A. Full plan | All 23 features | ~131 h | ~9.5 |
+| **B. Core plan ✅ chosen** | Everything that makes the comparison credible. **Deferred:** F15 memory (S7 scenarios wait with it, so 45 scenarios at first), F16 multi-agent, F21 Azure demo (the demo runs locally and is recorded). **Slimmed:** F17 inbox (one page, no diff view polish) | **~114 h** | **8 at ~14.25 h/week** |
+| C. Lean | B minus the OpenAI Agents SDK (three implementations: raw, LangGraph, Claude Agent SDK), 40 scenarios, CLI approvals only (no inbox) | ~101 h | ~7.5 |
+
+*(Updated by the [market review](../12-market-alignment-review.md): +6 h in the core plan for E9 robustness, LangGraph durability modes, the Claude session store, a slim adaptive attack and grader versioning. Still 8 weeks, now at ~14.25 h/week.)*
 
 **Why B:** it keeps the four-way comparison, pass^k with CIs, HITL, crash/resume, injection and the public
 benchmark, which together are the headline. Memory and multi-agent are good findings, but not the
@@ -207,12 +209,12 @@ bottleneck for starting the job search. *(Later, Project 4's own build plan grew
 | 4 | 19 | M2 → M3 | F7 (finish) · F8 stats + report v0 · **prompt freeze** · F9 (start) | **Baseline report v0** (raw loop, 10 dev scenarios × k=4, with CIs) |
 | 5 | 20 | M3 | F9 LangGraph · F10 OpenAI Agents SDK | Both pass golden stub tests + dev smoke with HITL |
 | 6 | 21 | M3 → M4 | F11 Claude Agent SDK · F12 tracing · F13 scenarios (start) | Four implementations in one Langfuse view |
-| 7 | 22 | M4 | F13 (finish, test split frozen) · F14 chaos · F17 inbox | OpsDesk-45 frozen with hashes; chaos results for 3 implementations |
-| 8 | 23 | M5 → M6 | F18 experiments · F19 taxonomy · F20 CI + PyPI · F22 report + post | Framework comparison report on the test split; `opssim` on PyPI; post published |
+| 7 | 22 | M4 | F13 (finish, test split frozen) · F14 chaos (incl. LangGraph durability modes) · F17 inbox | OpsDesk-45 frozen with hashes; chaos results for 3 implementations |
+| 8 | 23 | M5 → M6 | F18 experiments (incl. adaptive E6) · F19 taxonomy + E9 robustness · F20 CI + PyPI · F22 report + post | Framework comparison report on the test split; `opssim` on PyPI; post published |
 
 ```mermaid
 gantt
-    title Project 3 build timeline (core plan, ~13.5 h/week)
+    title Project 3 build timeline (core plan, ~14.25 h/week)
     dateFormat YYYY-MM-DD
     axisFormat W%W
     section M1 Environment
@@ -234,20 +236,23 @@ gantt
     F12 One trace view               :f12, after f11, 1d
     section M4 Scenarios and production
     F13 OpsDesk-45 + freeze          :f13, after f12, 4d
-    F14 Chaos + idempotency          :f14, after f13, 2d
+    F14 Chaos + idempotency          :f14, after f13, 3d
     F17 Demo API + inbox             :f17, after f14, 2d
     section M5 Measure
-    F18 Core experiments             :f18, after f17, 3d
-    F19 Taxonomy + calibration       :f19, after f18, 1d
+    F18 Core experiments             :f18, after f17, 4d
+    F19 Taxonomy + calibration + E9  :f19, after f18, 2d
     F20 CI gate + PyPI + score CLI   :f20, after f19, 2d
     section M6 Ship
     F22 Report + blog + video        :f22, after f20, 2d
 ```
 
+Week 8 is now the heaviest (~17 h). If it slips, the fault-rate half of E9 and the PyPI release notes move
+into the first days of Project 4.
+
 *(Dates are illustrative: Project 3 starts after Project 2's 8 weeks. One "d" is one working session of
 about 2–2.5 hours.)*
 
-**Deferred in B (add later, ~19 h)**
+**Deferred in B (add later, ~17 h)**
 
 | Feature | Effort | Value when added |
 |---|---|---|
@@ -255,7 +260,6 @@ about 2–2.5 hours.)*
 | F16 LangGraph multi-agent variant (E7) | 4 h | Evidence-based "single vs multi-agent" answer |
 | F21 Azure demo | 3.5 h | Public, clickable demo |
 | F17 inbox polish (argument diff, live event stream) | 2 h | Nicer demo and T4 mitigation visible |
-| F19 robustness sweep (E9) | 2 h | Robustness dimension fully covered |
 | F13 memory scenarios' authoring (inside F15) | 1 h | — |
 
 ## 9.6 Milestone exit criteria

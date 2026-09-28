@@ -11,7 +11,7 @@ Next.js → public portfolio**.
 > - **Project 2:** **core plan (Option B)** incl. the 2026 market-review updates, ~114 h, **8 weeks** at ~14 h/week
 >   ([build plan](projects/02-mcp-hub/docs/09-build-plan/README.md)); admin console, Tasks and the GitHub
 >   upstream are deferred
-> - **Project 3:** **core plan (Option B)**, ~108 h, **8 weeks** at ~13.5 h/week
+> - **Project 3:** **core plan (Option B)** incl. the 2026 market-review updates, ~114 h, **8 weeks** at ~14.25 h/week
 >   ([build plan](projects/03-agent-reliability-harness/docs/09-build-plan/README.md)); memory, the
 >   multi-agent variant and the Azure demo are deferred
 > - **Project 4:** **core plan (Option B)**, ~58 h, **4 weeks** at ~14.5 h/week

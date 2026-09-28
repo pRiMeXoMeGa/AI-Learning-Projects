@@ -10,7 +10,8 @@
 execution/crash recovery, long-term memory, guardrails, cross-framework tracing, a framework comparison
 backed by numbers
 **Status:** 🟡 System design, tech stack and build plan done (no code yet).
-**Core plan (Option B) chosen: ~108 h, 8 weeks** (roadmap weeks 16–23); memory, multi-agent and the Azure demo deferred
+**Core plan (Option B) chosen: ~114 h, 8 weeks** (roadmap weeks 16–23); memory, multi-agent and the Azure demo deferred
+**Checked against the 2026 market** ([review](docs/12-market-alignment-review.md)): E9 robustness, durability modes, session store, adaptive attacks and grader versioning added
 
 > **New here?** Start with [0 · Start here](docs/00-start-here.md): the project in plain English, one
 > run's journey, and which document to read next.
@@ -31,8 +32,8 @@ backed by numbers
 | 9 | [Build Plan](docs/09-build-plan/README.md) | 23 features in 6 milestones (+3 optional): master dependency diagram, options A/B/C, 8-week core timeline, and a page per feature with diagrams, tasks and acceptance criteria |
 | 10 | [Setup Guide](docs/10-setup-guide.md) | Accounts and keys (and when you need them), `.env`, first run, cost safety, troubleshooting |
 | 11 | [Glossary](docs/11-glossary.md) | Plain-English definitions of agent, reliability, HITL, safety and incident terms |
+| 12 | [Market Alignment Review](docs/12-market-alignment-review.md) | September 2026 check against frameworks, reliability research, benchmarks and jobs; 6 gaps fixed, backlog |
 
-Number 12 is reserved for the market alignment review, matching Projects 1 and 2.
 
 ## The system at a glance
 

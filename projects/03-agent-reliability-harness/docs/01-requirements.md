@@ -83,7 +83,7 @@ both. Incident triage was chosen ([ADR-001](07-decisions.md)):
 | **Natural injection surface** | Logs, tickets and runbooks are untrusted text the agent *must* read. This is how prompt injection happens in real operations. |
 | **Checkable outcomes** | "Is the service healthy, rolled back to the right version, with an incident at the right severity?" can be answered from state, with no judge needed. |
 | **Less crowded than refunds** | τ-bench already covers retail and airline refunds. A different domain makes the benchmark a contribution, not a copy. |
-| **Different from existing SRE benchmarks** | ITBench, AIOpsLab and SREGym test **root-cause skill** on real Kubernetes clusters (heavy, slow). OpsDesk tests **agent reliability and safety across frameworks** on a light simulator that runs 1,000+ episodes cheaply. |
+| **Different from existing SRE benchmarks** | ITBench (and Artificial Analysis's ITBench-AA), AIOpsLab, SREGym and InfraBench test **root-cause skill** on real infrastructure (heavy, slow). Thinkingbox-bench (2026) uses the same state-graded MCP method for business workflows, not incidents or framework comparison. OpsDesk tests **agent reliability and safety across frameworks** on a light simulator that runs 1,000+ episodes cheaply. |
 
 ## 1.3 Users & use cases
 
@@ -151,7 +151,7 @@ both. Incident triage was chosen ([ADR-001](07-decisions.md)):
 | FR-31 | Graders: final-state predicates, forbidden actions with **severity**, approval correctness, trajectory metrics, LLM judge only for the written summary | Must |
 | FR-32 | Statistics: success rate, **pass^k** (unbiased estimator), bootstrap CIs over scenarios, **paired** comparisons between implementations | Must |
 | FR-33 | **Chaos mode**: kill the agent process at a random step and resume it | Must |
-| FR-34 | **Perturbation mode**: paraphrased tickets and shuffled tool order, for robustness | Should |
+| FR-34 | **Perturbation mode**: paraphrased tickets and shuffled tool order, for robustness | Must (since the [market review](12-market-alignment-review.md)) |
 | FR-35 | **Failure taxonomy**: every failed run labelled with a failure mode (LLM-assisted, human-checked sample) | Should |
 | FR-36 | Report generator: Markdown report with tables, charts and links to traces; results reproducible from a commit and a results file | Must |
 | FR-37 | **Scoring CLI** so others can run their own agent against OpsDesk-50 | Should |
@@ -199,7 +199,7 @@ Split: **35 dev / 15 test** (stratified by category). Prompts and guards are tun
 | **E9** | How robust is it to rephrasing and flaky tools? | Paraphrase and fault-rate sweeps on a subset |
 | **DX** | What is each framework like to build with? | Lines of code, time to add HITL / a tool / resume, debugging notes |
 
-E1, E3, E4, E5 and E6 are **core**. E2, E7, E8, E9 are sized in the build plan.
+E1, E3, E4, E5, E6 and E9 are **core** (E9 since the [market review](12-market-alignment-review.md)). E2, E7 and E8 are sized in the build plan.
 
 ## 1.8 Capacity & budget estimate
 

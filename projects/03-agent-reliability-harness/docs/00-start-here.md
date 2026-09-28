@@ -91,7 +91,7 @@ Then the same scenario runs **three more times**, and in all four implementation
 
 **Why simulate instead of using real infrastructure?**
 To run more than 1,000 episodes for tens of dollars, with planted faults and exact grading. Real-cluster
-benchmarks (ITBench, SREGym) exist for root-cause skill; this project measures **reliability and
+benchmarks (ITBench-AA, SREGym, InfraBench) exist for root-cause skill; this project measures **reliability and
 safety across frameworks**, which needs many cheap, repeatable runs. ([ADR-001](07-decisions.md))
 
 **Isn't comparing frameworks unfair if they use different models?**

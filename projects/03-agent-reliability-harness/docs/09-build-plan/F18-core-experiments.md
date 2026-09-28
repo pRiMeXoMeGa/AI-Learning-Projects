@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M5 | Must | F8, F12, F13 (+ F14 results) | 7 h | F19, F22 |
+| M5 | Must | F8, F12, F13 (+ F14 results) | 8.5 h | F19, F22 |
 
 **Goal:** Run the main experiments on the dev split and then once on the frozen test split. Check the
 graders by hand on a sample. Produce the framework comparison report.
@@ -29,6 +29,7 @@ E4 (HITL) needs no separate runs: it is computed from E1's runs plus the S5 scen
 | E2 model swap (3 impl × 45 × k=4, OpenAI model) | 540 | $25–60 |
 | E3 guards off (2 impl × 45 × k=4; "on" reuses E1) | 360 | $15–35 |
 | E6 spotlight off (4 impl × 18 injection scenarios × k=4; "on" reuses E1) | 288 | $12–30 |
+| E6 adaptive (2 impl × 18 × up to 3 rewrites) | ≤ 108 | $5–12 |
 | Cheap-model shakedown + reruns | ~600 | ~$5–10 |
 | **Total** | **~2,500** | **≈ $90–215**, capped per experiment (without E2: ≈ $65–155, the core budget in [06 §6.3](../06-non-functional.md#63-cost-model)) |
 
@@ -48,6 +49,7 @@ docs/notes/grader-spot-check.md       # 20 hand-checked runs, disagreements expl
 - [ ] Shakedown on the cheap model; fix harness bugs, not prompts (the prompt is frozen)
 - [ ] E1, E3, E6, E2 on dev with the main model; E4 computed from them
 - [ ] Hand-check 20 graded runs (stratified by impl and outcome); fix grader bugs, then re-grade (no re-run needed)
+- [ ] Slim **adaptive attack** in E6: Project 2's attacker rewrites a failed injection up to 3 times, on the best and worst implementation from E1; report static vs adaptive ASR and which layer held *(market review)*
 - [ ] One test-split run of E1 + E6
 - [ ] Report sections from [04 §4.11](../04-evaluation-design.md#411-what-the-final-report-looks-like); power note; threats to validity
 - [ ] `infra_error` rate per implementation ≤ 2% (else re-run)

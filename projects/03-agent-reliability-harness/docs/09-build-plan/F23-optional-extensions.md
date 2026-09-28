@@ -41,11 +41,12 @@ flowchart LR
 
 | Priority | Depends on | Effort |
 |---|---|---|
-| Could | F18 | 3 h |
+| Could | F18 | 1.5 h on top of the slim core version |
 
 - **Why:** Static attack strings understate risk. 2026 research shows adaptive attackers beat most
   defences (see the [Project 2 market review](../../../02-mcp-hub/docs/12-market-alignment-review.md)).
 - **What:** An attacker model sees the agent's response to a failed injection and rewrites it, up to 5
   attempts per S4 case. Report static ASR and adaptive ASR separately, with spotlighting off and on.
+- **Core since the market review:** a slim version (3 rewrites, best and worst implementation, spotlighting on) is in F18. This extension adds 5 rewrites, all implementations and spotlighting off.
 - **Done when:** The E6 table has an "adaptive" column and the report discusses which layer (approval
   backstop vs. spotlighting) held.

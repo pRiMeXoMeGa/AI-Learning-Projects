@@ -149,7 +149,10 @@ flowchart TB
 - **Not chosen:** LangGraph Platform / LangSmith deployment (hosted features would muddy the
   comparison; open-source only).
 - **Profile:** Moves "LangGraph at work" to "LangGraph durability and HITL measured in public".
-- **Revisit:** If the checkpointer package's schema changes mid-project, pin it and note it.
+- **Durability modes:** the default `async` mode writes the checkpoint while the next step runs; `sync`
+  writes it first. E5 runs both, because the window between them is where duplicate actions come from.
+- **Revisit:** If the checkpointer package's schema changes mid-project, pin it and note it. Temporal's
+  LangGraph plugin (Public Preview, July 2026) is a backlog variant for E5.
 
 #### OpenAI Agents SDK (+ LiteLLM adapter)
 - **Role:**
@@ -163,6 +166,9 @@ flowchart TB
   - E1 runs it on **Claude** through the SDK's LiteLLM (or Any-LLM) adapter, which the SDK labels **beta, best-effort**.
   - E2 runs it on OpenAI's own Responses model.
   - Whether the adapter behaves well with Claude (tool schemas, prompt caching, usage reporting) is itself a finding.
+- **2026 status:** the April 2026 release added a model-native harness, **sandbox agents** and built-in HITL.
+  Pin a release after that update and re-check the approval (`interruptions`) API in the F0 spike. Sandbox
+  agents aren't used: this agent only calls MCP tools, and sandboxing is Project 5.
 - **Not chosen:** OpenAI's hosted MCP tool (runs the tool call on OpenAI's side, so the approval and
   environment backstop can't be compared like for like).
 - **Revisit:** If the LiteLLM route fails badly with Claude, E1 keeps the three other implementations on
@@ -174,12 +180,12 @@ flowchart TB
   - Only the `mcp__opsdesk__*` and `mcp__memory__*` tools are allowed.
   - A `can_use_tool` callback asks the approval service and waits.
   - `PreToolUse` hooks run the guard lib.
-  - Session resume after a crash.
+  - Session resume after a crash, from a custom **`SessionStore`** in Postgres (supported by the SDK in 2026), so a replacement worker can resume anywhere.
 - **Why:** Anthropic's official agent framework with the richest permission/hook model (C3). It's a
   different philosophy from both of the others: an agent runtime you configure, not a graph or a loop you
   write.
 - **Things this choice brings (and the design must handle):**
-  - **It runs the bundled Claude Code CLI as a subprocess.** Chaos kills must kill the whole process tree (psutil). Session files must live in a per-run directory that survives the kill, or resume can't work.
+  - **It runs the bundled Claude Code CLI as a subprocess.** Chaos kills must kill the whole process tree (psutil). Sessions are kept in the Postgres `SessionStore` with immediate flushes, so they survive the kill.
   - **Built-in tools (Bash, file, web) are disabled** and filesystem settings aren't loaded ([ADR-017](07-decisions.md)).
   - **Approvals block inside a live callback.** A run that waits for approval keeps its process alive, unlike LangGraph/OpenAI, which can exit and resume. Long waits are handled by denying with "pending approval", ending the turn, and resuming the session with the decision. How well this works is recorded in the DX scorecard.
 - **Not chosen:** The Claude API "tool runner" (simpler, but no hooks, permissions or sessions to

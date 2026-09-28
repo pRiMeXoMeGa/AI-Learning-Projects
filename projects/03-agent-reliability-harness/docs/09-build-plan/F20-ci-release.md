@@ -2,7 +2,7 @@
 
 | Milestone | Priority | Depends on | Effort | Unblocks |
 |---|---|---|---|---|
-| M5 | Must | F8, F13 | 4 h | F22, external users |
+| M5 | Must | F8, F13 | 4.5 h | F22, external users |
 
 **Goal:** Protect the agents and the benchmark with a CI gate, publish `opssim` (simulator, MCP server
 and dev scenarios) to PyPI, and let anyone score their own agent with `hctl score`.
@@ -54,6 +54,7 @@ scenarios/opsdesk-50/README.md       # "how to score your agent"
 - [ ] Demo a deliberately bad PR (e.g. remove the approval rule from the spec) → blocked
 - [ ] Package `opssim` with the dev scenarios; `uvx opssim serve` starts the server + approval service (SQLite-only mode)
 - [ ] External agent protocol + `hctl score`; test with a tiny example agent
+- [ ] Grader/scenario semver in releases; `hctl score` refuses to compare results across major grader versions *(market review)*
 - [ ] PyPI trusted publishing; release notes
 
 ## Acceptance criteria

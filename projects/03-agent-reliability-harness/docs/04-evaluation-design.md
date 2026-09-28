@@ -43,7 +43,7 @@ improved reliability**, and it splits reliability into four dimensions. The harn
 |---|---|---|
 | **Consistency** | Same task, same setup: does it succeed every time? | **pass^k**, outcome agreement across k runs, variance in steps and cost |
 | **Robustness** | Does it still work when wording changes or tools fail? | Success drop under paraphrase; success vs. injected fault rate; recovery rate after a tool error |
-| **Predictability** | Does it know when it's likely wrong? | Calibration of `confidence` (Brier, ECE), **selective success** (success when confidence ≥ 0.8), escalation precision |
+| **Predictability** | Does it know when it's likely wrong? | Calibration of `confidence` (Brier, ECE), **discrimination (AUROC)**, **selective success** (success when confidence ≥ 0.8), escalation precision |
 | **Safety** | When it fails, how bad is it? | Violations by severity (S1/S2/S3) per 100 runs, injection success, HITL bypass attempts |
 
 ## 4.3 Core metrics
@@ -62,6 +62,7 @@ improved reliability**, and it splits reliability into four dimensions. The harn
 | **Latency** | Wall time per run excluding approval wait; p50/p95 |
 | **Root-cause accuracy** | Correct service + cause type in the final report |
 | **Calibration** | Brier score and 10-bin ECE of `confidence` against success |
+| **Discrimination** | AUROC of `confidence` for separating successful from failed runs |
 
 **Why pass^k matters:** a 90% pass@1 agent that fails randomly has pass^4 ≈ 66%. An on-call team
 experiences pass^k, not pass@1. The report plots pass^k for k = 1…4 per implementation.
@@ -75,6 +76,10 @@ experiences pass^k, not pass@1. The report plots pass^k for k = 1…4 per implem
   sanity check.
 - **Multiple comparisons:** E1 has 6 pairwise comparisons. Holm correction; the report shows adjusted
   p-values and focuses on **effect sizes with CIs**.
+- **Paraphrase noise floor:** E9's paraphrased runs give the success change caused by rewording alone. Every
+  framework difference in E1 is shown next to that noise floor, and a difference smaller than it is not
+  reported as a finding (a 2026 noise-floor audit found prompt perturbations cause 11–58× more variance
+  than reruns).
 - **Power check (honest limit):** with 50 scenarios × k=4, differences below ~8–10 points in pass@1 are
   unlikely to be significant. The report says so instead of declaring winners on noise.
 - **Test split:** the final report shows dev and test separately. Numbers quoted in the README come
@@ -88,11 +93,11 @@ experiences pass^k, not pass@1. The report plots pass^k for k = 1…4 per implem
 | **E2 Model** | raw, LangGraph, OpenAI SDK × OpenAI mid × 50 × k=4 = 600 | pass^k difference vs E1 cells | "framework × model" interaction |
 | **E3 Guards** | best + worst impl from E1, guards off vs on, 50 × k=4 | failed-run rate, runaway runs (> 2× budget) | cost, loops caught, false guard trips on successful runs |
 | **E4 HITL** | from E1 runs (no extra cost) + S5 | HITL recall/precision, denial handling | backstop hits, re-asked approvals |
-| **E5 Crash/resume** | 3 impl (raw has own resume) × 20 S1/S5 scenarios × 3 kills × idem off/on | resume success | duplicate side effects, lost/re-asked approvals |
-| **E6 Injection** | 4 impl × (S4 + 10 planted) × k=4 × spotlight off/on | injection success rate (ASR) | stage reached, false refusals on normal tasks |
+| **E5 Crash/resume** | 3 impl (raw has own resume) × 20 S1/S5 scenarios × 3 kills × idem off/on; LangGraph in both `sync` and `async` durability modes | resume success | duplicate side effects, lost/re-asked approvals, durability-mode effect |
+| **E6 Injection** | 4 impl × (S4 + 10 planted) × k=4 × spotlight off/on; **adaptive attack** (up to 3 rewrites) on the best and worst impl | injection success rate (ASR), static vs adaptive | stage reached, false refusals on normal tasks, which layer held |
 | **E7 Multi-agent** | LangGraph single vs supervisor, 50 × k=4 | pass^k | tokens (multi-agent usually costs more), failure modes |
 | **E8 Memory** | S7 episodes, memory off/on; poisoning cases, write policy off/on | S7 success; poisoning ASR | memory reads per run |
-| **E9 Robustness** | 20 scenarios × 2 paraphrases; fault rate 0 / 10 / 25% | success drop | recovery rate |
+| **E9 Robustness** (core since the [market review](12-market-alignment-review.md)) | 20 scenarios × 2 paraphrases; fault rate 0 / 10 / 25% | success drop; paraphrase noise floor | recovery rate |
 
 **Kill points for E5** are sampled from four risk windows:
 - before an approval request

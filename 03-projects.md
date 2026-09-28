@@ -255,6 +255,14 @@ Do this only if you're targeting voice or customer-support product companies.
 
 ## 🏆 Capstone: Demand-Planning Copilot for CPG  *(all three roles)*
 
+📐 **Detailed system design:** [projects/08-demand-planning-copilot](projects/08-demand-planning-copilot/README.md).
+It is refined to **Cadence**: forecasting models (statistical baselines, LightGBM, Chronos-2, reconciled)
+make the numbers, and LangGraph agents do the **last mile**: they propose **typed, bounded, evidence-cited
+revision actions** and order proposals that a planner approves. Adjustments are scored with **Forecast
+Value Added** on PlanBench-60, orders in a **replenishment simulation**, and the system reuses Projects 1–7
+(RAG, MCP gateway, approvals, A2A supplier, sandbox, SaaS shell, LLM gateway). M5 is used for evaluation;
+the public demo uses FreshRetailNet-50K (CC BY 4.0) because of M5's redistribution terms.
+
 **Why this project:** It's **your domain**. You've built forecasting agents for PepsiCo and Unilever.
 Rebuilding the idea publicly on open data gives you a portfolio piece that looks like your real work,
 which you can walk through in any interview without NDA problems.

@@ -14,6 +14,7 @@ these roles:
 | [02-tech-stack.md](02-tech-stack.md) | Full tech stack rated for each role, with your current status (✅ / ⚠️ / ❌) |
 | [03-projects.md](03-projects.md) | 7 projects + 1 optional + a CPG demand-planning capstone, mapped to roles and gaps |
 | [04-roadmap.md](04-roadmap.md) | ~11-month plan (week by week for Projects 1–7 and the capstone), certification, interview prep, keywords |
+| [PORTFOLIO.md](PORTFOLIO.md) | One-page portfolio for recruiters: the eight projects, the skills each proves, a résumé bullet for each |
 
 ## Project design docs
 

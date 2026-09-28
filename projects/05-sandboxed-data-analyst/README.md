@@ -10,7 +10,7 @@
 **Gaps it closes:** sandboxed code execution, isolation technologies (microVM vs gVisor), output-handling
 security, generative UI with safe charts, code-writing agents with self-repair, data-agent evaluation
 **Status:** 🟡 System design, tech stack and build plan done (no code yet).
-**Build plan:** full ~64 h; **core plan ~59 h, 4 weeks** (recommended, awaiting your choice); lean ~47 h
+**Core plan (Option B) chosen: ~59 h, 4 weeks** (roadmap weeks 34–37); uploads, exports and two extra experiments deferred
 **Builds on:** [Project 6](../06-ai-saas-nextjs/README.md) (Next.js shell, AI SDK 7, auth) ·
 [Project 2](../02-mcp-hub/README.md) (MCP server patterns, OAuth) · [Project 3](../03-agent-reliability-harness/README.md) (runner, statistics)
 

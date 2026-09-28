@@ -167,7 +167,7 @@ the biggest yet:
 - C saves 12 h but removes the billing story.
 
 **Roadmap impact (applied):** P6 grows from 3 to 6 weeks (roadmap weeks 28–33), which adds **3 weeks** and
-takes the [roadmap](../../../../04-roadmap.md) from ~39 to **~42 weeks (about 9.7 months)**.
+takes the [roadmap](../../../../04-roadmap.md) from ~39 to **~42 weeks (about 9.7 months)**. *(Project 5's plan later took it to ~44 weeks.)*
 **Cumulative note:** the roadmap started at 26 weeks. Every detailed plan so far has grown, which is
 normal once designs are concrete. If you want to hold the total nearer 9 months, C here (and later the
 lean options for P5, P7 and the capstone) is the lever.

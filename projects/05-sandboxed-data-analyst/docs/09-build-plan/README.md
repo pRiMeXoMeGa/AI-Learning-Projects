@@ -122,16 +122,16 @@ flowchart LR
 | F13 | Provider benchmark & observability | M4 | Must | F4 | 2.5 (3 with concurrency ramp) | [F13](F13-provider-bench.md) |
 | F14 | Capstone hook (LangGraph MCP client) | M5 | Should | F4 | 1 (1.5 via P2 gateway) | [F14](F14-capstone-hook.md) |
 | F15 | CI gate, demo, report & video | M5 | Must | F9–F13 | 3.5 (4 full) | [F15](F15-ship.md) |
-| | **Total: full plan / core plan (recommended)** | | | | **~64 h / ~59 h** | |
+| | **Total: full plan / core plan (chosen)** | | | | **~64 h / ~59 h** | |
 
-## 9.5 Timeline: three options
+## 9.5 Timeline: Option B (core plan) chosen
 
-The roadmap gives Project 5 **2 weeks** (weeks 34–35). Once again, the design is larger than that:
+The roadmap originally gave Project 5 **2 weeks** (weeks 34–35). Once again, the design is larger than that:
 
 | Option | Scope | Effort | Weeks |
 |---|---|---|---|
 | A. Full plan | All features at full scope | ~64 h | ~4.5 |
-| **B. Core plan (recommended)** | Both providers with the full escape suite, output filter + safe charts, the analyst agent with notebook UI, AnalystBench-50, X1 + X2 experiments, a DABstep dev run **and** one leaderboard submission, provider benchmark, capstone hook. **Deferred:** dataset uploads, UI exports, X3/X4, the concurrency ramp, fronting the broker with the P2 gateway | **~59 h** | **4 at ~14.5 h/week** |
+| **B. Core plan ✅ chosen** | Both providers with the full escape suite, output filter + safe charts, the analyst agent with notebook UI, AnalystBench-50, X1 + X2 experiments, a DABstep dev run **and** one leaderboard submission, provider benchmark, capstone hook. **Deferred:** dataset uploads, UI exports, X3/X4, the concurrency ramp, fronting the broker with the P2 gateway | **~59 h** | **4 at ~14.5 h/week** |
 | C. Lean | B with **E2B only** (gVisor deferred), 30 benchmark questions, no DABstep, no capstone hook | ~47 h | ~3.5 |
 
 **Why B:**
@@ -141,11 +141,10 @@ The roadmap gives Project 5 **2 weeks** (weeks 34–35). Once again, the design 
   buy it. It's also what makes this project different from a typical "used E2B" demo.
 - The DABstep submission is cheap and gives an external number.
 
-**Roadmap impact (to update once you choose):** P5 grows from 2 to 4 weeks with B, which adds **2 weeks**
-and takes the roadmap from ~42 to **~44 weeks (about 10 months)**. With C it adds 1.5 weeks (~43.5
-weeks).
+**Roadmap impact (applied):** P5 grows from 2 to 4 weeks (roadmap weeks 34–37), which adds **2 weeks** and
+takes the [roadmap](../../../../04-roadmap.md) from ~42 to **~44 weeks (about 10 months)**.
 
-**Core plan, week by week** (would be roadmap weeks 34–37)
+**Core plan, week by week** (roadmap weeks 34–37)
 
 | Week | Roadmap week | Milestone | Features | Exit check |
 |---|---|---|---|---|
@@ -227,4 +226,4 @@ about 2–2.5 hours.)*
 | Agent loops on errors | Cost, latency | Execution budget + identical-error guard |
 | Azure VM cost if left running | Budget | Stop/start scripts; budget alert |
 | Scope creep (internet access, GPUs, arbitrary packages) | Timeline, risk | Out-of-scope list in [01 §1.8](../01-requirements.md#18-scope) is binding |
-| Plan longer than the roadmap slot | Later projects slip | Options A/B/C; roadmap updated once an option is chosen |
+| Plan longer than the roadmap slot | Later projects slip | **Option B chosen** (4 weeks); roadmap updated; deferred items added only while interviewing |

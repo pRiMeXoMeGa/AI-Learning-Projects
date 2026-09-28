@@ -158,4 +158,4 @@ flowchart LR
 - Billing: reuse P6's plumbing later if needed.
 - Arbitrary package installs at run time (the image is fixed; adding a package means rebuilding the image).
 
-**Time box:** 2 weeks in the roadmap (weeks 34–35). The build plan will size it.
+**Time box:** 4 weeks, roadmap weeks 34–37 (core plan, [build plan §9.5](09-build-plan/README.md#95-timeline-option-b-core-plan-chosen)).

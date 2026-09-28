@@ -15,6 +15,7 @@ these roles:
 | [03-projects.md](03-projects.md) | 7 projects + 1 optional + a CPG demand-planning capstone, mapped to roles and gaps |
 | [04-roadmap.md](04-roadmap.md) | ~11-month plan (week by week for Projects 1–7 and the capstone), certification, interview prep, keywords |
 | [PORTFOLIO.md](PORTFOLIO.md) | One-page portfolio for recruiters: the eight projects, the skills each proves, a résumé bullet for each |
+| [PROJECTS-EXPLAINED.md](PROJECTS-EXPLAINED.md) | All eight projects in plain English: analogies, how each works, worked examples, use cases, interview questions |
 
 ## Project design docs
 

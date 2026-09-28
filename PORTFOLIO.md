@@ -71,7 +71,7 @@ been measured.
 
 ## How to read this repo in 10 minutes
 
-1. This page.
+1. This page, then [the projects explained in plain English](PROJECTS-EXPLAINED.md).
 2. The capstone's [Start Here](projects/08-demand-planning-copilot/docs/00-start-here.md): the project closest
    to my day job.
 3. Any project's **Evaluation Design** (doc 04): how each claim above will be measured.
